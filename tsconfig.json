@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "rootDir": "src",
+    "outDir": "typings",
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "downlevelIteration": true,
+    "lib": ["es2017", "dom"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules/**/*"]
+}

@@ -1,0 +1,51 @@
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  env: {
+    browser: true,
+    node: true,
+  },
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {
+      modules: true,
+    },
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  plugins: ['@typescript-eslint'],
+  rules: {
+    'global-require': 0,
+    'import/no-unresolved': 0,
+    'no-param-reassign': 0,
+    'no-shadow': 0,
+    'import/extensions': 0,
+    'import/newline-after-import': 0,
+    'no-multi-assign': 0,
+    // allow debugger during development
+    'no-continue': 0,
+    'no-unexpected-multiline': 0,
+    'no-underscore-dangle': 0,
+    'import/no-extraneous-dependencies': 0,
+    'func-names': 0,
+    'no-loop-func': 0,
+    'no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
+    'consistent-return': 0,
+    'no-bitwise': 0,
+    'no-useless-escape': 0,
+    'no-plusplus': 0,
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '.*', args: 'none' }],
+    'no-empty': ['error', { allowEmptyCatch: true }],
+    'no-restricted-syntax': 'off',
+    // 构建时避免 console 和 debugger 被一起构建上去
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'class-methods-use-this': 'off',
+    '@typescript-eslint/no-explicit-any': ['off'],
+  },
+};

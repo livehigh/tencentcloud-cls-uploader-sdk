@@ -1,0 +1,12 @@
+.idea/
+.vscode
+package-lock.json
+node_modules
+demo/config.js
+demo/*.zip
+demo/logs
+test/*.zip
+.DS_Store
+dist/
+temp/
+demo/

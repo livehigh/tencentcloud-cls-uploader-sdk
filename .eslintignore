@@ -1,0 +1,6 @@
+src/proto/*
+dist/*
+src/lib/*
+demo/*
+rollup.config.js
+api-extractor.json

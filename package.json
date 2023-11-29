@@ -1,0 +1,59 @@
+{
+  "name": "tencentcloud-cls-uploader-sdk",
+  "version": "1.0.0-beta",
+  "description": "tencent cloud cls uploader js/nodejs sdk",
+  "private": true,
+  "main": "dist/cls.cjs",
+  "browser": "dist/cls.browser.js",
+  "type": "module",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "dev": "rollup -w -c",
+    "build": "rollup -c",
+    "lint": "eslint ./src --fix",
+    "test": "mocha test/test.js",
+    "build:browser": "webpack --config build/webpack.browser.js",
+    "build:node": "webpack --config build/webpack.node.js",
+    "generateProtoJS": "pbjs -t static-module -w commonjs src/proto/cls.proto > src/proto/cls.js",
+    "generateProtoTs": "pbts -o src/proto/cls.d.ts src/proto/cls.js",
+    "build:md": "api-extractor run --local --verbose",
+    "build:doc": "api-documenter markdown -i ./temp -o ./docs"
+  },
+  "keywords": [
+    "tencent",
+    "tencent cloud",
+    "qcloud",
+    "cls",
+    "cls-uploader-sdk"
+  ],
+  "author": "wonderswang <wonderswang@tencent.com>",
+  "license": "ISC",
+  "files": [
+    "dist/",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@types/crypto-js": "^4.2.1",
+    "axios": "^1.6.2",
+    "crypto-js": "^4.2.0",
+    "lz4": "^0.6.3",
+    "lz4js": "^0.2.0",
+    "protobufjs": "^6.11.4"
+  },
+  "devDependencies": {
+    "@microsoft/api-documenter": "^7.23.12",
+    "@microsoft/api-extractor": "^7.38.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.1.0",
+    "rollup": "^4.5.1",
+    "typescript": "^5.2.2"
+  }
+}
