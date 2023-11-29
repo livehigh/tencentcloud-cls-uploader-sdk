@@ -28,6 +28,27 @@ export default [
   {
     input: 'src/index.ts',
     output: {
+      format: 'esm',
+      file: 'dist/cls.mjs',
+      name: 'ClsClient',
+    },
+    external: ['axios', 'crypto-js'],
+    plugins: [
+      typescript({
+        tsconfig: './tsconfig.json',
+      }),
+      json(),
+      resolve(),
+      commonjs(),
+    ],
+    onwarn: (msg, warn) => {
+      if (/Circular dependency/.test(msg)) return;
+      warn(msg);
+    },
+  },
+  {
+    input: 'src/index.ts',
+    output: {
       format: 'umd',
       file: 'dist/cls.browser.js',
       name: 'ClsClient',
