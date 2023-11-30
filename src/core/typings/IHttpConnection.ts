@@ -13,4 +13,8 @@ export interface HttpConnectionOptions {
   proxy?: AxiosProxyConfig;
   credential?: QCloudCredential;
   getAuthorization?: GetAuthorizationFn;
+  /**
+   * 远端cls服务器自动填充sourceIp
+   */
+  autoFillSourceIp?: boolean;
 }

@@ -1,6 +1,7 @@
 import { CLSLog } from './typings';
 import UploadConfig from './ClientConfig';
 import { HttpConnection } from './http/httpConnection';
+import { isNotEmpty } from './util';
 
 enum UploadState {
   start,
@@ -32,6 +33,7 @@ export default class Uploader {
       proxy: this.config.proxy,
       credential: this.config.credential,
       getAuthorization: this.config.getAuthorization,
+      autoFillSourceIp: !isNotEmpty(this.config.sourceIp),
     });
   }
 

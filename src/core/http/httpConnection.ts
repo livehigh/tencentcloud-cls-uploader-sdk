@@ -34,6 +34,8 @@ export class HttpConnection {
 
   private topicId = '';
 
+  private autoFillSourceIp = true;
+
   /**
    * 永久密钥 SecretId、SecretKey
    */
@@ -57,6 +59,7 @@ export class HttpConnection {
     this.topicId = options.topicId;
     this.credential = options.credential;
     this.getAuthorization = options.getAuthorization;
+    this.autoFillSourceIp = options.autoFillSourceIp ?? true;
     this.ins = this.getIns(options);
   }
 
@@ -66,15 +69,8 @@ export class HttpConnection {
     let protocol = options.protocol ?? 'http';
 
     const host = `${options.region}.${this.CLS_HOST}`;
-    const headers: Record<string, string> = {
-      'x-cls-add-source': '1',
-    };
-    if (this.needAuth) {
-      headers['Content-Type'] = 'application/x-protobuf';
-      headers['Host'] = host;
-    } else {
-      headers['Content-Type'] = 'application/json';
-    }
+    const headers = this.getCommonHeaders(host);
+
     const axiosConfig: AxiosRequestConfig = {
       baseURL: `${protocol}://${host}`,
       headers,
@@ -101,6 +97,19 @@ export class HttpConnection {
     this.setResInterceptors(axiosIns);
 
     return axiosIns;
+  }
+
+  private getCommonHeaders(host: string) {
+    const headers: Record<string, string> = {
+      ...(this.autoFillSourceIp && { 'x-cls-add-source': '1' }),
+    };
+    if (this.needAuth) {
+      headers['Content-Type'] = 'application/x-protobuf';
+      headers['Host'] = host;
+    } else {
+      headers['Content-Type'] = 'application/json';
+    }
+    return headers;
   }
 
   public put!: (config: AxiosRequestConfig) => AxiosPromise;
