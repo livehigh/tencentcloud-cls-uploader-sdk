@@ -37,8 +37,6 @@
     "@types/crypto-js": "^4.2.1",
     "axios": "^1.6.2",
     "crypto-js": "^4.2.0",
-    "lz4": "^0.6.3",
-    "lz4js": "^0.2.0",
     "protobufjs": "^6.11.4"
   },
   "devDependencies": {
