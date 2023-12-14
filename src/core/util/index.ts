@@ -1,7 +1,3 @@
-export function getSkewTime(offset: number) {
-  return Date.now() + (offset || 0);
-}
-
 export function isString(s: string): boolean {
   return typeof s === 'string';
 }

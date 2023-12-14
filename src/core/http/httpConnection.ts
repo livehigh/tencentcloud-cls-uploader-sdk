@@ -1,7 +1,8 @@
 import axios, { AxiosAdapter, AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { CLSLog, QcloudTmpCredential, QCloudCredential, HttpConnectionOptions } from '../typings';
-import { getSkewTime, isNotEmpty, wait } from '../util';
+import { isNotEmpty, wait } from '../util';
+import systemClock from '../util/systemClock';
 import sign, { SignOptions } from '../util/sign';
 import ClsSDKError from '../exception';
 import handleLogs from '../util/logs';
@@ -12,15 +13,6 @@ import ClientConfig from '../ClientConfig';
  * @internal
  */
 export class HttpConnection {
-  /**
-   * 时间校准
-   */
-  private _systemClockOffset = 0;
-
-  get systemClockOffset() {
-    return this._systemClockOffset;
-  }
-
   /**
    * 临时签名缓存
    */
@@ -181,6 +173,7 @@ export class HttpConnection {
   private setResInterceptors(httpIns: AxiosInstance): void {
     httpIns.interceptors.response.use(
       (response): AxiosResponse => {
+        systemClock.handleOffset(response.headers.date);
         return response;
       },
       async error => {
@@ -197,6 +190,7 @@ export class HttpConnection {
         }
 
         if (error.response) {
+          systemClock.handleOffset(error.response.headers.date);
           // 请求已发出，但服务器响应的状态码不在 2xx 范围内
           const { status, headers, config, data } = error.response;
           if (status !== 413 && config.retryTimes < this.retryTimes) {
@@ -262,7 +256,6 @@ export class HttpConnection {
         ...this.credential,
         ...params,
         headers,
-        systemClockOffset: this.systemClockOffset,
       });
     }
 
@@ -273,7 +266,7 @@ export class HttpConnection {
       let AuthData;
       for (i = this.stsCache.length - 1; i >= 0; i--) {
         AuthData = this.stsCache[i];
-        const compareTime = Math.round(getSkewTime(this.systemClockOffset) / 1000) + 30;
+        const compareTime = Math.round(systemClock.now() / 1000) + 30;
         if ((AuthData.StartTime && compareTime < AuthData.StartTime) || compareTime >= AuthData.ExpiredTime) {
           this.stsCache.splice(i, 1);
           continue;
@@ -283,7 +276,7 @@ export class HttpConnection {
       }
     })();
     // 判断是否有缓存过可以使用的临时密钥
-    if (stsData?.ExpiredTime && stsData.ExpiredTime - getSkewTime(this.systemClockOffset) / 1000 > 60) {
+    if (stsData?.ExpiredTime && stsData.ExpiredTime - systemClock.now() / 1000 > 60) {
       // 如果缓存的临时密钥有效，并还有超过60秒有效期就直接使用
       return HttpConnection.calcAuth({
         ...params,
@@ -291,7 +284,6 @@ export class HttpConnection {
         ...stsData,
         SecretId: stsData.TmpSecretId,
         SecretKey: stsData.TmpSecretKey,
-        systemClockOffset: this.systemClockOffset,
       });
     } else if (this.getAuthorization) {
       // 外部计算签名或获取临时密钥
@@ -318,7 +310,6 @@ export class HttpConnection {
           ...stsData,
           SecretId: stsData.TmpSecretId,
           SecretKey: stsData.TmpSecretKey,
-          systemClockOffset: this.systemClockOffset,
         });
       } else {
         throw new ClsSDKError('getAuthorization return value is not standardized.');
@@ -346,30 +337,3 @@ export class HttpConnection {
     return authData;
   }
 }
-
-// const xhr = require('../lib/axios/axios/adapters/xhr');
-// const http = require('../lib/axios/axios/adapters/http');
-
-// 调整时间偏差
-// function allowRetry(err) {
-//   // 获取服务端时间
-//   const serverDate = (err.headers && (err.headers.date || err.headers.Date)) || (err.error && err.error.ServerTime);
-
-//   let allowRetry = false;
-//   let isTimeError = false; // 判断是否时间错误
-//   const { Code, Message } = err.error;
-//   if (Code === 'RequestTimeTooSkewed' || (Code === 'Unauthorized' && Message === 'Signature Expired')) {
-//     isTimeError = true;
-//   }
-//   if (isTimeError && serverDate) {
-//     const serverTime = Date.parse(serverDate);
-//     if (Math.abs(getSkewTime(SystemClockOffset) - serverTime) >= 30000) {
-//       console.error('error: Local time is too skewed.');
-//       SystemClockOffset = serverTime - Date.now();
-//       allowRetry = true;
-//     }
-//   } else if (Math.floor(err.status / 100) === 5) {
-//     allowRetry = true;
-//   }
-//   return allowRetry;
-// }

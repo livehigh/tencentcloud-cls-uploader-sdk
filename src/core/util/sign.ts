@@ -1,6 +1,7 @@
 import crypto from 'crypto-js';
 
 import ClsSDKError from '../exception';
+import systemClock from './systemClock';
 
 const util = {
   sha1(signStr: string) {
@@ -8,9 +9,6 @@ const util = {
   },
   sha1_hmac(signStr: string, SecretKey: string) {
     return crypto.HmacSHA1(signStr, SecretKey).toString();
-  },
-  getSkewTime(offset?: number) {
-    return Date.now() + (offset || 0);
   },
   getParamKeylist(obj: Record<string, any>) {
     const list = Object.keys(obj);
@@ -70,7 +68,6 @@ export interface SignOptions {
   headers: any;
   api?: string;
   expires?: number;
-  systemClockOffset?: number;
 }
 
 export default function sign(opt: SignOptions) {
@@ -89,7 +86,7 @@ export default function sign(opt: SignOptions) {
   }
 
   // 签名有效起止时间
-  const now = Math.floor(util.getSkewTime(opt.systemClockOffset) / 1000) - 1;
+  const now = Math.floor(systemClock.now() / 1000) - 1;
   let exp = now;
 
   const Expires = opt.expires;

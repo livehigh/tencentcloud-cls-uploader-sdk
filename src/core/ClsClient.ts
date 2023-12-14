@@ -2,6 +2,7 @@ import { CLSLog, IClientConfig } from './typings';
 import ClientConfig from './ClientConfig';
 import ClsSDKError from './exception';
 import Uploader from './Uploader';
+import systemClock from './util/systemClock';
 
 /**
  * CLS上传客户端
@@ -71,7 +72,7 @@ export default class ClsClient {
       // 判断日志缓存里最早的一条日志的时间间隔是否已达到最大缓存间隔
       const firstLog = this.logList[0];
       const { time: latestLogTime } = firstLog;
-      const now = Date.now();
+      const now = systemClock.now();
       const offsetTime = (now - latestLogTime) / 1000;
 
       if (offsetTime < this.config.maxRetainDuration) {
