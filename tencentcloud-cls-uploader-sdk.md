@@ -39,7 +39,7 @@ export interface IClientConfig {
         protocol?: string;
     };
     region: string;
-    sourceIp: string;
+    sourceIp?: string;
     topicId: string;
 }
 

@@ -69,7 +69,7 @@ export interface IClientConfig {
   /**
    * 日志来源，一般使用机器 IP 作为标识
    */
-  sourceIp: string;
+  sourceIp?: string;
   /**
    * 永久密钥
    */

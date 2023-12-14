@@ -24,9 +24,9 @@ export default class ClientConfig implements IClientConfig {
 
   public onError(_error: IClsSDKError): void {}
 
-  public maxRetainDuration = 10;
+  public maxRetainDuration = 20;
 
-  public maxRetainSize = 20;
+  public maxRetainSize = 30;
 
   public logExpiredDays = 7;
 

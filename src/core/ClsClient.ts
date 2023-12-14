@@ -67,29 +67,25 @@ export default class ClsClient {
     this.checkCacheLocked = true;
     const immediate = this.logList.some(log => log.immediate);
 
-    if (immediate) {
-      // 立即将日志加入上传任务队列中
-      this.uploader.add(this.logList.splice(0, currCacheSize));
-      this.checkLogCaches();
-    } else if (currCacheSize >= this.config.maxRetainSize) {
-      // 判断日志数量是否超过最大限制
-      this.uploader.add(this.logList.splice(0, currCacheSize));
-      this.checkLogCaches();
-    } else {
+    if (!immediate && currCacheSize < this.config.maxRetainSize) {
       // 判断日志缓存里最早的一条日志的时间间隔是否已达到最大缓存间隔
       const firstLog = this.logList[0];
       const { time: latestLogTime } = firstLog;
       const now = Date.now();
       const offsetTime = (now - latestLogTime) / 1000;
 
-      if (offsetTime >= this.config.maxRetainDuration) {
-        this.uploader.add(this.logList.splice(0, currCacheSize));
-        this.checkLogCaches();
-      } else {
+      if (offsetTime < this.config.maxRetainDuration) {
         const delayTime = this.config.maxRetainDuration - offsetTime + 1;
+        this.checkCacheLocked = false;
         this.logTimer = setTimeout(this.checkLogCaches.bind(this), delayTime * 1000);
+        return;
       }
     }
+
+    this.checkCacheLocked = false;
+    // 立即将日志加入上传任务队列中
+    this.uploader.add(this.logList.splice(0, currCacheSize));
+    this.checkLogCaches();
   }
 
   /**

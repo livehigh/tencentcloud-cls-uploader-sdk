@@ -83,7 +83,11 @@ const handleLogs = {
         const formatContents = log.contents;
         Object.keys(log.contents).forEach(key => {
           try {
-            formatContents[key] = formatContents[key].toString();
+            if (formatContents[key]) {
+              formatContents[key] = formatContents[key].toString();
+            } else {
+              formatContents[key] = '';
+            }
           } catch (error) {
             throw new ClsSDKError(`log format is incorrect: ${error.message}`);
           }

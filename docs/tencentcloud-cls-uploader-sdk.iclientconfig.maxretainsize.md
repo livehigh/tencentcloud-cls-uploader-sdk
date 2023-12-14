@@ -4,7 +4,7 @@
 
 ## IClientConfig.maxRetainSize property
 
-未上传的缓存日志数量超过该数值则上传（默认 20 条）
+未上传的缓存日志数量超过该数值则上传（默认 30 条）
 
 **Signature:**
 

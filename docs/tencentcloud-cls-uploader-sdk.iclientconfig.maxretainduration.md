@@ -4,7 +4,7 @@
 
 ## IClientConfig.maxRetainDuration property
 
-未上传的缓存日志超过该时间则上传（单位: s，默认 30s）
+未上传的缓存日志超过该时间则上传（单位: s，默认 20s）
 
 **Signature:**
 

@@ -79,7 +79,7 @@ export declare interface IClientConfig {
     /**
      * 日志来源，一般使用机器 IP 作为标识
      */
-    sourceIp: string;
+    sourceIp?: string;
     /**
      * 永久密钥
      */
@@ -105,11 +105,11 @@ export declare interface IClientConfig {
      */
     httpAdapter?: 'xhr' | 'http' | AxiosAdapter;
     /**
-     * 未上传的缓存日志超过该时间则上传（单位: s，默认 30s）
+     * 未上传的缓存日志超过该时间则上传（单位: s，默认 20s）
      */
     maxRetainDuration?: number;
     /**
-     * 未上传的缓存日志数量超过该数值则上传（默认 20 条）
+     * 未上传的缓存日志数量超过该数值则上传（默认 30 条）
      */
     maxRetainSize?: number;
     /**
