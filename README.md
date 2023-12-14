@@ -12,8 +12,8 @@
 |  Property | Type | Description |
 |  --- | --- | --- |
 |  [region](./tencentcloud-cls-uploader-sdk.iclientconfig.region.md) | string | 要上传的Cls地域 |
-|  [sourceIp](./tencentcloud-cls-uploader-sdk.iclientconfig.sourceip.md) | string | 日志来源，一般使用机器 IP 作为标识 |
 |  [topicId](./tencentcloud-cls-uploader-sdk.iclientconfig.topicid.md) | string | Cls 日志主题Id |
+|  [sourceIp?](./tencentcloud-cls-uploader-sdk.iclientconfig.sourceip.md) | string | _(可选)_ 日志来源，一般使用机器 IP 作为标识 |
 |  [credential?](./tencentcloud-cls-uploader-sdk.iclientconfig.credential.md) | [QCloudCredential](./tencentcloud-cls-uploader-sdk.qcloudcredential.md) | _(可选)_ 永久密钥 |
 |  [getAgent?](./tencentcloud-cls-uploader-sdk.iclientconfig.getagent.md) | () =&gt; any | _(可选)_ 获取代理函数 |
 |  [getAuthorization?](./tencentcloud-cls-uploader-sdk.iclientconfig.getauthorization.md) | [GetAuthorizationFn](./tencentcloud-cls-uploader-sdk.getauthorizationfn.md) | _(可选)_ 获取临时密钥函数 |
