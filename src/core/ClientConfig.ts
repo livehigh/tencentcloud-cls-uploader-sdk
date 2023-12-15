@@ -2,22 +2,22 @@ import ClsSDKError from './exception';
 import { GetAuthorizationFn, IClientConfig, IClsSDKError, QCloudCredential } from './typings';
 
 export default class ClientConfig implements IClientConfig {
-  private _topicId: string = '';
+  private clsTopicId: string = '';
 
   get topicId() {
-    return this._topicId;
+    return this.clsTopicId;
   }
 
-  private _region: string = '';
+  private clsRegion: string = '';
 
   get region() {
-    return this._region;
+    return this.clsRegion;
   }
 
-  private _credential: QCloudCredential | undefined = undefined;
+  private clsCredential: QCloudCredential | undefined = undefined;
 
   get credential() {
-    return this._credential;
+    return this.clsCredential;
   }
 
   public getAuthorization: GetAuthorizationFn | undefined = undefined;
@@ -34,10 +34,10 @@ export default class ClientConfig implements IClientConfig {
 
   public httpAdapter: IClientConfig['httpAdapter'] = undefined;
 
-  private _sourceIp = '';
+  private clsSourceIp = '';
 
   get sourceIp() {
-    return this._sourceIp;
+    return this.clsSourceIp;
   }
 
   public proxy: IClientConfig['proxy'] = undefined;
@@ -53,11 +53,11 @@ export default class ClientConfig implements IClientConfig {
     }
 
     if (options.sourceIp) {
-      this._sourceIp = options.sourceIp;
+      this.clsSourceIp = options.sourceIp;
     }
 
     if (options.credential) {
-      this._credential = options.credential;
+      this.clsCredential = options.credential;
     }
 
     if (options.getAuthorization) {
@@ -94,7 +94,7 @@ export default class ClientConfig implements IClientConfig {
       this.onError = options.onError;
     }
 
-    this._topicId = options.topicId;
-    this._region = options.region;
+    this.clsTopicId = options.topicId;
+    this.clsRegion = options.region;
   }
 }

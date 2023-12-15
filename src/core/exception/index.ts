@@ -8,28 +8,28 @@ export default class ClsSDKError extends Error implements IClsSDKError {
   /**
    * 请求id
    */
-  private _requestId?: string;
+  private clsRequestId?: string;
 
   get requestId() {
-    return this._requestId;
+    return this.clsRequestId;
   }
 
   /**
    * http状态码
    */
-  private _status?: number;
+  private httpStatus?: number;
 
   get status() {
-    return this._status;
+    return this.httpStatus;
   }
 
   /**
    * 接口返回状态码
    */
-  private _code?: string;
+  private httpCode?: string;
 
   get code() {
-    return this._code;
+    return this.httpCode;
   }
 
   constructor(error: string | ClsSdkErrorOption) {
@@ -37,9 +37,9 @@ export default class ClsSDKError extends Error implements IClsSDKError {
       super(error);
     } else {
       super(error.message);
-      this._requestId = error.headers?.['x-cls-requestid'] || '';
-      this._status = error.status;
-      this._code = error.code;
+      this.clsRequestId = error.headers?.['x-cls-requestid'] || '';
+      this.httpStatus = error.status;
+      this.httpCode = error.code;
     }
   }
 
