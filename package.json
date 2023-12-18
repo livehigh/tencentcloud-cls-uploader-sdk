@@ -2,7 +2,6 @@
   "name": "tencentcloud-cls-uploader-sdk",
   "version": "1.0.0-beta",
   "description": "tencent cloud cls uploader js/nodejs sdk",
-  "private": true,
   "main": "dist/cls.cjs",
   "module": "dist/cls.mjs",
   "browser": "dist/cls.mjs",
@@ -27,7 +26,11 @@
     "cls",
     "cls-uploader-sdk"
   ],
-  "author": "wonderswang <wonderswang@tencent.com>",
+  "author": "Wonder233 <492121382@qq.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wonder233/tencentcloud-cls-uploader-sdk.git"
+  },
   "license": "ISC",
   "files": [
     "dist/",
