@@ -1,6 +1,6 @@
 {
   "name": "tencentcloud-cls-uploader-sdk",
-  "version": "1.0.0-beta",
+  "version": "1.0.1-beta",
   "description": "tencent cloud cls uploader js/nodejs sdk",
   "main": "dist/cls.cjs",
   "module": "dist/cls.mjs",
