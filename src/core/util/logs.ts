@@ -83,7 +83,7 @@ const handleLogs = {
         const formatContents = log.contents;
         Object.keys(log.contents).forEach(key => {
           try {
-            if (formatContents[key]) {
+            if (typeof formatContents[key] !== 'undefined') {
               formatContents[key] = formatContents[key].toString();
             } else {
               formatContents[key] = '';
