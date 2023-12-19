@@ -4,7 +4,7 @@
   "description": "tencent cloud cls uploader js/nodejs sdk",
   "main": "dist/cls.cjs",
   "module": "dist/cls.mjs",
-  "browser": "dist/cls.mjs",
+  "browser": "dist/cls.browser.js",
   "type": "module",
   "typings": "dist/index.d.ts",
   "scripts": {
