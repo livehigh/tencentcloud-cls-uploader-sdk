@@ -2,6 +2,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
+
+const extensions = ['.js', '.ts'];
 
 export default [
   {
@@ -15,6 +18,10 @@ export default [
     plugins: [
       typescript({
         tsconfig: './tsconfig.json',
+      }),
+      babel({
+        exclude: ['node_modules/**', 'src/proto/cls.js'],
+        extensions,
       }),
       json(),
       resolve(),
@@ -37,6 +44,10 @@ export default [
       typescript({
         tsconfig: './tsconfig.json',
       }),
+      babel({
+        exclude: ['node_modules/**', 'src/proto/cls.js'],
+        extensions,
+      }),
       json(),
       resolve(),
       commonjs(),
@@ -57,6 +68,10 @@ export default [
     plugins: [
       typescript({
         tsconfig: './tsconfig.json',
+      }),
+      babel({
+        exclude: ['node_modules/**', 'src/proto/cls.js'],
+        extensions,
       }),
       json(),
       resolve({

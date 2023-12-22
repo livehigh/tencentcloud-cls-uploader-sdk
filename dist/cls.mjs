@@ -1,272 +1,823 @@
 import axios from 'axios';
 import crypto from 'crypto-js';
 
+function ownKeys(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function (r) {
+      return Object.getOwnPropertyDescriptor(e, r).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread2(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+      _defineProperty(e, r, t[r]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+    });
+  }
+  return e;
+}
+function _regeneratorRuntime() {
+  _regeneratorRuntime = function () {
+    return e;
+  };
+  var t,
+    e = {},
+    r = Object.prototype,
+    n = r.hasOwnProperty,
+    o = Object.defineProperty || function (t, e, r) {
+      t[e] = r.value;
+    },
+    i = "function" == typeof Symbol ? Symbol : {},
+    a = i.iterator || "@@iterator",
+    c = i.asyncIterator || "@@asyncIterator",
+    u = i.toStringTag || "@@toStringTag";
+  function define(t, e, r) {
+    return Object.defineProperty(t, e, {
+      value: r,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }), t[e];
+  }
+  try {
+    define({}, "");
+  } catch (t) {
+    define = function (t, e, r) {
+      return t[e] = r;
+    };
+  }
+  function wrap(t, e, r, n) {
+    var i = e && e.prototype instanceof Generator ? e : Generator,
+      a = Object.create(i.prototype),
+      c = new Context(n || []);
+    return o(a, "_invoke", {
+      value: makeInvokeMethod(t, r, c)
+    }), a;
+  }
+  function tryCatch(t, e, r) {
+    try {
+      return {
+        type: "normal",
+        arg: t.call(e, r)
+      };
+    } catch (t) {
+      return {
+        type: "throw",
+        arg: t
+      };
+    }
+  }
+  e.wrap = wrap;
+  var h = "suspendedStart",
+    l = "suspendedYield",
+    f = "executing",
+    s = "completed",
+    y = {};
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+  var p = {};
+  define(p, a, function () {
+    return this;
+  });
+  var d = Object.getPrototypeOf,
+    v = d && d(d(values([])));
+  v && v !== r && n.call(v, a) && (p = v);
+  var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p);
+  function defineIteratorMethods(t) {
+    ["next", "throw", "return"].forEach(function (e) {
+      define(t, e, function (t) {
+        return this._invoke(e, t);
+      });
+    });
+  }
+  function AsyncIterator(t, e) {
+    function invoke(r, o, i, a) {
+      var c = tryCatch(t[r], t, o);
+      if ("throw" !== c.type) {
+        var u = c.arg,
+          h = u.value;
+        return h && "object" == typeof h && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) {
+          invoke("next", t, i, a);
+        }, function (t) {
+          invoke("throw", t, i, a);
+        }) : e.resolve(h).then(function (t) {
+          u.value = t, i(u);
+        }, function (t) {
+          return invoke("throw", t, i, a);
+        });
+      }
+      a(c.arg);
+    }
+    var r;
+    o(this, "_invoke", {
+      value: function (t, n) {
+        function callInvokeWithMethodAndArg() {
+          return new e(function (e, r) {
+            invoke(t, n, e, r);
+          });
+        }
+        return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+      }
+    });
+  }
+  function makeInvokeMethod(e, r, n) {
+    var o = h;
+    return function (i, a) {
+      if (o === f) throw new Error("Generator is already running");
+      if (o === s) {
+        if ("throw" === i) throw a;
+        return {
+          value: t,
+          done: !0
+        };
+      }
+      for (n.method = i, n.arg = a;;) {
+        var c = n.delegate;
+        if (c) {
+          var u = maybeInvokeDelegate(c, n);
+          if (u) {
+            if (u === y) continue;
+            return u;
+          }
+        }
+        if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) {
+          if (o === h) throw o = s, n.arg;
+          n.dispatchException(n.arg);
+        } else "return" === n.method && n.abrupt("return", n.arg);
+        o = f;
+        var p = tryCatch(e, r, n);
+        if ("normal" === p.type) {
+          if (o = n.done ? s : l, p.arg === y) continue;
+          return {
+            value: p.arg,
+            done: n.done
+          };
+        }
+        "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg);
+      }
+    };
+  }
+  function maybeInvokeDelegate(e, r) {
+    var n = r.method,
+      o = e.iterator[n];
+    if (o === t) return r.delegate = null, "throw" === n && e.iterator.return && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y;
+    var i = tryCatch(o, e.iterator, r.arg);
+    if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y;
+    var a = i.arg;
+    return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y);
+  }
+  function pushTryEntry(t) {
+    var e = {
+      tryLoc: t[0]
+    };
+    1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e);
+  }
+  function resetTryEntry(t) {
+    var e = t.completion || {};
+    e.type = "normal", delete e.arg, t.completion = e;
+  }
+  function Context(t) {
+    this.tryEntries = [{
+      tryLoc: "root"
+    }], t.forEach(pushTryEntry, this), this.reset(!0);
+  }
+  function values(e) {
+    if (e || "" === e) {
+      var r = e[a];
+      if (r) return r.call(e);
+      if ("function" == typeof e.next) return e;
+      if (!isNaN(e.length)) {
+        var o = -1,
+          i = function next() {
+            for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next;
+            return next.value = t, next.done = !0, next;
+          };
+        return i.next = i;
+      }
+    }
+    throw new TypeError(typeof e + " is not iterable");
+  }
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", {
+    value: GeneratorFunctionPrototype,
+    configurable: !0
+  }), o(GeneratorFunctionPrototype, "constructor", {
+    value: GeneratorFunction,
+    configurable: !0
+  }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) {
+    var e = "function" == typeof t && t.constructor;
+    return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name));
+  }, e.mark = function (t) {
+    return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t;
+  }, e.awrap = function (t) {
+    return {
+      __await: t
+    };
+  }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () {
+    return this;
+  }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) {
+    void 0 === i && (i = Promise);
+    var a = new AsyncIterator(wrap(t, r, n, o), i);
+    return e.isGeneratorFunction(r) ? a : a.next().then(function (t) {
+      return t.done ? t.value : a.next();
+    });
+  }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () {
+    return this;
+  }), define(g, "toString", function () {
+    return "[object Generator]";
+  }), e.keys = function (t) {
+    var e = Object(t),
+      r = [];
+    for (var n in e) r.push(n);
+    return r.reverse(), function next() {
+      for (; r.length;) {
+        var t = r.pop();
+        if (t in e) return next.value = t, next.done = !1, next;
+      }
+      return next.done = !0, next;
+    };
+  }, e.values = values, Context.prototype = {
+    constructor: Context,
+    reset: function (e) {
+      if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t);
+    },
+    stop: function () {
+      this.done = !0;
+      var t = this.tryEntries[0].completion;
+      if ("throw" === t.type) throw t.arg;
+      return this.rval;
+    },
+    dispatchException: function (e) {
+      if (this.done) throw e;
+      var r = this;
+      function handle(n, o) {
+        return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o;
+      }
+      for (var o = this.tryEntries.length - 1; o >= 0; --o) {
+        var i = this.tryEntries[o],
+          a = i.completion;
+        if ("root" === i.tryLoc) return handle("end");
+        if (i.tryLoc <= this.prev) {
+          var c = n.call(i, "catchLoc"),
+            u = n.call(i, "finallyLoc");
+          if (c && u) {
+            if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+            if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+          } else if (c) {
+            if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+          } else {
+            if (!u) throw new Error("try statement without catch or finally");
+            if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+          }
+        }
+      }
+    },
+    abrupt: function (t, e) {
+      for (var r = this.tryEntries.length - 1; r >= 0; --r) {
+        var o = this.tryEntries[r];
+        if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) {
+          var i = o;
+          break;
+        }
+      }
+      i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null);
+      var a = i ? i.completion : {};
+      return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a);
+    },
+    complete: function (t, e) {
+      if ("throw" === t.type) throw t.arg;
+      return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y;
+    },
+    finish: function (t) {
+      for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+        var r = this.tryEntries[e];
+        if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y;
+      }
+    },
+    catch: function (t) {
+      for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+        var r = this.tryEntries[e];
+        if (r.tryLoc === t) {
+          var n = r.completion;
+          if ("throw" === n.type) {
+            var o = n.arg;
+            resetTryEntry(r);
+          }
+          return o;
+        }
+      }
+      throw new Error("illegal catch attempt");
+    },
+    delegateYield: function (e, r, n) {
+      return this.delegate = {
+        iterator: values(e),
+        resultName: r,
+        nextLoc: n
+      }, "next" === this.method && (this.arg = t), y;
+    }
+  }, e;
+}
+function _toPrimitive(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+function _toPropertyKey(t) {
+  var i = _toPrimitive(t, "string");
+  return "symbol" == typeof i ? i : String(i);
+}
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+      args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+      _next(undefined);
+    });
+  };
+}
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+  }
+}
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
+  return Constructor;
+}
+function _defineProperty(obj, key, value) {
+  key = _toPropertyKey(key);
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
+}
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+function _construct(Parent, args, Class) {
+  if (_isNativeReflectConstruct()) {
+    _construct = Reflect.construct.bind();
+  } else {
+    _construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Function.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) _setPrototypeOf(instance, Class.prototype);
+      return instance;
+    };
+  }
+  return _construct.apply(null, arguments);
+}
+function _isNativeFunction(fn) {
+  try {
+    return Function.toString.call(fn).indexOf("[native code]") !== -1;
+  } catch (e) {
+    return typeof fn === "function";
+  }
+}
+function _wrapNativeSuper(Class) {
+  var _cache = typeof Map === "function" ? new Map() : undefined;
+  _wrapNativeSuper = function _wrapNativeSuper(Class) {
+    if (Class === null || !_isNativeFunction(Class)) return Class;
+    if (typeof Class !== "function") {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+    if (typeof _cache !== "undefined") {
+      if (_cache.has(Class)) return _cache.get(Class);
+      _cache.set(Class, Wrapper);
+    }
+    function Wrapper() {
+      return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+    }
+    Wrapper.prototype = Object.create(Class.prototype, {
+      constructor: {
+        value: Wrapper,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    return _setPrototypeOf(Wrapper, Class);
+  };
+  return _wrapNativeSuper(Class);
+}
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+  return self;
+}
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  } else if (call !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
+  }
+  return _assertThisInitialized(self);
+}
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+      result;
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
 /**
  * SDK异常错误类型
  * @internal
  */
-class ClsSDKError extends Error {
+var ClsSDKError = /*#__PURE__*/function (_Error) {
+  _inherits(ClsSDKError, _Error);
+  var _super = _createSuper(ClsSDKError);
+  function ClsSDKError(error) {
+    var _this;
+    _classCallCheck(this, ClsSDKError);
+    if (typeof error === 'string') {
+      _this = _super.call(this, error);
+    } else {
+      var _error$headers;
+      _this = _super.call(this, error.message);
+      _this.clsRequestId = ((_error$headers = error.headers) === null || _error$headers === void 0 ? void 0 : _error$headers['x-cls-requestid']) || '';
+      _this.httpStatus = error.status;
+      _this.httpCode = error.code;
+    }
+    return _possibleConstructorReturn(_this);
+  }
+  _createClass(ClsSDKError, [{
+    key: "requestId",
+    get:
     /**
      * 请求id
      */
-    clsRequestId;
-    get requestId() {
-        return this.clsRequestId;
+
+    function get() {
+      return this.clsRequestId;
     }
     /**
      * http状态码
      */
-    httpStatus;
-    get status() {
-        return this.httpStatus;
+  }, {
+    key: "status",
+    get: function get() {
+      return this.httpStatus;
     }
     /**
      * 接口返回状态码
      */
-    httpCode;
-    get code() {
-        return this.httpCode;
+  }, {
+    key: "code",
+    get: function get() {
+      return this.httpCode;
     }
-    constructor(error) {
-        if (typeof error === 'string') {
-            super(error);
-        }
-        else {
-            super(error.message);
-            this.clsRequestId = error.headers?.['x-cls-requestid'] || '';
-            this.httpStatus = error.status;
-            this.httpCode = error.code;
-        }
+  }, {
+    key: "getMessage",
+    value: function getMessage() {
+      return this.message;
     }
-    getMessage() {
-        return this.message;
+  }, {
+    key: "toString",
+    value: function toString() {
+      return '[ClsSDKError]' + 'message:' + this.getMessage() + '  requestId:' + this.requestId;
     }
-    toString() {
-        return '[ClsSDKError]' + 'message:' + this.getMessage() + '  requestId:' + this.requestId;
+  }, {
+    key: "toLocaleString",
+    value: function toLocaleString() {
+      return '[ClsSDKError]' + 'message:' + this.getMessage() + '  requestId:' + this.requestId;
     }
-    toLocaleString() {
-        return '[ClsSDKError]' + 'message:' + this.getMessage() + '  requestId:' + this.requestId;
-    }
-}
+  }]);
+  return ClsSDKError;
+}( /*#__PURE__*/_wrapNativeSuper(Error));
 
-class ClientConfig {
-    clsTopicId = '';
-    get topicId() {
-        return this.clsTopicId;
+var ClientConfig = /*#__PURE__*/function () {
+  function ClientConfig(options) {
+    _classCallCheck(this, ClientConfig);
+    _defineProperty(this, "clsTopicId", '');
+    _defineProperty(this, "clsRegion", '');
+    _defineProperty(this, "clsCredential", undefined);
+    _defineProperty(this, "getAuthorization", undefined);
+    _defineProperty(this, "maxRetainDuration", 20);
+    _defineProperty(this, "maxRetainSize", 30);
+    _defineProperty(this, "logExpiredDays", 7);
+    _defineProperty(this, "logPath", '');
+    _defineProperty(this, "httpAdapter", undefined);
+    _defineProperty(this, "clsSourceIp", '');
+    _defineProperty(this, "proxy", undefined);
+    _defineProperty(this, "getAgent", undefined);
+    if (!options.topicId || typeof options.topicId !== 'string') {
+      throw new ClsSDKError('topicId is required and must be a string');
     }
-    clsRegion = '';
-    get region() {
-        return this.clsRegion;
+    if (!options.region || typeof options.region !== 'string') {
+      throw new ClsSDKError('region is required and must be a string');
     }
-    clsCredential = undefined;
-    get credential() {
-        return this.clsCredential;
+    if (options.sourceIp) {
+      this.clsSourceIp = options.sourceIp;
     }
-    getAuthorization = undefined;
-    onError(_error) { }
-    maxRetainDuration = 20;
-    maxRetainSize = 30;
-    logExpiredDays = 7;
-    logPath = '';
-    httpAdapter = undefined;
-    clsSourceIp = '';
-    get sourceIp() {
-        return this.clsSourceIp;
+    if (options.credential) {
+      this.clsCredential = options.credential;
     }
-    proxy = undefined;
-    getAgent = undefined;
-    constructor(options) {
-        if (!options.topicId || typeof options.topicId !== 'string') {
-            throw new ClsSDKError('topicId is required and must be a string');
-        }
-        if (!options.region || typeof options.region !== 'string') {
-            throw new ClsSDKError('region is required and must be a string');
-        }
-        if (options.sourceIp) {
-            this.clsSourceIp = options.sourceIp;
-        }
-        if (options.credential) {
-            this.clsCredential = options.credential;
-        }
-        if (options.getAuthorization) {
-            this.getAuthorization = options.getAuthorization;
-        }
-        if (options.proxy) {
-            this.proxy = options.proxy;
-        }
-        if (options.getAgent) {
-            this.getAgent = options.getAgent;
-        }
-        if (options.maxRetainDuration) {
-            this.maxRetainDuration = options.maxRetainDuration;
-        }
-        if (options.maxRetainSize) {
-            this.maxRetainSize = options.maxRetainSize;
-        }
-        if (options.logExpiredDays) {
-            this.logExpiredDays = options.logExpiredDays;
-        }
-        if (options.logPath) {
-            this.logPath = options.logPath;
-        }
-        if (options.httpAdapter) {
-            this.httpAdapter = options.httpAdapter;
-        }
-        if (options.onError) {
-            this.onError = options.onError;
-        }
-        this.clsTopicId = options.topicId;
-        this.clsRegion = options.region;
+    if (options.getAuthorization) {
+      this.getAuthorization = options.getAuthorization;
     }
-}
+    if (options.proxy) {
+      this.proxy = options.proxy;
+    }
+    if (options.getAgent) {
+      this.getAgent = options.getAgent;
+    }
+    if (options.maxRetainDuration) {
+      this.maxRetainDuration = options.maxRetainDuration;
+    }
+    if (options.maxRetainSize) {
+      this.maxRetainSize = options.maxRetainSize;
+    }
+    if (options.logExpiredDays) {
+      this.logExpiredDays = options.logExpiredDays;
+    }
+    if (options.logPath) {
+      this.logPath = options.logPath;
+    }
+    if (options.httpAdapter) {
+      this.httpAdapter = options.httpAdapter;
+    }
+    if (options.onError) {
+      this.onError = options.onError;
+    }
+    this.clsTopicId = options.topicId;
+    this.clsRegion = options.region;
+  }
+  _createClass(ClientConfig, [{
+    key: "topicId",
+    get: function get() {
+      return this.clsTopicId;
+    }
+  }, {
+    key: "region",
+    get: function get() {
+      return this.clsRegion;
+    }
+  }, {
+    key: "credential",
+    get: function get() {
+      return this.clsCredential;
+    }
+  }, {
+    key: "onError",
+    value: function onError(_error) {}
+  }, {
+    key: "sourceIp",
+    get: function get() {
+      return this.clsSourceIp;
+    }
+  }]);
+  return ClientConfig;
+}();
 
 function isString(s) {
-    return typeof s === 'string';
+  return typeof s === 'string';
 }
 function wait(time) {
-    return new Promise(resolve => {
-        setTimeout(resolve, time);
-    });
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time);
+  });
 }
 function isNotEmpty(value) {
-    return value !== undefined && value !== null && value !== '';
+  return value !== undefined && value !== null && value !== '';
 }
 
 /**
  * 系统时间校准
  */
-class SystemClock {
+var SystemClock = /*#__PURE__*/function () {
+  function SystemClock() {
+    _classCallCheck(this, SystemClock);
     // 当前时间与系统时间偏移量
     /**
      * 当前时间与系统时间偏移量
      */
-    offset = 0;
+    _defineProperty(this, "offset", 0);
+  }
+  _createClass(SystemClock, [{
+    key: "systemClockOffset",
+    get:
     /**
      * 获取时间偏移量
      */
-    get systemClockOffset() {
-        return this.offset;
+    function get() {
+      return this.offset;
     }
     /**
      * 获取当前系统时间
      * @returns
      */
-    now() {
-        return Date.now() + (this.offset || 0);
+  }, {
+    key: "now",
+    value: function now() {
+      return Date.now() + (this.offset || 0);
     }
-    handleOffset(serverDate) {
-        const serverTime = Date.parse(serverDate);
-        // 本地时间与服务器时间相差大于等于30s则需要进行校准
-        if (Math.abs(this.now() - serverTime) >= 30000) {
-            this.offset = serverTime - Date.now();
-        }
+  }, {
+    key: "handleOffset",
+    value: function handleOffset(serverDate) {
+      var serverTime = Date.parse(serverDate);
+      // 本地时间与服务器时间相差大于等于30s则需要进行校准
+      if (Math.abs(this.now() - serverTime) >= 30000) {
+        this.offset = serverTime - Date.now();
+      }
     }
-}
+  }]);
+  return SystemClock;
+}();
 var systemClock = new SystemClock();
 
-const util$5 = {
-    sha1(signStr) {
-        return crypto.SHA1(signStr).toString();
-    },
-    sha1_hmac(signStr, SecretKey) {
-        return crypto.HmacSHA1(signStr, SecretKey).toString();
-    },
-    getParamKeylist(obj) {
-        const list = Object.keys(obj);
-        return list.sort(function (a, b) {
-            a = a.toLowerCase();
-            b = b.toLowerCase();
-            return a === b ? 0 : a > b ? 1 : -1;
-        });
-    },
-    getHeaderKeylist(obj) {
-        const list = [];
-        for (const key of Object.keys(obj)) {
-            const lowerKey = key.toLowerCase();
-            if (obj[key] &&
-                (lowerKey === 'content-type' || lowerKey === 'content-md5' || lowerKey === 'host' || lowerKey[0] === 'x')) {
-                list.push(key);
-            }
-        }
-        return list.sort(function (a, b) {
-            a = a.toLowerCase();
-            b = b.toLowerCase();
-            return a === b ? 0 : a > b ? 1 : -1;
-        });
-    },
-    camSafeUrlEncode(str) {
-        return encodeURIComponent(str)
-            .replace(/!/g, '%21')
-            .replace(/'/g, '%27')
-            .replace(/\(/g, '%28')
-            .replace(/\)/g, '%29')
-            .replace(/\*/g, '%2A');
-    },
-    obj2str(obj, getKeylist) {
-        let i, key, val;
-        const list = [];
-        const keyList = getKeylist(obj);
-        for (i = 0; i < keyList.length; i++) {
-            key = keyList[i];
-            val = obj[key] === undefined ? '' : '' + obj[key];
-            key = key.toLowerCase();
-            key = util$5.camSafeUrlEncode(key);
-            val = util$5.camSafeUrlEncode(val) || '';
-            list.push(key + '=' + val);
-        }
-        return list.join('&');
-    },
+var util$5 = {
+  sha1: function sha1(signStr) {
+    return crypto.SHA1(signStr).toString();
+  },
+  sha1_hmac: function sha1_hmac(signStr, SecretKey) {
+    return crypto.HmacSHA1(signStr, SecretKey).toString();
+  },
+  getParamKeylist: function getParamKeylist(obj) {
+    var list = Object.keys(obj);
+    return list.sort(function (a, b) {
+      a = a.toLowerCase();
+      b = b.toLowerCase();
+      return a === b ? 0 : a > b ? 1 : -1;
+    });
+  },
+  getHeaderKeylist: function getHeaderKeylist(obj) {
+    var list = [];
+    for (var _i = 0, _Object$keys = Object.keys(obj); _i < _Object$keys.length; _i++) {
+      var key = _Object$keys[_i];
+      var lowerKey = key.toLowerCase();
+      if (obj[key] && (lowerKey === 'content-type' || lowerKey === 'content-md5' || lowerKey === 'host' || lowerKey[0] === 'x')) {
+        list.push(key);
+      }
+    }
+    return list.sort(function (a, b) {
+      a = a.toLowerCase();
+      b = b.toLowerCase();
+      return a === b ? 0 : a > b ? 1 : -1;
+    });
+  },
+  camSafeUrlEncode: function camSafeUrlEncode(str) {
+    return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A');
+  },
+  obj2str: function obj2str(obj, getKeylist) {
+    var i, key, val;
+    var list = [];
+    var keyList = getKeylist(obj);
+    for (i = 0; i < keyList.length; i++) {
+      key = keyList[i];
+      val = obj[key] === undefined ? '' : '' + obj[key];
+      key = key.toLowerCase();
+      key = util$5.camSafeUrlEncode(key);
+      val = util$5.camSafeUrlEncode(val) || '';
+      list.push(key + '=' + val);
+    }
+    return list.join('&');
+  }
 };
 function sign(opt) {
-    opt = opt || {};
-    const { SecretId, SecretKey } = opt;
-    const method = (opt.method || 'get').toLowerCase();
-    const queryParams = Object.assign({}, opt.query || {});
-    const headersParams = Object.assign({}, opt.headers || {});
-    if (!SecretId) {
-        throw new ClsSDKError('missing param SecretId');
-    }
-    if (!SecretKey) {
-        throw new ClsSDKError('missing param SecretKey');
-    }
-    // 签名有效起止时间
-    const now = Math.floor(systemClock.now() / 1000) - 1;
-    let exp = now;
-    const Expires = opt.expires;
-    if (Expires === undefined) {
-        exp += 900; // 签名过期时间为当前 + 900s
-    }
-    else {
-        exp += Expires * 1 || 0;
-    }
-    // 要用到的 Authorization 参数列表
-    const SignAlgorithm = 'sha1';
-    const SignTime = `${now};${exp}`;
-    const KeyTime = `${now};${exp}`;
-    const HeaderList = util$5.getHeaderKeylist(headersParams)?.join(';').toLowerCase();
-    const UrlParamList = util$5.getParamKeylist(queryParams)?.join(';').toLowerCase();
-    // 签名算法说明文档：https://cloud.tencent.com/document/product/614/12445
-    // 步骤一：拼接 HttpRequestInfo
-    const FormatedParameters = util$5.obj2str(queryParams, util$5.getParamKeylist);
-    const FormatedHeaders = util$5.obj2str(headersParams, util$5.getHeaderKeylist);
-    const HttpRequestInfo = [method.toLowerCase(), `/${opt.api || ''}`, FormatedParameters, FormatedHeaders, ''].join('\n');
-    // 步骤二：拼接 StringToSign
-    const StringToSign = ['sha1', KeyTime, util$5.sha1(HttpRequestInfo), ''].join('\n');
-    // 步骤三：生成 SignKey
-    const SignKey = util$5.sha1_hmac(KeyTime, SecretKey);
-    // 步骤四：计算 Signature
-    const Signature = util$5.sha1_hmac(StringToSign, SignKey);
-    // 步骤五：构造 Authorization
-    const authorization = [
-        `q-sign-algorithm=${SignAlgorithm}`,
-        `q-ak=${SecretId}`,
-        `q-sign-time=${SignTime}`,
-        `q-key-time=${KeyTime}`,
-        'q-header-list=' + HeaderList,
-        'q-url-param-list=' + UrlParamList,
-        `q-signature=${Signature}`,
-    ].join('&');
-    return authorization;
+  var _util$getHeaderKeylis, _util$getParamKeylist;
+  opt = opt || {};
+  var _opt = opt,
+    SecretId = _opt.SecretId,
+    SecretKey = _opt.SecretKey;
+  var method = (opt.method || 'get').toLowerCase();
+  var queryParams = Object.assign({}, opt.query || {});
+  var headersParams = Object.assign({}, opt.headers || {});
+  if (!SecretId) {
+    throw new ClsSDKError('missing param SecretId');
+  }
+  if (!SecretKey) {
+    throw new ClsSDKError('missing param SecretKey');
+  }
+  // 签名有效起止时间
+  var now = Math.floor(systemClock.now() / 1000) - 1;
+  var exp = now;
+  var Expires = opt.expires;
+  if (Expires === undefined) {
+    exp += 900; // 签名过期时间为当前 + 900s
+  } else {
+    exp += Expires * 1 || 0;
+  }
+  // 要用到的 Authorization 参数列表
+  var SignAlgorithm = 'sha1';
+  var SignTime = "".concat(now, ";").concat(exp);
+  var KeyTime = "".concat(now, ";").concat(exp);
+  var HeaderList = (_util$getHeaderKeylis = util$5.getHeaderKeylist(headersParams)) === null || _util$getHeaderKeylis === void 0 ? void 0 : _util$getHeaderKeylis.join(';').toLowerCase();
+  var UrlParamList = (_util$getParamKeylist = util$5.getParamKeylist(queryParams)) === null || _util$getParamKeylist === void 0 ? void 0 : _util$getParamKeylist.join(';').toLowerCase();
+  // 签名算法说明文档：https://cloud.tencent.com/document/product/614/12445
+  // 步骤一：拼接 HttpRequestInfo
+  var FormatedParameters = util$5.obj2str(queryParams, util$5.getParamKeylist);
+  var FormatedHeaders = util$5.obj2str(headersParams, util$5.getHeaderKeylist);
+  var HttpRequestInfo = [method.toLowerCase(), "/".concat(opt.api || ''), FormatedParameters, FormatedHeaders, ''].join('\n');
+  // 步骤二：拼接 StringToSign
+  var StringToSign = ['sha1', KeyTime, util$5.sha1(HttpRequestInfo), ''].join('\n');
+  // 步骤三：生成 SignKey
+  var SignKey = util$5.sha1_hmac(KeyTime, SecretKey);
+  // 步骤四：计算 Signature
+  var Signature = util$5.sha1_hmac(StringToSign, SignKey);
+  // 步骤五：构造 Authorization
+  var authorization = ["q-sign-algorithm=".concat(SignAlgorithm), "q-ak=".concat(SecretId), "q-sign-time=".concat(SignTime), "q-key-time=".concat(KeyTime), 'q-header-list=' + HeaderList, 'q-url-param-list=' + UrlParamList, "q-signature=".concat(Signature)].join('&');
+  return authorization;
 }
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -4275,538 +4826,721 @@ $root.cls = (function() {
 
 var cls = $root;
 
-// const lz4 = require('lz4');
 // const { lz4, CBuffer } = require('../../lib/lz4');
 // const lz4 = require('lz4js');
-const handleLogs = {
-    formatLogGroup(logs, options = {}) {
-        const logGroup = new cls.cls.LogGroup();
-        if (options.filename) {
-            logGroup.filename = options.filename;
-        }
-        if (options.source) {
-            logGroup.source = options.source;
-        }
-        logs.forEach(log => {
-            const logItem = new cls.cls.Log();
-            logItem.time = log.time;
-            Object.keys(log.contents).forEach(key => {
-                const o = log.contents[key];
-                const value = isString(o) ? o : JSON.stringify(o);
-                logItem.contents.push(new cls.cls.Log.Content({ key, value }));
-            });
-            logGroup.logs.push(logItem);
+var handleLogs = {
+  formatLogGroup: function formatLogGroup(logs) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var logGroup = new cls.cls.LogGroup();
+    if (options.filename) {
+      logGroup.filename = options.filename;
+    }
+    if (options.source) {
+      logGroup.source = options.source;
+    }
+    logs.forEach(function (log) {
+      var logItem = new cls.cls.Log();
+      logItem.time = log.time;
+      Object.keys(log.contents).forEach(function (key) {
+        var o = log.contents[key];
+        var value = isString(o) ? o : JSON.stringify(o);
+        logItem.contents.push(new cls.cls.Log.Content({
+          key: key,
+          value: value
+        }));
+      });
+      logGroup.logs.push(logItem);
+    });
+    // 校验日志格式是否正确
+    var errMsg = cls.cls.LogGroup.verify(logGroup);
+    if (errMsg) {
+      throw new ClsSDKError("log format is incorrect: ".concat(errMsg));
+    }
+    return logGroup;
+  },
+  log2Buffer: function log2Buffer(logs) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var clsList = new cls.cls.LogGroupList();
+    var logGroup = handleLogs.formatLogGroup(logs, options);
+    clsList.logGroupList.push(logGroup);
+    // 将本地日志转换为 pb 格式
+    var buffer = cls.cls.LogGroupList.encode(clsList).finish();
+    return buffer;
+    // const buffer = Buffer.from(JSON.stringify(logGroupList))
+    // const input = new CBuffer(this.toArrayBuffer(buffer));
+    // const maxOutputSize = lz4.encodeBound(input.length);
+    // const output = new CBuffer(maxOutputSize);
+    // const outputSize = lz4.encodeBlock(input, output);
+    // let lz4Buffer = output.slice(0, outputSize);
+    // lz4Buffer = btoa(encodeURIComponent(lz4Buffer));
+    // // 将 pb 格式的日志进行 lz4 压缩
+    // let lz4Buffer = Buffer.alloc(lz4.encodeBound(buffer.length));
+    // const compressedSize = lz4.encodeBlock(buffer, lz4Buffer);
+    // lz4Buffer = lz4Buffer.slice(0, compressedSize);
+    // this.write(`./demo/proto_node.lz4`, lz4Buffer);
+    // let uncompressed = Buffer.from(buffer.length);
+    // const uncompressedSize = lz4.decodeBlock(lz4Buffer, uncompressed)
+    // uncompressed = uncompressed.slice(0, uncompressedSize)
+    // let lz4Buffer = lz4.compress(buffer, buffer.length);
+    // lz4Buffer = this.toBuffer(lz4Buffer);
+    // this.write(`./demo/proto_js.lz4`, lz4Buffer);
+    // const depress = lz4.decompress(lz4Buffer);
+    // this.write(`./demo/depress_js`, depress);
+    // return lz4Buffer;
+  },
+  log2JSON: function log2JSON(logs) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var source = options.source,
+      filename = options.filename;
+    var logGroup = _objectSpread2(_objectSpread2(_objectSpread2({}, filename && {
+      filename: filename
+    }), source && {
+      source: source
+    }), {}, {
+      logs: logs.map(function (log) {
+        var formatContents = log.contents;
+        Object.keys(log.contents).forEach(function (key) {
+          try {
+            if (typeof formatContents[key] !== 'undefined') {
+              formatContents[key] = formatContents[key].toString();
+            } else {
+              formatContents[key] = '';
+            }
+          } catch (error) {
+            throw new ClsSDKError("log format is incorrect: ".concat(error.message));
+          }
         });
-        // 校验日志格式是否正确
-        const errMsg = cls.cls.LogGroup.verify(logGroup);
-        if (errMsg) {
-            throw new ClsSDKError(`log format is incorrect: ${errMsg}`);
-        }
-        return logGroup;
-    },
-    log2Buffer(logs, options = {}) {
-        const clsList = new cls.cls.LogGroupList();
-        const logGroup = handleLogs.formatLogGroup(logs, options);
-        clsList.logGroupList.push(logGroup);
-        // 将本地日志转换为 pb 格式
-        const buffer = cls.cls.LogGroupList.encode(clsList).finish();
-        return buffer;
-        // const buffer = Buffer.from(JSON.stringify(logGroupList))
-        // const input = new CBuffer(this.toArrayBuffer(buffer));
-        // const maxOutputSize = lz4.encodeBound(input.length);
-        // const output = new CBuffer(maxOutputSize);
-        // const outputSize = lz4.encodeBlock(input, output);
-        // let lz4Buffer = output.slice(0, outputSize);
-        // lz4Buffer = btoa(encodeURIComponent(lz4Buffer));
-        // // 将 pb 格式的日志进行 lz4 压缩
-        // let lz4Buffer = Buffer.alloc(lz4.encodeBound(buffer.length));
-        // const compressedSize = lz4.encodeBlock(buffer, lz4Buffer);
-        // lz4Buffer = lz4Buffer.slice(0, compressedSize);
-        // this.write(`./demo/proto_node.lz4`, lz4Buffer);
-        // let uncompressed = Buffer.from(buffer.length);
-        // const uncompressedSize = lz4.decodeBlock(lz4Buffer, uncompressed)
-        // uncompressed = uncompressed.slice(0, uncompressedSize)
-        // let lz4Buffer = lz4.compress(buffer, buffer.length);
-        // lz4Buffer = this.toBuffer(lz4Buffer);
-        // this.write(`./demo/proto_js.lz4`, lz4Buffer);
-        // const depress = lz4.decompress(lz4Buffer);
-        // this.write(`./demo/depress_js`, depress);
-        // return lz4Buffer;
-    },
-    log2JSON(logs, options = {}) {
-        const { source, filename } = options;
-        const logGroup = {
-            ...(filename && { filename }),
-            ...(source && { source }),
-            logs: logs.map(log => {
-                const formatContents = log.contents;
-                Object.keys(log.contents).forEach(key => {
-                    try {
-                        if (typeof formatContents[key] !== 'undefined') {
-                            formatContents[key] = formatContents[key].toString();
-                        }
-                        else {
-                            formatContents[key] = '';
-                        }
-                    }
-                    catch (error) {
-                        throw new ClsSDKError(`log format is incorrect: ${error.message}`);
-                    }
-                });
-                return {
-                    contents: log.contents,
-                    time: log.time,
-                };
-            }),
+        return {
+          contents: log.contents,
+          time: log.time
         };
-        return JSON.stringify(logGroup);
-    },
-    // toArrayBuffer(buf) {
-    //   const ab = new ArrayBuffer(buf.length);
-    //   const view = new Uint8Array(ab);
-    //   for (let i = 0; i < buf.length; ++i) {
-    //     view[i] = buf[i];
-    //   }
-    //   return ab;
-    // },
-    // toBuffer(ab) {
-    //   const buf = Buffer.alloc(ab.byteLength);
-    //   const view = new Uint8Array(ab);
-    //   for (let i = 0; i < buf.length; ++i) {
-    //     buf[i] = view[i];
-    //   }
-    //   return buf;
-    // },
+      })
+    });
+    return JSON.stringify(logGroup);
+  } // toArrayBuffer(buf) {
+  //   const ab = new ArrayBuffer(buf.length);
+  //   const view = new Uint8Array(ab);
+  //   for (let i = 0; i < buf.length; ++i) {
+  //     view[i] = buf[i];
+  //   }
+  //   return ab;
+  // },
+  // toBuffer(ab) {
+  //   const buf = Buffer.alloc(ab.byteLength);
+  //   const view = new Uint8Array(ab);
+  //   for (let i = 0; i < buf.length; ++i) {
+  //     buf[i] = view[i];
+  //   }
+  //   return buf;
+  // },
 };
 
 /**
  * @class HttpConnection
  * @internal
  */
-class HttpConnection {
+var HttpConnection = /*#__PURE__*/function () {
+  function HttpConnection(options) {
+    var _options$autoFillSour;
+    _classCallCheck(this, HttpConnection);
     /**
      * 临时签名缓存
      */
-    stsCache = [];
-    CLS_HOST = 'cls.tencentcs.com';
-    cancelRequestSource = axios.CancelToken.source();
-    retryTimes = 3; // 默认重试次数
-    topicId = '';
-    autoFillSourceIp = true;
+    _defineProperty(this, "stsCache", []);
+    _defineProperty(this, "CLS_HOST", 'cls.tencentcs.com');
+    _defineProperty(this, "cancelRequestSource", axios.CancelToken.source());
+    _defineProperty(this, "retryTimes", 3);
+    // 默认重试次数
+    _defineProperty(this, "topicId", '');
+    _defineProperty(this, "autoFillSourceIp", true);
     /**
      * 永久密钥 SecretId、SecretKey
      */
-    credential = undefined;
+    _defineProperty(this, "credential", undefined);
     /**
      * 获取签名的回调方法
      */
-    getAuthorization = undefined;
+    _defineProperty(this, "getAuthorization", undefined);
+    _defineProperty(this, "ins", undefined);
+    this.topicId = options.topicId;
+    this.credential = options.credential;
+    this.getAuthorization = options.getAuthorization;
+    this.autoFillSourceIp = (_options$autoFillSour = options.autoFillSourceIp) !== null && _options$autoFillSour !== void 0 ? _options$autoFillSour : true;
+    this.ins = this.getIns(options);
+  }
+  _createClass(HttpConnection, [{
+    key: "needAuth",
+    get:
     /**
      * 需要鉴权
      */
-    get needAuth() {
-        return isNotEmpty(this.credential) || isNotEmpty(this.getAuthorization);
+    function get() {
+      return isNotEmpty(this.credential) || isNotEmpty(this.getAuthorization);
     }
-    ins = undefined;
-    constructor(options) {
-        this.topicId = options.topicId;
-        this.credential = options.credential;
-        this.getAuthorization = options.getAuthorization;
-        this.autoFillSourceIp = options.autoFillSourceIp ?? true;
-        this.ins = this.getIns(options);
+  }, {
+    key: "getIns",
+    value: function getIns(options) {
+      var _options$retry, _options$protocol;
+      this.retryTimes = (_options$retry = options.retry) !== null && _options$retry !== void 0 ? _options$retry : 3;
+      var protocol = (_options$protocol = options.protocol) !== null && _options$protocol !== void 0 ? _options$protocol : 'http';
+      var host = "".concat(options.region, ".").concat(this.CLS_HOST);
+      var headers = this.getCommonHeaders(host);
+      var axiosConfig = {
+        baseURL: "".concat(protocol, "://").concat(host),
+        headers: headers,
+        timeout: 5000,
+        cancelToken: this.cancelRequestSource.token,
+        params: {
+          topic_id: this.topicId
+        }
+      };
+      if (options.agent) {
+        var _options$agent = options.agent,
+          httpAgent = _options$agent.httpAgent,
+          httpsAgent = _options$agent.httpsAgent,
+          proxy = _options$agent.proxy;
+        protocol = options.agent.protocol || protocol;
+        httpAgent && (axiosConfig.httpAgent = httpAgent);
+        httpsAgent && (axiosConfig.httpsAgent = httpsAgent);
+        proxy && (axiosConfig.proxy = proxy);
+        options.proxy && (axiosConfig.proxy = proxy); // 直接挂载的代理变量优先级高于函数中获取的代理变量
+      }
+      var axiosIns = axios.create(axiosConfig);
+      this.generateCancelToken(axiosIns);
+      this.initMethods(axiosIns);
+      this.setReqInterceptors(axiosIns);
+      this.setResInterceptors(axiosIns);
+      return axiosIns;
     }
-    getIns(options) {
-        this.retryTimes = options.retry ?? 3;
-        let protocol = options.protocol ?? 'http';
-        const host = `${options.region}.${this.CLS_HOST}`;
-        const headers = this.getCommonHeaders(host);
-        const axiosConfig = {
-            baseURL: `${protocol}://${host}`,
-            headers,
-            timeout: 5000,
-            cancelToken: this.cancelRequestSource.token,
-            params: {
-                topic_id: this.topicId,
-            },
+  }, {
+    key: "getCommonHeaders",
+    value: function getCommonHeaders(host) {
+      var headers = _objectSpread2({}, this.autoFillSourceIp && {
+        'x-cls-add-source': '1'
+      });
+      if (this.needAuth) {
+        headers['Content-Type'] = 'application/x-protobuf';
+        headers['Host'] = host;
+      } else {
+        headers['Content-Type'] = 'application/json';
+      }
+      return headers;
+    }
+  }, {
+    key: "initMethods",
+    value: function initMethods(httpIns) {
+      var _this = this;
+      ['PUT', 'POST', 'GET', 'DELETE', 'HEAD'].forEach(function (method) {
+        _this[method.toLowerCase()] = function (config) {
+          var url = config.url;
+          if (!url) throw new Error('url 不能为空');
+          return httpIns(_objectSpread2({
+            method: method
+          }, config));
         };
-        if (options.agent) {
-            const { httpAgent, httpsAgent, proxy } = options.agent;
-            protocol = options.agent.protocol || protocol;
-            httpAgent && (axiosConfig.httpAgent = httpAgent);
-            httpsAgent && (axiosConfig.httpsAgent = httpsAgent);
-            proxy && (axiosConfig.proxy = proxy);
-            options.proxy && (axiosConfig.proxy = proxy); // 直接挂载的代理变量优先级高于函数中获取的代理变量
-        }
-        const axiosIns = axios.create(axiosConfig);
-        this.generateCancelToken(axiosIns);
-        this.initMethods(axiosIns);
-        this.setReqInterceptors(axiosIns);
-        this.setResInterceptors(axiosIns);
-        return axiosIns;
-    }
-    getCommonHeaders(host) {
-        const headers = {
-            ...(this.autoFillSourceIp && { 'x-cls-add-source': '1' }),
-        };
-        if (this.needAuth) {
-            headers['Content-Type'] = 'application/x-protobuf';
-            headers['Host'] = host;
-        }
-        else {
-            headers['Content-Type'] = 'application/json';
-        }
-        return headers;
-    }
-    put;
-    post;
-    get;
-    delete;
-    head;
-    initMethods(httpIns) {
-        ['PUT', 'POST', 'GET', 'DELETE', 'HEAD'].forEach(method => {
-            this[method.toLowerCase()] = (config) => {
-                const { url } = config;
-                if (!url)
-                    throw new Error('url 不能为空');
-                return httpIns({
-                    method,
-                    ...config,
-                });
-            };
-        });
+      });
     }
     /**
      * 修改请求适配器
      * @param adapter
      */
-    changeAdapter(adapter) {
-        if (!this.ins) {
-            throw new ClsSDKError('HttpConnection is not initialized');
-        }
-        this.ins.defaults.adapter = adapter;
+  }, {
+    key: "changeAdapter",
+    value: function changeAdapter(adapter) {
+      if (!this.ins) {
+        throw new ClsSDKError('HttpConnection is not initialized');
+      }
+      this.ins.defaults.adapter = adapter;
     }
     /**
      * 取消当前所有请求
      */
-    cancelRequest() {
-        if (!this.ins) {
-            throw new ClsSDKError('HttpConnection is not initialized');
-        }
-        this.cancelRequestSource.cancel('cancel');
-        this.generateCancelToken(this.ins);
+  }, {
+    key: "cancelRequest",
+    value: function cancelRequest() {
+      if (!this.ins) {
+        throw new ClsSDKError('HttpConnection is not initialized');
+      }
+      this.cancelRequestSource.cancel('cancel');
+      this.generateCancelToken(this.ins);
     }
     /**
      * 通用请求拦截器
      */
-    setReqInterceptors(httpIns) {
-        httpIns.interceptors.request.use(async (config) => {
-            const { headers, params, url, method } = config;
-            const authData = await this._getAuthorization({
-                method: method,
-                headers,
-                query: params,
-                api: url?.replace(/^\//g, '') || '',
-            });
-            if (authData) {
-                config.headers.Authorization = authData.Authorization;
-                authData.SecurityToken && (config.headers['x-cls-token'] = authData.SecurityToken);
+  }, {
+    key: "setReqInterceptors",
+    value: function setReqInterceptors(httpIns) {
+      var _this2 = this;
+      httpIns.interceptors.request.use( /*#__PURE__*/function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(config) {
+          var headers, params, url, method, authData;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                headers = config.headers, params = config.params, url = config.url, method = config.method;
+                _context.next = 3;
+                return _this2._getAuthorization({
+                  method: method,
+                  headers: headers,
+                  query: params,
+                  api: (url === null || url === void 0 ? void 0 : url.replace(/^\//g, '')) || ''
+                });
+              case 3:
+                authData = _context.sent;
+                if (authData) {
+                  config.headers.Authorization = authData.Authorization;
+                  authData.SecurityToken && (config.headers['x-cls-token'] = authData.SecurityToken);
+                }
+                return _context.abrupt("return", config);
+              case 6:
+              case "end":
+                return _context.stop();
             }
-            return config;
-        }, error => Promise.resolve(error));
+          }, _callee);
+        }));
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }(), function (error) {
+        return Promise.resolve(error);
+      });
     }
     /**
      * 通用响应拦截器
      */
-    setResInterceptors(httpIns) {
-        httpIns.interceptors.response.use((response) => {
-            systemClock.handleOffset(response.headers.date);
-            return response;
-        }, async (error) => {
-            if (axios.isCancel(error)) {
-                const error = {
-                    code: 'canceled',
-                    message: 'Operation canceled by the user.',
+  }, {
+    key: "setResInterceptors",
+    value: function setResInterceptors(httpIns) {
+      var _this3 = this;
+      httpIns.interceptors.response.use(function (response) {
+        systemClock.handleOffset(response.headers.date);
+        return response;
+      }, /*#__PURE__*/function () {
+        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(error) {
+          var _error, _error$response, status, headers, config, data;
+          return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+            while (1) switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!axios.isCancel(error)) {
+                  _context2.next = 3;
+                  break;
+                }
+                _error = {
+                  code: 'canceled',
+                  message: 'Operation canceled by the user.'
                 };
-                throw new ClsSDKError(error);
-            }
-            if (!error.config.retryTimes) {
-                error.config.retryTimes = 0;
-            }
-            if (error.response) {
+                throw new ClsSDKError(_error);
+              case 3:
+                if (!error.config.retryTimes) {
+                  error.config.retryTimes = 0;
+                }
+                if (!error.response) {
+                  _context2.next = 15;
+                  break;
+                }
                 systemClock.handleOffset(error.response.headers.date);
                 // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-                const { status, headers, config, data } = error.response;
-                if (status !== 413 && config.retryTimes < this.retryTimes) {
-                    config.retryTimes++;
-                    // TODO: 需要校准时间
-                    await wait(1000);
-                    return httpIns(config);
+                _error$response = error.response, status = _error$response.status, headers = _error$response.headers, config = _error$response.config, data = _error$response.data;
+                if (!(status !== 413 && config.retryTimes < _this3.retryTimes)) {
+                  _context2.next = 14;
+                  break;
                 }
-                else {
-                    throw new ClsSDKError({ status, headers, code: data.errorcode, message: data.errormessage });
-                }
+                config.retryTimes++;
+                // TODO: 需要校准时间
+                _context2.next = 11;
+                return wait(1000);
+              case 11:
+                return _context2.abrupt("return", httpIns(config));
+              case 14:
+                throw new ClsSDKError({
+                  status: status,
+                  headers: headers,
+                  code: data.errorcode,
+                  message: data.errormessage
+                });
+              case 15:
+                throw new ClsSDKError({
+                  code: error.code || error.message,
+                  message: error.message
+                });
+              case 16:
+              case "end":
+                return _context2.stop();
             }
-            throw new ClsSDKError({ code: error.code || error.message, message: error.message });
-        });
+          }, _callee2);
+        }));
+        return function (_x2) {
+          return _ref2.apply(this, arguments);
+        };
+      }());
     }
     /**
      * 上传日志
      * @param logs
      * @returns  AxiosPromise
      */
-    putLogs(logs) {
-        if (!this.ins) {
-            throw new ClsSDKError('HttpConnection is not initialized');
-        }
-        if (this.needAuth) {
-            const data = handleLogs.log2Buffer(logs);
-            return this.post({
-                url: `/structuredlog`,
-                data,
-            });
-        }
-        else {
-            const data = handleLogs.log2JSON(logs);
-            return this.post({
-                url: `/tracklog`,
-                data,
-            });
-        }
+  }, {
+    key: "putLogs",
+    value: function putLogs(logs) {
+      if (!this.ins) {
+        throw new ClsSDKError('HttpConnection is not initialized');
+      }
+      if (this.needAuth) {
+        var data = handleLogs.log2Buffer(logs);
+        return this.post({
+          url: "/structuredlog",
+          data: data
+        });
+      } else {
+        var _data = handleLogs.log2JSON(logs);
+        return this.post({
+          url: "/tracklog",
+          data: _data
+        });
+      }
     }
     /**
      * 生成取消请求的token种子
      * @param ins
      */
-    generateCancelToken(ins) {
-        this.cancelRequestSource = axios.CancelToken.source();
-        ins.defaults.cancelToken = this.cancelRequestSource.token;
+  }, {
+    key: "generateCancelToken",
+    value: function generateCancelToken(ins) {
+      this.cancelRequestSource = axios.CancelToken.source();
+      ins.defaults.cancelToken = this.cancelRequestSource.token;
     }
-    async _getAuthorization(params) {
-        const headers = HttpConnection.formatHeader(params.headers);
-        // 有永久密钥则直接签名
-        if (this.credential) {
-            // 内部计算获取签名
-            return HttpConnection.calcAuth({
-                ...this.credential,
-                ...params,
-                headers,
-            });
-        }
-        let stsData = undefined;
-        // 从缓存中取可用的签名 sts
-        (() => {
-            let i;
-            let AuthData;
-            for (i = this.stsCache.length - 1; i >= 0; i--) {
-                AuthData = this.stsCache[i];
-                const compareTime = Math.round(systemClock.now() / 1000) + 30;
-                if ((AuthData.StartTime && compareTime < AuthData.StartTime) || compareTime >= AuthData.ExpiredTime) {
-                    this.stsCache.splice(i, 1);
-                    continue;
-                }
-                stsData = AuthData;
+  }, {
+    key: "_getAuthorization",
+    value: function () {
+      var _getAuthorization2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(params) {
+        var _this4 = this,
+          _stsData;
+        var headers, stsData, authData;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              headers = HttpConnection.formatHeader(params.headers); // 有永久密钥则直接签名
+              if (!this.credential) {
+                _context3.next = 3;
                 break;
-            }
-        })();
-        // 判断是否有缓存过可以使用的临时密钥
-        if (stsData?.ExpiredTime && stsData.ExpiredTime - systemClock.now() / 1000 > 60) {
-            // 如果缓存的临时密钥有效，并还有超过60秒有效期就直接使用
-            return HttpConnection.calcAuth({
-                ...params,
-                headers,
-                ...stsData,
+              }
+              return _context3.abrupt("return", HttpConnection.calcAuth(_objectSpread2(_objectSpread2(_objectSpread2({}, this.credential), params), {}, {
+                headers: headers
+              })));
+            case 3:
+              stsData = undefined; // 从缓存中取可用的签名 sts
+              (function () {
+                var i;
+                var AuthData;
+                for (i = _this4.stsCache.length - 1; i >= 0; i--) {
+                  AuthData = _this4.stsCache[i];
+                  var compareTime = Math.round(systemClock.now() / 1000) + 30;
+                  if (AuthData.StartTime && compareTime < AuthData.StartTime || compareTime >= AuthData.ExpiredTime) {
+                    _this4.stsCache.splice(i, 1);
+                    continue;
+                  }
+                  stsData = AuthData;
+                  break;
+                }
+              })();
+              // 判断是否有缓存过可以使用的临时密钥
+              if (!((_stsData = stsData) !== null && _stsData !== void 0 && _stsData.ExpiredTime && stsData.ExpiredTime - systemClock.now() / 1000 > 60)) {
+                _context3.next = 9;
+                break;
+              }
+              return _context3.abrupt("return", HttpConnection.calcAuth(_objectSpread2(_objectSpread2(_objectSpread2({}, params), {}, {
+                headers: headers
+              }, stsData), {}, {
                 SecretId: stsData.TmpSecretId,
-                SecretKey: stsData.TmpSecretKey,
-            });
-        }
-        else if (this.getAuthorization) {
-            // 外部计算签名或获取临时密钥
-            const authData = await this.getAuthorization({
+                SecretKey: stsData.TmpSecretKey
+              })));
+            case 9:
+              if (!this.getAuthorization) {
+                _context3.next = 24;
+                break;
+              }
+              _context3.next = 12;
+              return this.getAuthorization({
                 method: params.method,
                 query: params.query,
-                headers: headers,
-            });
-            if (typeof authData === 'string') {
-                return { Authorization: authData };
-            }
-            else if (authData.StartTime &&
-                authData.TmpSecretId &&
-                authData.TmpSecretKey &&
-                authData.Token &&
-                authData.ExpiredTime) {
-                stsData = authData;
-                this.stsCache.push(stsData);
-                return HttpConnection.calcAuth({
-                    ...params,
-                    headers,
-                    ...stsData,
-                    SecretId: stsData.TmpSecretId,
-                    SecretKey: stsData.TmpSecretKey,
-                });
-            }
-            else {
-                throw new ClsSDKError('getAuthorization return value is not standardized.');
-            }
+                headers: headers
+              });
+            case 12:
+              authData = _context3.sent;
+              if (!(typeof authData === 'string')) {
+                _context3.next = 17;
+                break;
+              }
+              return _context3.abrupt("return", {
+                Authorization: authData
+              });
+            case 17:
+              if (!(authData.StartTime && authData.TmpSecretId && authData.TmpSecretKey && authData.Token && authData.ExpiredTime)) {
+                _context3.next = 23;
+                break;
+              }
+              stsData = authData;
+              this.stsCache.push(stsData);
+              return _context3.abrupt("return", HttpConnection.calcAuth(_objectSpread2(_objectSpread2(_objectSpread2({}, params), {}, {
+                headers: headers
+              }, stsData), {}, {
+                SecretId: stsData.TmpSecretId,
+                SecretKey: stsData.TmpSecretKey
+              })));
+            case 23:
+              throw new ClsSDKError('getAuthorization return value is not standardized.');
+            case 24:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, this);
+      }));
+      function _getAuthorization(_x3) {
+        return _getAuthorization2.apply(this, arguments);
+      }
+      return _getAuthorization;
+    }()
+  }], [{
+    key: "formatHeader",
+    value: function formatHeader(headers) {
+      var commonHeaders = {};
+      var CommonHeaderSet = new Set(['Content-Type', 'Host', 'Content-Length']);
+      Object.keys(headers).forEach(function (key) {
+        if (CommonHeaderSet.has(key)) {
+          commonHeaders[key] = headers[key];
         }
+      });
+      return commonHeaders;
     }
-    static formatHeader(headers) {
-        const commonHeaders = {};
-        const CommonHeaderSet = new Set(['Content-Type', 'Host', 'Content-Length']);
-        Object.keys(headers).forEach(key => {
-            if (CommonHeaderSet.has(key)) {
-                commonHeaders[key] = headers[key];
-            }
-        });
-        return commonHeaders;
+  }, {
+    key: "calcAuth",
+    value: function calcAuth(options) {
+      var Authorization = sign(options);
+      var authData = {
+        Authorization: Authorization,
+        SecurityToken: options.SecurityToken || ''
+      };
+      return authData;
     }
-    static calcAuth(options) {
-        const Authorization = sign(options);
-        const authData = {
-            Authorization,
-            SecurityToken: options.SecurityToken || '',
-        };
-        return authData;
-    }
-}
+  }]);
+  return HttpConnection;
+}();
 
 var UploadState;
 (function (UploadState) {
-    UploadState[UploadState["start"] = 0] = "start";
-    UploadState[UploadState["waiting"] = 1] = "waiting";
-    UploadState[UploadState["running"] = 2] = "running";
-    UploadState[UploadState["stop"] = 3] = "stop";
+  UploadState[UploadState["start"] = 0] = "start";
+  UploadState[UploadState["waiting"] = 1] = "waiting";
+  UploadState[UploadState["running"] = 2] = "running";
+  UploadState[UploadState["stop"] = 3] = "stop";
 })(UploadState || (UploadState = {}));
-class Uploader {
-    queue = [];
-    config;
-    http;
-    state = UploadState.stop;
-    constructor({ config }) {
-        this.config = config;
-        this.http = new HttpConnection({
-            region: this.config.region,
-            topicId: this.config.topicId,
-            agent: this.config.getAgent?.(),
-            proxy: this.config.proxy,
-            credential: this.config.credential,
-            getAuthorization: this.config.getAuthorization,
-            autoFillSourceIp: !isNotEmpty(this.config.sourceIp),
-        });
-    }
-    start() {
-        this.state = UploadState.start;
-        this.startNextBatch();
+var Uploader = /*#__PURE__*/function () {
+  function Uploader(_ref) {
+    var _this$config$getAgent, _this$config;
+    var config = _ref.config;
+    _classCallCheck(this, Uploader);
+    _defineProperty(this, "queue", []);
+    _defineProperty(this, "state", UploadState.stop);
+    this.config = config;
+    this.http = new HttpConnection({
+      region: this.config.region,
+      topicId: this.config.topicId,
+      agent: (_this$config$getAgent = (_this$config = this.config).getAgent) === null || _this$config$getAgent === void 0 ? void 0 : _this$config$getAgent.call(_this$config),
+      proxy: this.config.proxy,
+      credential: this.config.credential,
+      getAuthorization: this.config.getAuthorization,
+      autoFillSourceIp: !isNotEmpty(this.config.sourceIp)
+    });
+  }
+  _createClass(Uploader, [{
+    key: "start",
+    value: function start() {
+      this.state = UploadState.start;
+      this.startNextBatch();
     }
     /**
      * 将要上传的日志添加至队列
      * @param logs
      */
-    add(logs) {
-        const item = {
-            index: this.queue.length,
-            logs,
-        };
-        this.queue.push(item);
-        this.startNextBatch();
+  }, {
+    key: "add",
+    value: function add(logs) {
+      var item = {
+        index: this.queue.length,
+        logs: logs
+      };
+      this.queue.push(item);
+      this.startNextBatch();
     }
-    async startNextBatch() {
-        if (this.state === UploadState.running)
-            return;
-        this.state = UploadState.running;
-        while (this.queue.length > 0 && this.isStart()) {
-            const uploadItem = this.queue.shift();
-            if (uploadItem) {
-                try {
-                    await this.http.putLogs(uploadItem.logs);
-                }
-                catch (err) {
-                    this.config.onError(err);
-                }
-            }
-        }
-        this.state = UploadState.waiting;
+  }, {
+    key: "startNextBatch",
+    value: function () {
+      var _startNextBatch = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var uploadItem;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              if (!(this.state === UploadState.running)) {
+                _context.next = 2;
+                break;
+              }
+              return _context.abrupt("return");
+            case 2:
+              this.state = UploadState.running;
+            case 3:
+              if (!(this.queue.length > 0 && this.isStart())) {
+                _context.next = 16;
+                break;
+              }
+              uploadItem = this.queue.shift();
+              if (!uploadItem) {
+                _context.next = 14;
+                break;
+              }
+              _context.prev = 6;
+              _context.next = 9;
+              return this.http.putLogs(uploadItem.logs);
+            case 9:
+              _context.next = 14;
+              break;
+            case 11:
+              _context.prev = 11;
+              _context.t0 = _context["catch"](6);
+              this.config.onError(_context.t0);
+            case 14:
+              _context.next = 3;
+              break;
+            case 16:
+              this.state = UploadState.waiting;
+            case 17:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this, [[6, 11]]);
+      }));
+      function startNextBatch() {
+        return _startNextBatch.apply(this, arguments);
+      }
+      return startNextBatch;
+    }()
+  }, {
+    key: "isStart",
+    value: function isStart() {
+      return this.state !== UploadState.stop;
     }
-    isStart() {
-        return this.state !== UploadState.stop;
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.http.cancelRequest();
+      this.state = UploadState.stop;
     }
-    stop() {
-        this.http.cancelRequest();
-        this.state = UploadState.stop;
-    }
-}
+  }]);
+  return Uploader;
+}();
 
 /**
  * CLS上传客户端
  * @public
  */
-class ClsClient {
+var ClsClient = /*#__PURE__*/function () {
+  /**
+   * Creates an instance of clsclient.
+   * @param options - 可选参数，不传则必须调用 init 函数进行初始化
+   */
+  function ClsClient(options) {
+    _classCallCheck(this, ClsClient);
     /**
      * 内部检查缓存日志定时器
      */
-    logTimer = undefined;
-    checkCacheLocked = false;
+    _defineProperty(this, "logTimer", undefined);
+    _defineProperty(this, "checkCacheLocked", false);
     /**
      * 日志缓存队列(缓存写入时间按从小到大的顺序)
      */
-    logList = [];
+    _defineProperty(this, "logList", []);
     /**
      * 标志cls上传器是否初始化
      */
-    initTag = false;
-    config;
-    uploader;
-    /**
-     * Creates an instance of clsclient.
-     * @param options - 可选参数，不传则必须调用 init 函数进行初始化
-     */
-    constructor(options) {
-        if (options) {
-            this.init(options);
-        }
+    _defineProperty(this, "initTag", false);
+    if (options) {
+      this.init(options);
     }
-    /**
-     * clsclient 初始化函数
-     * @param options - 参数配置
-     */
-    init(options) {
-        this.config = new ClientConfig(options);
-        this.uploader = new Uploader({
-            config: this.config,
-        });
-        this.initTag = true;
+  }
+  /**
+   * clsclient 初始化函数
+   * @param options - 参数配置
+   */
+  _createClass(ClsClient, [{
+    key: "init",
+    value: function init(options) {
+      this.config = new ClientConfig(options);
+      this.uploader = new Uploader({
+        config: this.config
+      });
+      this.initTag = true;
     }
     /**
      * 检查当前日志缓存，满足上传条件则加入队列
      */
-    async checkLogCaches() {
-        if (this.checkCacheLocked) {
-            return;
-        }
-        const currCacheSize = this.logList.length;
-        if (currCacheSize === 0)
-            return;
-        // 清理掉之前正在执行的定时器
-        clearTimeout(this.logTimer);
-        this.checkCacheLocked = true;
-        const immediate = this.logList.some(log => log.immediate);
-        if (!immediate && currCacheSize < this.config.maxRetainSize) {
-            // 判断日志缓存里最早的一条日志的时间间隔是否已达到最大缓存间隔
-            const firstLog = this.logList[0];
-            const { time: latestLogTime } = firstLog;
-            const now = systemClock.now();
-            const offsetTime = (now - latestLogTime) / 1000;
-            if (offsetTime < this.config.maxRetainDuration) {
-                const delayTime = this.config.maxRetainDuration - offsetTime + 1;
-                this.checkCacheLocked = false;
-                this.logTimer = setTimeout(this.checkLogCaches.bind(this), delayTime * 1000);
-                return;
-            }
-        }
-        this.checkCacheLocked = false;
-        // 立即将日志加入上传任务队列中
-        this.uploader.add(this.logList.splice(0, currCacheSize));
-        this.checkLogCaches();
-    }
+  }, {
+    key: "checkLogCaches",
+    value: (function () {
+      var _checkLogCaches = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var currCacheSize, immediate, firstLog, latestLogTime, now, offsetTime, delayTime;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              if (!this.checkCacheLocked) {
+                _context.next = 2;
+                break;
+              }
+              return _context.abrupt("return");
+            case 2:
+              currCacheSize = this.logList.length;
+              if (!(currCacheSize === 0)) {
+                _context.next = 5;
+                break;
+              }
+              return _context.abrupt("return");
+            case 5:
+              // 清理掉之前正在执行的定时器
+              clearTimeout(this.logTimer);
+              this.checkCacheLocked = true;
+              immediate = this.logList.some(function (log) {
+                return log.immediate;
+              });
+              if (!(!immediate && currCacheSize < this.config.maxRetainSize)) {
+                _context.next = 18;
+                break;
+              }
+              // 判断日志缓存里最早的一条日志的时间间隔是否已达到最大缓存间隔
+              firstLog = this.logList[0];
+              latestLogTime = firstLog.time;
+              now = systemClock.now();
+              offsetTime = (now - latestLogTime) / 1000;
+              if (!(offsetTime < this.config.maxRetainDuration)) {
+                _context.next = 18;
+                break;
+              }
+              delayTime = this.config.maxRetainDuration - offsetTime + 1;
+              this.checkCacheLocked = false;
+              this.logTimer = setTimeout(this.checkLogCaches.bind(this), delayTime * 1000);
+              return _context.abrupt("return");
+            case 18:
+              this.checkCacheLocked = false;
+              // 立即将日志加入上传任务队列中
+              this.uploader.add(this.logList.splice(0, currCacheSize));
+              this.checkLogCaches();
+            case 21:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this);
+      }));
+      function checkLogCaches() {
+        return _checkLogCaches.apply(this, arguments);
+      }
+      return checkLogCaches;
+    }()
     /**
      * 写入日志
      * @param log - 要上传的日志键值对
@@ -4818,25 +5552,36 @@ class ClsClient {
      *  客户端控制上报：clsclient.log({ key: 'value' });
      * ```
      */
-    log(log, _immediate) {
-        if (!this.initTag) {
-            // 未调用初始化方法禁止日志上传
-            throw new ClsSDKError('ClsClient initialization method not called!');
-        }
-        const immediate = _immediate ?? false;
-        // TODO: 此处的时间使用本地时间可能会不正确，需要校准
-        const clsLog = { contents: log, time: Date.now(), immediate };
-        this.logList.push(clsLog);
-        this.checkLogCaches();
+    )
+  }, {
+    key: "log",
+    value: function log(_log, _immediate) {
+      if (!this.initTag) {
+        // 未调用初始化方法禁止日志上传
+        throw new ClsSDKError('ClsClient initialization method not called!');
+      }
+      var immediate = _immediate !== null && _immediate !== void 0 ? _immediate : false;
+      // TODO: 此处的时间使用本地时间可能会不正确，需要校准
+      var clsLog = {
+        contents: _log,
+        time: Date.now(),
+        immediate: immediate
+      };
+      this.logList.push(clsLog);
+      this.checkLogCaches();
     }
     /**
      * Destorys clsclient
      */
-    destory() {
-        clearTimeout(this.logTimer);
-        this.uploader.stop();
-        this.initTag = false;
+  }, {
+    key: "destory",
+    value: function destory() {
+      clearTimeout(this.logTimer);
+      this.uploader.stop();
+      this.initTag = false;
     }
-}
+  }]);
+  return ClsClient;
+}();
 
 export { ClsClient as default };
