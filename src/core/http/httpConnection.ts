@@ -58,7 +58,7 @@ export class HttpConnection {
   public getIns(options: HttpConnectionOptions) {
     this.retryTimes = options.retry ?? 3;
 
-    let protocol = options.protocol ?? 'http';
+    let protocol = options.protocol ?? 'https';
 
     const host = `${options.region}.${this.CLS_HOST}`;
     const headers = this.getCommonHeaders(host);
