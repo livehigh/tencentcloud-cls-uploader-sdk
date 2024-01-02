@@ -1,5 +1,6 @@
 import ClsSDKError from './exception';
 import { GetAuthorizationFn, IClientConfig, IClsSDKError, QCloudCredential } from './typings';
+import { isNotEmpty } from './util';
 
 export default class ClientConfig implements IClientConfig {
   private clsTopicId: string = '';
@@ -8,11 +9,11 @@ export default class ClientConfig implements IClientConfig {
     return this.clsTopicId;
   }
 
-  private clsRegion: string = '';
+  public region: IClientConfig['region'] = undefined;
 
-  get region() {
-    return this.clsRegion;
-  }
+  public endpoint: IClientConfig['endpoint'] = undefined;
+
+  public api: IClientConfig['api'] = undefined;
 
   private clsCredential: QCloudCredential | undefined = undefined;
 
@@ -34,11 +35,9 @@ export default class ClientConfig implements IClientConfig {
 
   public httpAdapter: IClientConfig['httpAdapter'] = undefined;
 
-  private clsSourceIp = '';
+  public autoFillSourceIp: IClientConfig['autoFillSourceIp'] = undefined;
 
-  get sourceIp() {
-    return this.clsSourceIp;
-  }
+  public sourceIp: IClientConfig['sourceIp'] = undefined;
 
   public proxy: IClientConfig['proxy'] = undefined;
 
@@ -48,28 +47,44 @@ export default class ClientConfig implements IClientConfig {
     if (!options.topicId || typeof options.topicId !== 'string') {
       throw new ClsSDKError('topicId is required and must be a string');
     }
-    if (!options.region || typeof options.region !== 'string') {
-      throw new ClsSDKError('region is required and must be a string');
+    if (options.region && isNotEmpty(options.region)) {
+      this.region = options.region;
+    } else if (options.endpoint && isNotEmpty(options.endpoint)) {
+      this.endpoint = options.endpoint;
+    } else {
+      throw new ClsSDKError('region or endpoint is required');
     }
 
-    if (options.sourceIp) {
-      this.clsSourceIp = options.sourceIp;
+    if (isNotEmpty(options.api)) {
+      this.api = options.api;
     }
 
-    if (options.credential) {
+    if (isNotEmpty(options.sourceIp)) {
+      this.sourceIp = options.sourceIp;
+    }
+
+    if (isNotEmpty(options.autoFillSourceIp)) {
+      this.autoFillSourceIp = options.autoFillSourceIp;
+    }
+
+    if (isNotEmpty(options.credential)) {
       this.clsCredential = options.credential;
     }
 
-    if (options.getAuthorization) {
+    if (isNotEmpty(options.getAuthorization)) {
       this.getAuthorization = options.getAuthorization;
     }
 
-    if (options.proxy) {
+    if (isNotEmpty(options.proxy)) {
       this.proxy = options.proxy;
     }
 
-    if (options.getAgent) {
+    if (isNotEmpty(options.getAgent)) {
       this.getAgent = options.getAgent;
+    }
+
+    if (isNotEmpty(options.httpAdapter)) {
+      this.httpAdapter = options.httpAdapter;
     }
 
     if (options.maxRetainDuration) {
@@ -86,15 +101,10 @@ export default class ClientConfig implements IClientConfig {
       this.logPath = options.logPath;
     }
 
-    if (options.httpAdapter) {
-      this.httpAdapter = options.httpAdapter;
-    }
-
     if (options.onError) {
       this.onError = options.onError;
     }
 
     this.clsTopicId = options.topicId;
-    this.clsRegion = options.region;
   }
 }

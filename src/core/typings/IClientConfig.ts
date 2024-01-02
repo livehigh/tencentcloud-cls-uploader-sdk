@@ -65,11 +65,23 @@ export interface IClientConfig {
   /**
    * 要上传的CLS地域
    */
-  region: string;
+  region?: string;
+  /**
+   * 要上传的CLS服务器endpoint
+   */
+  endpoint?: string;
+  /**
+   * 远端cls服务器上报 api 接口
+   */
+  api?: string | { anony: string; auth: string };
   /**
    * 日志来源，一般使用机器 IP 作为标识
    */
   sourceIp?: string;
+  /**
+   * 日志来源，是否让远端自动填入客户端ip
+   */
+  autoFillSourceIp?: boolean;
   /**
    * 永久密钥
    */

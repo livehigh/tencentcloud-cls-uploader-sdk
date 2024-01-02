@@ -24,7 +24,12 @@ export type GetAuthorizationFn = (options: {
 
 // @public
 export interface IClientConfig {
+    api?: string | {
+        anony: string;
+        auth: string;
+    };
     credential?: QCloudCredential;
+    endpoint?: string;
     getAgent?: () => any;
     getAuthorization?: GetAuthorizationFn;
     httpAdapter?: 'xhr' | 'http' | AxiosAdapter;
@@ -38,7 +43,7 @@ export interface IClientConfig {
         port: number;
         protocol?: string;
     };
-    region: string;
+    region?: string;
     sourceIp?: string;
     topicId: string;
 }

@@ -28,12 +28,14 @@ export default class Uploader {
     this.config = config;
     this.http = new HttpConnection({
       region: this.config.region,
+      api: this.config.api,
+      endpoint: this.config.endpoint,
       topicId: this.config.topicId,
       agent: this.config.getAgent?.(),
       proxy: this.config.proxy,
       credential: this.config.credential,
       getAuthorization: this.config.getAuthorization,
-      autoFillSourceIp: !isNotEmpty(this.config.sourceIp),
+      autoFillSourceIp: this.config.autoFillSourceIp ?? !isNotEmpty(this.config.sourceIp),
     });
   }
 
@@ -64,7 +66,11 @@ export default class Uploader {
       const uploadItem = this.queue.shift();
       if (uploadItem) {
         try {
-          await this.http.putLogs(uploadItem.logs);
+          if (this.config.endpoint && this.config.endpoint.includes('zhiyan')) {
+            await this.http.putZhiyanLogs(uploadItem.logs);
+          } else {
+            await this.http.putLogs(uploadItem.logs);
+          }
         } catch (err) {
           this.config.onError(err);
         }

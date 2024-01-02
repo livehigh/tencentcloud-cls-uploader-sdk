@@ -100,6 +100,30 @@ const handleLogs = {
     };
     return JSON.stringify(logGroup);
   },
+  log2ZhiyanJSON(logs: CLSLog[], topicId: string) {
+    const logGroup = {
+      topic: topicId,
+      data: logs.map(log => {
+        const formatContents = log.contents;
+        Object.keys(log.contents).forEach(key => {
+          try {
+            if (typeof formatContents[key] !== 'undefined') {
+              formatContents[key] = formatContents[key].toString();
+            } else {
+              formatContents[key] = '';
+            }
+          } catch (error) {
+            throw new ClsSDKError(`log format is incorrect: ${error.message}`);
+          }
+        });
+        return {
+          fields: log.contents,
+          timestamp: log.time,
+        };
+      }),
+    };
+    return JSON.stringify(logGroup);
+  },
   // toArrayBuffer(buf) {
   //   const ab = new ArrayBuffer(buf.length);
   //   const view = new Uint8Array(ab);

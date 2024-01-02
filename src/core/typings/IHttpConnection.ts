@@ -5,7 +5,12 @@ import { GetAuthorizationFn, QCloudCredential } from './IClientConfig';
  * @internal
  */
 export interface HttpConnectionOptions {
-  region: string;
+  region?: string;
+  endpoint?: string;
+  /**
+   * 远端cls服务器上报 api 接口
+   */
+  api?: string | { anony: string; auth: string };
   topicId: string;
   retry?: number;
   protocol?: string;

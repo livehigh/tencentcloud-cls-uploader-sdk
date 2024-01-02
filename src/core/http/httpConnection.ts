@@ -26,7 +26,9 @@ export class HttpConnection {
 
   private topicId = '';
 
-  private autoFillSourceIp = true;
+  private autoFillSourceIp = false;
+
+  private api: string | { anony: string; auth: string } = { anony: '/tracklog', auth: '/structuredlog' };
 
   /**
    * 永久密钥 SecretId、SecretKey
@@ -52,6 +54,7 @@ export class HttpConnection {
     this.credential = options.credential;
     this.getAuthorization = options.getAuthorization;
     this.autoFillSourceIp = options.autoFillSourceIp ?? true;
+    this.api = options.api ?? { anony: '/tracklog', auth: '/structuredlog' };
     this.ins = this.getIns(options);
   }
 
@@ -60,7 +63,17 @@ export class HttpConnection {
 
     let protocol = options.protocol ?? 'https';
 
-    const host = `${options.region}.${this.CLS_HOST}`;
+    if (!isNotEmpty(options.region) && !isNotEmpty(options.endpoint)) {
+      throw new ClsSDKError('region or endpoint are required');
+    }
+
+    let host = `${options.region}.${this.CLS_HOST}`;
+    if (options.region) {
+      host = `${options.region}.${this.CLS_HOST}`;
+    } else if (options.endpoint) {
+      host = options.endpoint;
+    }
+
     const headers = this.getCommonHeaders(host);
 
     const axiosConfig: AxiosRequestConfig = {
@@ -217,19 +230,34 @@ export class HttpConnection {
     if (!this.ins) {
       throw new ClsSDKError('HttpConnection is not initialized');
     }
+    const authApi = typeof this.api === 'string' ? this.api : this.api.auth;
+    const anonyApi = typeof this.api === 'string' ? this.api : this.api.anony;
     if (this.needAuth) {
       const data = handleLogs.log2Buffer(logs);
       return this.post({
-        url: `/structuredlog`,
+        url: authApi,
         data,
       });
     } else {
       const data = handleLogs.log2JSON(logs);
       return this.post({
-        url: `/tracklog`,
+        url: anonyApi,
         data,
       });
     }
+  }
+
+  public putZhiyanLogs(logs: CLSLog[]) {
+    if (!this.ins) {
+      throw new ClsSDKError('HttpConnection is not initialized');
+    }
+    const data = handleLogs.log2ZhiyanJSON(logs, this.topicId);
+    const anonyApi = typeof this.api === 'string' ? this.api : this.api.anony;
+    return this.post({
+      url: anonyApi,
+      data,
+    });
+
   }
 
   /**

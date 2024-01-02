@@ -75,7 +75,18 @@ export declare interface IClientConfig {
     /**
      * 要上传的CLS地域
      */
-    region: string;
+    region?: string;
+    /**
+     * 要上传的CLS服务器endpoint
+     */
+    endpoint?: string;
+    /**
+     * 远端cls服务器上报 api 接口
+     */
+    api?: string | {
+        anony: string;
+        auth: string;
+    };
     /**
      * 日志来源，一般使用机器 IP 作为标识
      */
@@ -105,11 +116,11 @@ export declare interface IClientConfig {
      */
     httpAdapter?: 'xhr' | 'http' | AxiosAdapter;
     /**
-     * 未上传的缓存日志超过该时间则上传（单位: s，默认 20s）
+     * 未上传的缓存日志超过该时间则上传（单位: s，默认 30s）
      */
     maxRetainDuration?: number;
     /**
-     * 未上传的缓存日志数量超过该数值则上传（默认 30 条）
+     * 未上传的缓存日志数量超过该数值则上传（默认 20 条）
      */
     maxRetainSize?: number;
     /**
