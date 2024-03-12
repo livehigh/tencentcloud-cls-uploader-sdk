@@ -79,7 +79,7 @@ const params = {
 };
 
 // 立即上传
-clsClient.log(params, { immediate: true });
+clsClient.log(params, true);
 ```
 
 - 格式二：匿名上报。
@@ -102,7 +102,7 @@ const params = {
 };
 
 // 立即上传
-clsClient.log(params, { immediate: true });
+clsClient.log(params, true);
 ```
 
 - 格式三（不推荐）：使用固定密钥计算签名进行日志上报
@@ -129,7 +129,7 @@ const params = {
 };
 
 // 立即上传
-clsClient.log(params, { immediate: true });
+clsClient.log(params, true);
 ```
 
 ## API 文档
