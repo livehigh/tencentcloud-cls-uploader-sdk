@@ -39,6 +39,7 @@
   "dependencies": {
     "@types/crypto-js": "^4.2.1",
     "axios": "^1.6.2",
+    "axios-miniprogram-adapter": "^0.3.5",
     "crypto-js": "^4.2.0",
     "protobufjs": "^6.11.4"
   },

@@ -1,4 +1,5 @@
 import axios, { AxiosAdapter, AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
+import mpAdapter from 'axios-miniprogram-adapter';
 
 import { CLSLog, QcloudTmpCredential, QCloudCredential, HttpConnectionOptions } from '../typings';
 import { isNotEmpty, wait } from '../util';
@@ -100,6 +101,8 @@ export class HttpConnection {
     this.initMethods(axiosIns);
     this.setReqInterceptors(axiosIns);
     this.setResInterceptors(axiosIns);
+
+    axiosIns.defaults.adapter = mpAdapter;
 
     return axiosIns;
   }

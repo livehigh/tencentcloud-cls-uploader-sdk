@@ -4,6 +4,24 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ClsClient = factory());
 })(this, (function () { 'use strict';
 
+  function _callSuper(t, o, e) {
+    return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
+  }
+  function _construct(t, e, r) {
+    if (_isNativeReflectConstruct()) return Reflect.construct.apply(null, arguments);
+    var o = [null];
+    o.push.apply(o, e);
+    var p = new (t.bind.apply(t, o))();
+    return r && _setPrototypeOf(p, r.prototype), p;
+  }
+  function _isNativeReflectConstruct() {
+    try {
+      var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (t) {}
+    return (_isNativeReflectConstruct = function () {
+      return !!t;
+    })();
+  }
   function ownKeys(e, r) {
     var t = Object.keys(e);
     if (Object.getOwnPropertySymbols) {
@@ -435,32 +453,6 @@
     };
     return _setPrototypeOf(o, p);
   }
-  function _isNativeReflectConstruct() {
-    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-    if (Reflect.construct.sham) return false;
-    if (typeof Proxy === "function") return true;
-    try {
-      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-  function _construct(Parent, args, Class) {
-    if (_isNativeReflectConstruct()) {
-      _construct = Reflect.construct.bind();
-    } else {
-      _construct = function _construct(Parent, args, Class) {
-        var a = [null];
-        a.push.apply(a, args);
-        var Constructor = Function.bind.apply(Parent, a);
-        var instance = new Constructor();
-        if (Class) _setPrototypeOf(instance, Class.prototype);
-        return instance;
-      };
-    }
-    return _construct.apply(null, arguments);
-  }
   function _isNativeFunction(fn) {
     try {
       return Function.toString.call(fn).indexOf("[native code]") !== -1;
@@ -508,20 +500,6 @@
     }
     return _assertThisInitialized(self);
   }
-  function _createSuper(Derived) {
-    var hasNativeReflectConstruct = _isNativeReflectConstruct();
-    return function _createSuperInternal() {
-      var Super = _getPrototypeOf(Derived),
-        result;
-      if (hasNativeReflectConstruct) {
-        var NewTarget = _getPrototypeOf(this).constructor;
-        result = Reflect.construct(Super, arguments, NewTarget);
-      } else {
-        result = Super.apply(this, arguments);
-      }
-      return _possibleConstructorReturn(this, result);
-    };
-  }
 
   /**
    * SDK异常错误类型
@@ -529,15 +507,14 @@
    */
   var ClsSDKError = /*#__PURE__*/function (_Error) {
     _inherits(ClsSDKError, _Error);
-    var _super = _createSuper(ClsSDKError);
     function ClsSDKError(error) {
       var _this;
       _classCallCheck(this, ClsSDKError);
       if (typeof error === 'string') {
-        _this = _super.call(this, error);
+        _this = _callSuper(this, ClsSDKError, [error]);
       } else {
         var _error$headers;
-        _this = _super.call(this, error.message);
+        _this = _callSuper(this, ClsSDKError, [error.message]);
         _this.clsRequestId = ((_error$headers = error.headers) === null || _error$headers === void 0 ? void 0 : _error$headers['x-cls-requestid']) || '';
         _this.httpStatus = error.status;
         _this.httpCode = error.code;
@@ -589,7 +566,7 @@
     return ClsSDKError;
   }( /*#__PURE__*/_wrapNativeSuper(Error));
 
-  function isString$1(s) {
+  function isString$2(s) {
     return typeof s === 'string';
   }
   function wait(time) {
@@ -687,7 +664,7 @@
     return ClientConfig;
   }();
 
-  function bind(fn, thisArg) {
+  function bind$2(fn, thisArg) {
     return function wrap() {
       return fn.apply(thisArg, arguments);
     };
@@ -695,11 +672,11 @@
 
   // utils is a library of generic helper functions non-specific to axios
 
-  const {toString} = Object.prototype;
+  const {toString: toString$1} = Object.prototype;
   const {getPrototypeOf} = Object;
 
   const kindOf = (cache => thing => {
-      const str = toString.call(thing);
+      const str = toString$1.call(thing);
       return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
   })(Object.create(null));
 
@@ -717,7 +694,7 @@
    *
    * @returns {boolean} True if value is an Array, otherwise false
    */
-  const {isArray} = Array;
+  const {isArray: isArray$1} = Array;
 
   /**
    * Determine if a value is undefined
@@ -726,7 +703,7 @@
    *
    * @returns {boolean} True if the value is undefined, otherwise false
    */
-  const isUndefined = typeOfTest('undefined');
+  const isUndefined$1 = typeOfTest('undefined');
 
   /**
    * Determine if a value is a Buffer
@@ -735,9 +712,9 @@
    *
    * @returns {boolean} True if value is a Buffer, otherwise false
    */
-  function isBuffer(val) {
-    return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
-      && isFunction(val.constructor.isBuffer) && val.constructor.isBuffer(val);
+  function isBuffer$1(val) {
+    return val !== null && !isUndefined$1(val) && val.constructor !== null && !isUndefined$1(val.constructor)
+      && isFunction$1(val.constructor.isBuffer) && val.constructor.isBuffer(val);
   }
 
   /**
@@ -747,7 +724,7 @@
    *
    * @returns {boolean} True if value is an ArrayBuffer, otherwise false
    */
-  const isArrayBuffer = kindOfTest('ArrayBuffer');
+  const isArrayBuffer$1 = kindOfTest('ArrayBuffer');
 
 
   /**
@@ -757,12 +734,12 @@
    *
    * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
    */
-  function isArrayBufferView(val) {
+  function isArrayBufferView$1(val) {
     let result;
     if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
       result = ArrayBuffer.isView(val);
     } else {
-      result = (val) && (val.buffer) && (isArrayBuffer(val.buffer));
+      result = (val) && (val.buffer) && (isArrayBuffer$1(val.buffer));
     }
     return result;
   }
@@ -774,7 +751,7 @@
    *
    * @returns {boolean} True if value is a String, otherwise false
    */
-  const isString = typeOfTest('string');
+  const isString$1 = typeOfTest('string');
 
   /**
    * Determine if a value is a Function
@@ -782,7 +759,7 @@
    * @param {*} val The value to test
    * @returns {boolean} True if value is a Function, otherwise false
    */
-  const isFunction = typeOfTest('function');
+  const isFunction$1 = typeOfTest('function');
 
   /**
    * Determine if a value is a Number
@@ -791,7 +768,7 @@
    *
    * @returns {boolean} True if value is a Number, otherwise false
    */
-  const isNumber = typeOfTest('number');
+  const isNumber$1 = typeOfTest('number');
 
   /**
    * Determine if a value is an Object
@@ -800,7 +777,7 @@
    *
    * @returns {boolean} True if value is an Object, otherwise false
    */
-  const isObject = (thing) => thing !== null && typeof thing === 'object';
+  const isObject$1 = (thing) => thing !== null && typeof thing === 'object';
 
   /**
    * Determine if a value is a Boolean
@@ -833,7 +810,7 @@
    *
    * @returns {boolean} True if value is a Date, otherwise false
    */
-  const isDate = kindOfTest('Date');
+  const isDate$1 = kindOfTest('Date');
 
   /**
    * Determine if a value is a File
@@ -842,7 +819,7 @@
    *
    * @returns {boolean} True if value is a File, otherwise false
    */
-  const isFile = kindOfTest('File');
+  const isFile$1 = kindOfTest('File');
 
   /**
    * Determine if a value is a Blob
@@ -851,7 +828,7 @@
    *
    * @returns {boolean} True if value is a Blob, otherwise false
    */
-  const isBlob = kindOfTest('Blob');
+  const isBlob$1 = kindOfTest('Blob');
 
   /**
    * Determine if a value is a FileList
@@ -869,7 +846,7 @@
    *
    * @returns {boolean} True if value is a Stream, otherwise false
    */
-  const isStream = (val) => isObject(val) && isFunction(val.pipe);
+  const isStream$1 = (val) => isObject$1(val) && isFunction$1(val.pipe);
 
   /**
    * Determine if a value is a FormData
@@ -878,14 +855,14 @@
    *
    * @returns {boolean} True if value is an FormData, otherwise false
    */
-  const isFormData = (thing) => {
+  const isFormData$1 = (thing) => {
     let kind;
     return thing && (
       (typeof FormData === 'function' && thing instanceof FormData) || (
-        isFunction(thing.append) && (
+        isFunction$1(thing.append) && (
           (kind = kindOf(thing)) === 'formdata' ||
           // detect form-data instance
-          (kind === 'object' && isFunction(thing.toString) && thing.toString() === '[object FormData]')
+          (kind === 'object' && isFunction$1(thing.toString) && thing.toString() === '[object FormData]')
         )
       )
     )
@@ -898,7 +875,7 @@
    *
    * @returns {boolean} True if value is a URLSearchParams object, otherwise false
    */
-  const isURLSearchParams = kindOfTest('URLSearchParams');
+  const isURLSearchParams$1 = kindOfTest('URLSearchParams');
 
   /**
    * Trim excess whitespace off the beginning and end of a string
@@ -907,7 +884,7 @@
    *
    * @returns {String} The String freed of excess whitespace
    */
-  const trim = (str) => str.trim ?
+  const trim$1 = (str) => str.trim ?
     str.trim() : str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
 
   /**
@@ -925,7 +902,7 @@
    * @param {Boolean} [allOwnKeys = false]
    * @returns {any}
    */
-  function forEach(obj, fn, {allOwnKeys = false} = {}) {
+  function forEach$1(obj, fn, {allOwnKeys = false} = {}) {
     // Don't bother if no value provided
     if (obj === null || typeof obj === 'undefined') {
       return;
@@ -940,7 +917,7 @@
       obj = [obj];
     }
 
-    if (isArray(obj)) {
+    if (isArray$1(obj)) {
       // Iterate over array values
       for (i = 0, l = obj.length; i < l; i++) {
         fn.call(null, obj[i], i, obj);
@@ -978,7 +955,7 @@
     return typeof self !== "undefined" ? self : (typeof window !== 'undefined' ? window : global)
   })();
 
-  const isContextDefined = (context) => !isUndefined(context) && context !== _global;
+  const isContextDefined = (context) => !isUndefined$1(context) && context !== _global;
 
   /**
    * Accepts varargs expecting each argument to be an object, then
@@ -998,16 +975,16 @@
    *
    * @returns {Object} Result of all merge properties
    */
-  function merge(/* obj1, obj2, obj3, ... */) {
+  function merge$1(/* obj1, obj2, obj3, ... */) {
     const {caseless} = isContextDefined(this) && this || {};
     const result = {};
     const assignValue = (val, key) => {
       const targetKey = caseless && findKey(result, key) || key;
       if (isPlainObject(result[targetKey]) && isPlainObject(val)) {
-        result[targetKey] = merge(result[targetKey], val);
+        result[targetKey] = merge$1(result[targetKey], val);
       } else if (isPlainObject(val)) {
-        result[targetKey] = merge({}, val);
-      } else if (isArray(val)) {
+        result[targetKey] = merge$1({}, val);
+      } else if (isArray$1(val)) {
         result[targetKey] = val.slice();
       } else {
         result[targetKey] = val;
@@ -1015,7 +992,7 @@
     };
 
     for (let i = 0, l = arguments.length; i < l; i++) {
-      arguments[i] && forEach(arguments[i], assignValue);
+      arguments[i] && forEach$1(arguments[i], assignValue);
     }
     return result;
   }
@@ -1030,10 +1007,10 @@
    * @param {Boolean} [allOwnKeys]
    * @returns {Object} The resulting value of object a
    */
-  const extend = (a, b, thisArg, {allOwnKeys}= {}) => {
-    forEach(b, (val, key) => {
-      if (thisArg && isFunction(val)) {
-        a[key] = bind(val, thisArg);
+  const extend$1 = (a, b, thisArg, {allOwnKeys}= {}) => {
+    forEach$1(b, (val, key) => {
+      if (thisArg && isFunction$1(val)) {
+        a[key] = bind$2(val, thisArg);
       } else {
         a[key] = val;
       }
@@ -1137,9 +1114,9 @@
    */
   const toArray = (thing) => {
     if (!thing) return null;
-    if (isArray(thing)) return thing;
+    if (isArray$1(thing)) return thing;
     let i = thing.length;
-    if (!isNumber(i)) return null;
+    if (!isNumber$1(i)) return null;
     const arr = new Array(i);
     while (i-- > 0) {
       arr[i] = thing[i];
@@ -1230,7 +1207,7 @@
     const descriptors = Object.getOwnPropertyDescriptors(obj);
     const reducedDescriptors = {};
 
-    forEach(descriptors, (descriptor, name) => {
+    forEach$1(descriptors, (descriptor, name) => {
       let ret;
       if ((ret = reducer(descriptor, name, obj)) !== false) {
         reducedDescriptors[name] = ret || descriptor;
@@ -1248,13 +1225,13 @@
   const freezeMethods = (obj) => {
     reduceDescriptors(obj, (descriptor, name) => {
       // skip restricted props in strict mode
-      if (isFunction(obj) && ['arguments', 'caller', 'callee'].indexOf(name) !== -1) {
+      if (isFunction$1(obj) && ['arguments', 'caller', 'callee'].indexOf(name) !== -1) {
         return false;
       }
 
       const value = obj[name];
 
-      if (!isFunction(value)) return;
+      if (!isFunction$1(value)) return;
 
       descriptor.enumerable = false;
 
@@ -1280,7 +1257,7 @@
       });
     };
 
-    isArray(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
+    isArray$1(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
 
     return obj;
   };
@@ -1320,7 +1297,7 @@
    * @returns {boolean}
    */
   function isSpecCompliantForm(thing) {
-    return !!(thing && isFunction(thing.append) && thing[Symbol.toStringTag] === 'FormData' && thing[Symbol.iterator]);
+    return !!(thing && isFunction$1(thing.append) && thing[Symbol.toStringTag] === 'FormData' && thing[Symbol.iterator]);
   }
 
   const toJSONObject = (obj) => {
@@ -1328,18 +1305,18 @@
 
     const visit = (source, i) => {
 
-      if (isObject(source)) {
+      if (isObject$1(source)) {
         if (stack.indexOf(source) >= 0) {
           return;
         }
 
         if(!('toJSON' in source)) {
           stack[i] = source;
-          const target = isArray(source) ? [] : {};
+          const target = isArray$1(source) ? [] : {};
 
-          forEach(source, (value, key) => {
+          forEach$1(source, (value, key) => {
             const reducedValue = visit(value, i + 1);
-            !isUndefined(reducedValue) && (target[key] = reducedValue);
+            !isUndefined$1(reducedValue) && (target[key] = reducedValue);
           });
 
           stack[i] = undefined;
@@ -1357,33 +1334,33 @@
   const isAsyncFn = kindOfTest('AsyncFunction');
 
   const isThenable = (thing) =>
-    thing && (isObject(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing.catch);
+    thing && (isObject$1(thing) || isFunction$1(thing)) && isFunction$1(thing.then) && isFunction$1(thing.catch);
 
-  var utils$1 = {
-    isArray,
-    isArrayBuffer,
-    isBuffer,
-    isFormData,
-    isArrayBufferView,
-    isString,
-    isNumber,
+  var utils$4 = {
+    isArray: isArray$1,
+    isArrayBuffer: isArrayBuffer$1,
+    isBuffer: isBuffer$1,
+    isFormData: isFormData$1,
+    isArrayBufferView: isArrayBufferView$1,
+    isString: isString$1,
+    isNumber: isNumber$1,
     isBoolean,
-    isObject,
+    isObject: isObject$1,
     isPlainObject,
-    isUndefined,
-    isDate,
-    isFile,
-    isBlob,
+    isUndefined: isUndefined$1,
+    isDate: isDate$1,
+    isFile: isFile$1,
+    isBlob: isBlob$1,
     isRegExp,
-    isFunction,
-    isStream,
-    isURLSearchParams,
+    isFunction: isFunction$1,
+    isStream: isStream$1,
+    isURLSearchParams: isURLSearchParams$1,
     isTypedArray,
     isFileList,
-    forEach,
-    merge,
-    extend,
-    trim,
+    forEach: forEach$1,
+    merge: merge$1,
+    extend: extend$1,
+    trim: trim$1,
     stripBOM,
     inherits,
     toFlatObject,
@@ -1441,7 +1418,7 @@
     response && (this.response = response);
   }
 
-  utils$1.inherits(AxiosError, Error, {
+  utils$4.inherits(AxiosError, Error, {
     toJSON: function toJSON() {
       return {
         // Standard
@@ -1456,7 +1433,7 @@
         columnNumber: this.columnNumber,
         stack: this.stack,
         // Axios
-        config: utils$1.toJSONObject(this.config),
+        config: utils$4.toJSONObject(this.config),
         code: this.code,
         status: this.response && this.response.status ? this.response.status : null
       };
@@ -1491,7 +1468,7 @@
   AxiosError.from = (error, code, config, request, response, customProps) => {
     const axiosError = Object.create(prototype$1);
 
-    utils$1.toFlatObject(error, axiosError, function filter(obj) {
+    utils$4.toFlatObject(error, axiosError, function filter(obj) {
       return obj !== Error.prototype;
     }, prop => {
       return prop !== 'isAxiosError';
@@ -1519,7 +1496,7 @@
    * @returns {boolean}
    */
   function isVisitable(thing) {
-    return utils$1.isPlainObject(thing) || utils$1.isArray(thing);
+    return utils$4.isPlainObject(thing) || utils$4.isArray(thing);
   }
 
   /**
@@ -1530,7 +1507,7 @@
    * @returns {string} the key without the brackets.
    */
   function removeBrackets(key) {
-    return utils$1.endsWith(key, '[]') ? key.slice(0, -2) : key;
+    return utils$4.endsWith(key, '[]') ? key.slice(0, -2) : key;
   }
 
   /**
@@ -1559,10 +1536,10 @@
    * @returns {boolean}
    */
   function isFlatArray(arr) {
-    return utils$1.isArray(arr) && !arr.some(isVisitable);
+    return utils$4.isArray(arr) && !arr.some(isVisitable);
   }
 
-  const predicates = utils$1.toFlatObject(utils$1, {}, null, function filter(prop) {
+  const predicates = utils$4.toFlatObject(utils$4, {}, null, function filter(prop) {
     return /^is[A-Z]/.test(prop);
   });
 
@@ -1590,7 +1567,7 @@
    * @returns
    */
   function toFormData(obj, formData, options) {
-    if (!utils$1.isObject(obj)) {
+    if (!utils$4.isObject(obj)) {
       throw new TypeError('target must be an object');
     }
 
@@ -1598,13 +1575,13 @@
     formData = formData || new (FormData)();
 
     // eslint-disable-next-line no-param-reassign
-    options = utils$1.toFlatObject(options, {
+    options = utils$4.toFlatObject(options, {
       metaTokens: true,
       dots: false,
       indexes: false
     }, false, function defined(option, source) {
       // eslint-disable-next-line no-eq-null,eqeqeq
-      return !utils$1.isUndefined(source[option]);
+      return !utils$4.isUndefined(source[option]);
     });
 
     const metaTokens = options.metaTokens;
@@ -1613,24 +1590,24 @@
     const dots = options.dots;
     const indexes = options.indexes;
     const _Blob = options.Blob || typeof Blob !== 'undefined' && Blob;
-    const useBlob = _Blob && utils$1.isSpecCompliantForm(formData);
+    const useBlob = _Blob && utils$4.isSpecCompliantForm(formData);
 
-    if (!utils$1.isFunction(visitor)) {
+    if (!utils$4.isFunction(visitor)) {
       throw new TypeError('visitor must be a function');
     }
 
     function convertValue(value) {
       if (value === null) return '';
 
-      if (utils$1.isDate(value)) {
+      if (utils$4.isDate(value)) {
         return value.toISOString();
       }
 
-      if (!useBlob && utils$1.isBlob(value)) {
+      if (!useBlob && utils$4.isBlob(value)) {
         throw new AxiosError('Blob is not supported. Use a Buffer instead.');
       }
 
-      if (utils$1.isArrayBuffer(value) || utils$1.isTypedArray(value)) {
+      if (utils$4.isArrayBuffer(value) || utils$4.isTypedArray(value)) {
         return useBlob && typeof Blob === 'function' ? new Blob([value]) : Buffer.from(value);
       }
 
@@ -1651,20 +1628,20 @@
       let arr = value;
 
       if (value && !path && typeof value === 'object') {
-        if (utils$1.endsWith(key, '{}')) {
+        if (utils$4.endsWith(key, '{}')) {
           // eslint-disable-next-line no-param-reassign
           key = metaTokens ? key : key.slice(0, -2);
           // eslint-disable-next-line no-param-reassign
           value = JSON.stringify(value);
         } else if (
-          (utils$1.isArray(value) && isFlatArray(value)) ||
-          ((utils$1.isFileList(value) || utils$1.endsWith(key, '[]')) && (arr = utils$1.toArray(value))
+          (utils$4.isArray(value) && isFlatArray(value)) ||
+          ((utils$4.isFileList(value) || utils$4.endsWith(key, '[]')) && (arr = utils$4.toArray(value))
           )) {
           // eslint-disable-next-line no-param-reassign
           key = removeBrackets(key);
 
           arr.forEach(function each(el, index) {
-            !(utils$1.isUndefined(el) || el === null) && formData.append(
+            !(utils$4.isUndefined(el) || el === null) && formData.append(
               // eslint-disable-next-line no-nested-ternary
               indexes === true ? renderKey([key], index, dots) : (indexes === null ? key : key + '[]'),
               convertValue(el)
@@ -1692,7 +1669,7 @@
     });
 
     function build(value, path) {
-      if (utils$1.isUndefined(value)) return;
+      if (utils$4.isUndefined(value)) return;
 
       if (stack.indexOf(value) !== -1) {
         throw Error('Circular reference detected in ' + path.join('.'));
@@ -1700,9 +1677,9 @@
 
       stack.push(value);
 
-      utils$1.forEach(value, function each(el, key) {
-        const result = !(utils$1.isUndefined(el) || el === null) && visitor.call(
-          formData, el, utils$1.isString(key) ? key.trim() : key, path, exposedHelpers
+      utils$4.forEach(value, function each(el, key) {
+        const result = !(utils$4.isUndefined(el) || el === null) && visitor.call(
+          formData, el, utils$4.isString(key) ? key.trim() : key, path, exposedHelpers
         );
 
         if (result === true) {
@@ -1713,7 +1690,7 @@
       stack.pop();
     }
 
-    if (!utils$1.isObject(obj)) {
+    if (!utils$4.isObject(obj)) {
       throw new TypeError('data must be an object');
     }
 
@@ -1730,7 +1707,7 @@
    *
    * @returns {string} The encoded string.
    */
-  function encode$1(str) {
+  function encode$2(str) {
     const charMap = {
       '!': '%21',
       "'": '%27',
@@ -1767,8 +1744,8 @@
 
   prototype.toString = function toString(encoder) {
     const _encode = encoder ? function(value) {
-      return encoder.call(this, value, encode$1);
-    } : encode$1;
+      return encoder.call(this, value, encode$2);
+    } : encode$2;
 
     return this._pairs.map(function each(pair) {
       return _encode(pair[0]) + '=' + _encode(pair[1]);
@@ -1783,7 +1760,7 @@
    *
    * @returns {string} The encoded value.
    */
-  function encode(val) {
+  function encode$1(val) {
     return encodeURIComponent(val).
       replace(/%3A/gi, ':').
       replace(/%24/g, '$').
@@ -1802,13 +1779,13 @@
    *
    * @returns {string} The formatted url
    */
-  function buildURL(url, params, options) {
+  function buildURL$2(url, params, options) {
     /*eslint no-param-reassign:0*/
     if (!params) {
       return url;
     }
     
-    const _encode = options && options.encode || encode;
+    const _encode = options && options.encode || encode$1;
 
     const serializeFn = options && options.serialize;
 
@@ -1817,7 +1794,7 @@
     if (serializeFn) {
       serializedParams = serializeFn(params, options);
     } else {
-      serializedParams = utils$1.isURLSearchParams(params) ?
+      serializedParams = utils$4.isURLSearchParams(params) ?
         params.toString() :
         new AxiosURLSearchParams(params, options).toString(_encode);
     }
@@ -1892,15 +1869,13 @@
      * @returns {void}
      */
     forEach(fn) {
-      utils$1.forEach(this.handlers, function forEachHandler(h) {
+      utils$4.forEach(this.handlers, function forEachHandler(h) {
         if (h !== null) {
           fn(h);
         }
       });
     }
   }
-
-  var InterceptorManager$1 = InterceptorManager;
 
   var transitionalDefaults = {
     silentJSONParsing: true,
@@ -1966,7 +1941,7 @@
     );
   })();
 
-  var utils = /*#__PURE__*/Object.freeze({
+  var utils$3 = /*#__PURE__*/Object.freeze({
     __proto__: null,
     hasBrowserEnv: hasBrowserEnv,
     hasStandardBrowserEnv: hasStandardBrowserEnv,
@@ -1974,14 +1949,14 @@
   });
 
   var platform = {
-    ...utils,
+    ...utils$3,
     ...platform$1
   };
 
   function toURLEncodedForm(data, options) {
     return toFormData(data, new platform.classes.URLSearchParams(), Object.assign({
       visitor: function(value, key, path, helpers) {
-        if (platform.isNode && utils$1.isBuffer(value)) {
+        if (platform.isNode && utils$4.isBuffer(value)) {
           this.append(key, value.toString('base64'));
           return false;
         }
@@ -2003,7 +1978,7 @@
     // foo.x.y.z
     // foo-x-y-z
     // foo x y z
-    return utils$1.matchAll(/\w+|\[(\w*)]/g, name).map(match => {
+    return utils$4.matchAll(/\w+|\[(\w*)]/g, name).map(match => {
       return match[0] === '[]' ? '' : match[1] || match[0];
     });
   }
@@ -2038,12 +2013,15 @@
   function formDataToJSON(formData) {
     function buildPath(path, value, target, index) {
       let name = path[index++];
+
+      if (name === '__proto__') return true;
+
       const isNumericKey = Number.isFinite(+name);
       const isLast = index >= path.length;
-      name = !name && utils$1.isArray(target) ? target.length : name;
+      name = !name && utils$4.isArray(target) ? target.length : name;
 
       if (isLast) {
-        if (utils$1.hasOwnProp(target, name)) {
+        if (utils$4.hasOwnProp(target, name)) {
           target[name] = [target[name], value];
         } else {
           target[name] = value;
@@ -2052,23 +2030,23 @@
         return !isNumericKey;
       }
 
-      if (!target[name] || !utils$1.isObject(target[name])) {
+      if (!target[name] || !utils$4.isObject(target[name])) {
         target[name] = [];
       }
 
       const result = buildPath(path, value, target[name], index);
 
-      if (result && utils$1.isArray(target[name])) {
+      if (result && utils$4.isArray(target[name])) {
         target[name] = arrayToObject(target[name]);
       }
 
       return !isNumericKey;
     }
 
-    if (utils$1.isFormData(formData) && utils$1.isFunction(formData.entries)) {
+    if (utils$4.isFormData(formData) && utils$4.isFunction(formData.entries)) {
       const obj = {};
 
-      utils$1.forEachEntry(formData, (name, value) => {
+      utils$4.forEachEntry(formData, (name, value) => {
         buildPath(parsePropPath(name), value, obj, 0);
       });
 
@@ -2089,10 +2067,10 @@
    * @returns {string} A stringified version of the rawValue.
    */
   function stringifySafely(rawValue, parser, encoder) {
-    if (utils$1.isString(rawValue)) {
+    if (utils$4.isString(rawValue)) {
       try {
         (parser || JSON.parse)(rawValue);
-        return utils$1.trim(rawValue);
+        return utils$4.trim(rawValue);
       } catch (e) {
         if (e.name !== 'SyntaxError') {
           throw e;
@@ -2112,33 +2090,30 @@
     transformRequest: [function transformRequest(data, headers) {
       const contentType = headers.getContentType() || '';
       const hasJSONContentType = contentType.indexOf('application/json') > -1;
-      const isObjectPayload = utils$1.isObject(data);
+      const isObjectPayload = utils$4.isObject(data);
 
-      if (isObjectPayload && utils$1.isHTMLForm(data)) {
+      if (isObjectPayload && utils$4.isHTMLForm(data)) {
         data = new FormData(data);
       }
 
-      const isFormData = utils$1.isFormData(data);
+      const isFormData = utils$4.isFormData(data);
 
       if (isFormData) {
-        if (!hasJSONContentType) {
-          return data;
-        }
         return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
       }
 
-      if (utils$1.isArrayBuffer(data) ||
-        utils$1.isBuffer(data) ||
-        utils$1.isStream(data) ||
-        utils$1.isFile(data) ||
-        utils$1.isBlob(data)
+      if (utils$4.isArrayBuffer(data) ||
+        utils$4.isBuffer(data) ||
+        utils$4.isStream(data) ||
+        utils$4.isFile(data) ||
+        utils$4.isBlob(data)
       ) {
         return data;
       }
-      if (utils$1.isArrayBufferView(data)) {
+      if (utils$4.isArrayBufferView(data)) {
         return data.buffer;
       }
-      if (utils$1.isURLSearchParams(data)) {
+      if (utils$4.isURLSearchParams(data)) {
         headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
         return data.toString();
       }
@@ -2150,7 +2125,7 @@
           return toURLEncodedForm(data, this.formSerializer).toString();
         }
 
-        if ((isFileList = utils$1.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
+        if ((isFileList = utils$4.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
           const _FormData = this.env && this.env.FormData;
 
           return toFormData(
@@ -2174,7 +2149,7 @@
       const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
       const JSONRequested = this.responseType === 'json';
 
-      if (data && utils$1.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
+      if (data && utils$4.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
         const silentJSONParsing = transitional && transitional.silentJSONParsing;
         const strictJSONParsing = !silentJSONParsing && JSONRequested;
 
@@ -2222,7 +2197,7 @@
     }
   };
 
-  utils$1.forEach(['delete', 'get', 'head', 'post', 'put', 'patch'], (method) => {
+  utils$4.forEach(['delete', 'get', 'head', 'post', 'put', 'patch'], (method) => {
     defaults.headers[method] = {};
   });
 
@@ -2230,7 +2205,7 @@
 
   // RawAxiosHeaders whose duplicates are ignored by node
   // c.f. https://nodejs.org/api/http.html#http_message_headers
-  const ignoreDuplicateOf = utils$1.toObjectSet([
+  const ignoreDuplicateOf = utils$4.toObjectSet([
     'age', 'authorization', 'content-length', 'content-type', 'etag',
     'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
     'last-modified', 'location', 'max-forwards', 'proxy-authorization',
@@ -2291,7 +2266,7 @@
       return value;
     }
 
-    return utils$1.isArray(value) ? value.map(normalizeValue) : String(value);
+    return utils$4.isArray(value) ? value.map(normalizeValue) : String(value);
   }
 
   function parseTokens(str) {
@@ -2309,7 +2284,7 @@
   const isValidHeaderName = (str) => /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(str.trim());
 
   function matchHeaderValue(context, value, header, filter, isHeaderNameFilter) {
-    if (utils$1.isFunction(filter)) {
+    if (utils$4.isFunction(filter)) {
       return filter.call(this, value, header);
     }
 
@@ -2317,13 +2292,13 @@
       value = header;
     }
 
-    if (!utils$1.isString(value)) return;
+    if (!utils$4.isString(value)) return;
 
-    if (utils$1.isString(filter)) {
+    if (utils$4.isString(filter)) {
       return value.indexOf(filter) !== -1;
     }
 
-    if (utils$1.isRegExp(filter)) {
+    if (utils$4.isRegExp(filter)) {
       return filter.test(value);
     }
   }
@@ -2336,7 +2311,7 @@
   }
 
   function buildAccessors(obj, header) {
-    const accessorName = utils$1.toCamelCase(' ' + header);
+    const accessorName = utils$4.toCamelCase(' ' + header);
 
     ['get', 'set', 'has'].forEach(methodName => {
       Object.defineProperty(obj, methodName + accessorName, {
@@ -2363,7 +2338,7 @@
           throw new Error('header name must be a non-empty string');
         }
 
-        const key = utils$1.findKey(self, lHeader);
+        const key = utils$4.findKey(self, lHeader);
 
         if(!key || self[key] === undefined || _rewrite === true || (_rewrite === undefined && self[key] !== false)) {
           self[key || _header] = normalizeValue(_value);
@@ -2371,11 +2346,11 @@
       }
 
       const setHeaders = (headers, _rewrite) =>
-        utils$1.forEach(headers, (_value, _header) => setHeader(_value, _header, _rewrite));
+        utils$4.forEach(headers, (_value, _header) => setHeader(_value, _header, _rewrite));
 
-      if (utils$1.isPlainObject(header) || header instanceof this.constructor) {
+      if (utils$4.isPlainObject(header) || header instanceof this.constructor) {
         setHeaders(header, valueOrRewrite);
-      } else if(utils$1.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
+      } else if(utils$4.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
         setHeaders(parseHeaders(header), valueOrRewrite);
       } else {
         header != null && setHeader(valueOrRewrite, header, rewrite);
@@ -2388,7 +2363,7 @@
       header = normalizeHeader(header);
 
       if (header) {
-        const key = utils$1.findKey(this, header);
+        const key = utils$4.findKey(this, header);
 
         if (key) {
           const value = this[key];
@@ -2401,11 +2376,11 @@
             return parseTokens(value);
           }
 
-          if (utils$1.isFunction(parser)) {
+          if (utils$4.isFunction(parser)) {
             return parser.call(this, value, key);
           }
 
-          if (utils$1.isRegExp(parser)) {
+          if (utils$4.isRegExp(parser)) {
             return parser.exec(value);
           }
 
@@ -2418,7 +2393,7 @@
       header = normalizeHeader(header);
 
       if (header) {
-        const key = utils$1.findKey(this, header);
+        const key = utils$4.findKey(this, header);
 
         return !!(key && this[key] !== undefined && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
       }
@@ -2434,7 +2409,7 @@
         _header = normalizeHeader(_header);
 
         if (_header) {
-          const key = utils$1.findKey(self, _header);
+          const key = utils$4.findKey(self, _header);
 
           if (key && (!matcher || matchHeaderValue(self, self[key], key, matcher))) {
             delete self[key];
@@ -2444,7 +2419,7 @@
         }
       }
 
-      if (utils$1.isArray(header)) {
+      if (utils$4.isArray(header)) {
         header.forEach(deleteHeader);
       } else {
         deleteHeader(header);
@@ -2473,8 +2448,8 @@
       const self = this;
       const headers = {};
 
-      utils$1.forEach(this, (value, header) => {
-        const key = utils$1.findKey(headers, header);
+      utils$4.forEach(this, (value, header) => {
+        const key = utils$4.findKey(headers, header);
 
         if (key) {
           self[key] = normalizeValue(value);
@@ -2503,8 +2478,8 @@
     toJSON(asStrings) {
       const obj = Object.create(null);
 
-      utils$1.forEach(this, (value, header) => {
-        value != null && value !== false && (obj[header] = asStrings && utils$1.isArray(value) ? value.join(', ') : value);
+      utils$4.forEach(this, (value, header) => {
+        value != null && value !== false && (obj[header] = asStrings && utils$4.isArray(value) ? value.join(', ') : value);
       });
 
       return obj;
@@ -2551,7 +2526,7 @@
         }
       }
 
-      utils$1.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
+      utils$4.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
 
       return this;
     }
@@ -2560,7 +2535,7 @@
   AxiosHeaders.accessor(['Content-Type', 'Content-Length', 'Accept', 'Accept-Encoding', 'User-Agent', 'Authorization']);
 
   // reserved names hotfix
-  utils$1.reduceDescriptors(AxiosHeaders.prototype, ({value}, key) => {
+  utils$4.reduceDescriptors(AxiosHeaders.prototype, ({value}, key) => {
     let mapped = key[0].toUpperCase() + key.slice(1); // map `set` => `Set`
     return {
       get: () => value,
@@ -2570,7 +2545,7 @@
     }
   });
 
-  utils$1.freezeMethods(AxiosHeaders);
+  utils$4.freezeMethods(AxiosHeaders);
 
   var AxiosHeaders$1 = AxiosHeaders;
 
@@ -2588,7 +2563,7 @@
     const headers = AxiosHeaders$1.from(context.headers);
     let data = context.data;
 
-    utils$1.forEach(fns, function transform(fn) {
+    utils$4.forEach(fns, function transform(fn) {
       data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
     });
 
@@ -2616,7 +2591,7 @@
     this.name = 'CanceledError';
   }
 
-  utils$1.inherits(CanceledError, AxiosError, {
+  utils$4.inherits(CanceledError, AxiosError, {
     __CANCEL__: true
   });
 
@@ -2629,7 +2604,7 @@
    *
    * @returns {object} The response.
    */
-  function settle(resolve, reject, response) {
+  function settle$2(resolve, reject, response) {
     const validateStatus = response.config.validateStatus;
     if (!response.status || !validateStatus || validateStatus(response.status)) {
       resolve(response);
@@ -2651,11 +2626,11 @@
       write(name, value, expires, path, domain, secure) {
         const cookie = [name + '=' + encodeURIComponent(value)];
 
-        utils$1.isNumber(expires) && cookie.push('expires=' + new Date(expires).toGMTString());
+        utils$4.isNumber(expires) && cookie.push('expires=' + new Date(expires).toGMTString());
 
-        utils$1.isString(path) && cookie.push('path=' + path);
+        utils$4.isString(path) && cookie.push('path=' + path);
 
-        utils$1.isString(domain) && cookie.push('domain=' + domain);
+        utils$4.isString(domain) && cookie.push('domain=' + domain);
 
         secure === true && cookie.push('secure');
 
@@ -2690,7 +2665,7 @@
    *
    * @returns {boolean} True if the specified URL is absolute, otherwise false
    */
-  function isAbsoluteURL(url) {
+  function isAbsoluteURL$2(url) {
     // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
     // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
     // by any combination of letters, digits, plus, period, or hyphen.
@@ -2705,9 +2680,9 @@
    *
    * @returns {string} The combined URL
    */
-  function combineURLs(baseURL, relativeURL) {
+  function combineURLs$2(baseURL, relativeURL) {
     return relativeURL
-      ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+      ? baseURL.replace(/\/?\/$/, '') + '/' + relativeURL.replace(/^\/+/, '')
       : baseURL;
   }
 
@@ -2721,9 +2696,9 @@
    *
    * @returns {string} The combined full path
    */
-  function buildFullPath(baseURL, requestedURL) {
-    if (baseURL && !isAbsoluteURL(requestedURL)) {
-      return combineURLs(baseURL, requestedURL);
+  function buildFullPath$2(baseURL, requestedURL) {
+    if (baseURL && !isAbsoluteURL$2(requestedURL)) {
+      return combineURLs$2(baseURL, requestedURL);
     }
     return requestedURL;
   }
@@ -2778,7 +2753,7 @@
       * @returns {boolean} True if URL shares the same origin, otherwise false
       */
       return function isURLSameOrigin(requestURL) {
-        const parsed = (utils$1.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+        const parsed = (utils$4.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
         return (parsed.protocol === originURL.protocol &&
             parsed.host === originURL.host);
       };
@@ -2897,7 +2872,7 @@
 
       let contentType;
 
-      if (utils$1.isFormData(requestData)) {
+      if (utils$4.isFormData(requestData)) {
         if (platform.hasStandardBrowserEnv || platform.hasStandardBrowserWebWorkerEnv) {
           requestHeaders.setContentType(false); // Let the browser set it
         } else if ((contentType = requestHeaders.getContentType()) !== false) {
@@ -2916,9 +2891,9 @@
         requestHeaders.set('Authorization', 'Basic ' + btoa(username + ':' + password));
       }
 
-      const fullPath = buildFullPath(config.baseURL, config.url);
+      const fullPath = buildFullPath$2(config.baseURL, config.url);
 
-      request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+      request.open(config.method.toUpperCase(), buildURL$2(fullPath, config.params, config.paramsSerializer), true);
 
       // Set the request timeout in MS
       request.timeout = config.timeout;
@@ -2942,7 +2917,7 @@
           request
         };
 
-        settle(function _resolve(value) {
+        settle$2(function _resolve(value) {
           resolve(value);
           done();
         }, function _reject(err) {
@@ -3020,7 +2995,7 @@
       // This is only done if running in a standard browser environment.
       // Specifically not if we're in a web worker, or react-native.
       if(platform.hasStandardBrowserEnv) {
-        withXSRFToken && utils$1.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(config));
+        withXSRFToken && utils$4.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(config));
 
         if (withXSRFToken || (withXSRFToken !== false && isURLSameOrigin(fullPath))) {
           // Add xsrf header
@@ -3037,13 +3012,13 @@
 
       // Add headers to the request
       if ('setRequestHeader' in request) {
-        utils$1.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
+        utils$4.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
           request.setRequestHeader(key, val);
         });
       }
 
       // Add withCredentials to request if needed
-      if (!utils$1.isUndefined(config.withCredentials)) {
+      if (!utils$4.isUndefined(config.withCredentials)) {
         request.withCredentials = !!config.withCredentials;
       }
 
@@ -3098,7 +3073,7 @@
     xhr: xhrAdapter
   };
 
-  utils$1.forEach(knownAdapters, (fn, value) => {
+  utils$4.forEach(knownAdapters, (fn, value) => {
     if (fn) {
       try {
         Object.defineProperty(fn, 'name', {value});
@@ -3111,11 +3086,11 @@
 
   const renderReason = (reason) => `- ${reason}`;
 
-  const isResolvedHandle = (adapter) => utils$1.isFunction(adapter) || adapter === null || adapter === false;
+  const isResolvedHandle = (adapter) => utils$4.isFunction(adapter) || adapter === null || adapter === false;
 
   var adapters = {
     getAdapter: (adapters) => {
-      adapters = utils$1.isArray(adapters) ? adapters : [adapters];
+      adapters = utils$4.isArray(adapters) ? adapters : [adapters];
 
       const {length} = adapters;
       let nameOrAdapter;
@@ -3239,7 +3214,7 @@
     });
   }
 
-  const headersToObject = (thing) => thing instanceof AxiosHeaders$1 ? thing.toJSON() : thing;
+  const headersToObject = (thing) => thing instanceof AxiosHeaders$1 ? { ...thing } : thing;
 
   /**
    * Config-specific merge-function which creates a new config-object
@@ -3256,11 +3231,11 @@
     const config = {};
 
     function getMergedValue(target, source, caseless) {
-      if (utils$1.isPlainObject(target) && utils$1.isPlainObject(source)) {
-        return utils$1.merge.call({caseless}, target, source);
-      } else if (utils$1.isPlainObject(source)) {
-        return utils$1.merge({}, source);
-      } else if (utils$1.isArray(source)) {
+      if (utils$4.isPlainObject(target) && utils$4.isPlainObject(source)) {
+        return utils$4.merge.call({caseless}, target, source);
+      } else if (utils$4.isPlainObject(source)) {
+        return utils$4.merge({}, source);
+      } else if (utils$4.isArray(source)) {
         return source.slice();
       }
       return source;
@@ -3268,25 +3243,25 @@
 
     // eslint-disable-next-line consistent-return
     function mergeDeepProperties(a, b, caseless) {
-      if (!utils$1.isUndefined(b)) {
+      if (!utils$4.isUndefined(b)) {
         return getMergedValue(a, b, caseless);
-      } else if (!utils$1.isUndefined(a)) {
+      } else if (!utils$4.isUndefined(a)) {
         return getMergedValue(undefined, a, caseless);
       }
     }
 
     // eslint-disable-next-line consistent-return
     function valueFromConfig2(a, b) {
-      if (!utils$1.isUndefined(b)) {
+      if (!utils$4.isUndefined(b)) {
         return getMergedValue(undefined, b);
       }
     }
 
     // eslint-disable-next-line consistent-return
     function defaultToConfig2(a, b) {
-      if (!utils$1.isUndefined(b)) {
+      if (!utils$4.isUndefined(b)) {
         return getMergedValue(undefined, b);
-      } else if (!utils$1.isUndefined(a)) {
+      } else if (!utils$4.isUndefined(a)) {
         return getMergedValue(undefined, a);
       }
     }
@@ -3332,16 +3307,16 @@
       headers: (a, b) => mergeDeepProperties(headersToObject(a), headersToObject(b), true)
     };
 
-    utils$1.forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
+    utils$4.forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
       const merge = mergeMap[prop] || mergeDeepProperties;
       const configValue = merge(config1[prop], config2[prop], prop);
-      (utils$1.isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
+      (utils$4.isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
     });
 
     return config;
   }
 
-  const VERSION = "1.6.2";
+  const VERSION = "1.6.8";
 
   const validators$1 = {};
 
@@ -3443,8 +3418,8 @@
     constructor(instanceConfig) {
       this.defaults = instanceConfig;
       this.interceptors = {
-        request: new InterceptorManager$1(),
-        response: new InterceptorManager$1()
+        request: new InterceptorManager(),
+        response: new InterceptorManager()
       };
     }
 
@@ -3456,7 +3431,31 @@
      *
      * @returns {Promise} The Promise to be fulfilled
      */
-    request(configOrUrl, config) {
+    async request(configOrUrl, config) {
+      try {
+        return await this._request(configOrUrl, config);
+      } catch (err) {
+        if (err instanceof Error) {
+          let dummy;
+
+          Error.captureStackTrace ? Error.captureStackTrace(dummy = {}) : (dummy = new Error());
+
+          // slice off the Error: ... line
+          const stack = dummy.stack ? dummy.stack.replace(/^.+\n/, '') : '';
+
+          if (!err.stack) {
+            err.stack = stack;
+            // match without the 2 top stack lines
+          } else if (stack && !String(err.stack).endsWith(stack.replace(/^.+\n.+\n/, ''))) {
+            err.stack += '\n' + stack;
+          }
+        }
+
+        throw err;
+      }
+    }
+
+    _request(configOrUrl, config) {
       /*eslint no-param-reassign:0*/
       // Allow for axios('example/url'[, config]) a la fetch API
       if (typeof configOrUrl === 'string') {
@@ -3479,7 +3478,7 @@
       }
 
       if (paramsSerializer != null) {
-        if (utils$1.isFunction(paramsSerializer)) {
+        if (utils$4.isFunction(paramsSerializer)) {
           config.paramsSerializer = {
             serialize: paramsSerializer
           };
@@ -3495,12 +3494,12 @@
       config.method = (config.method || this.defaults.method || 'get').toLowerCase();
 
       // Flatten headers
-      let contextHeaders = headers && utils$1.merge(
+      let contextHeaders = headers && utils$4.merge(
         headers.common,
         headers[config.method]
       );
 
-      headers && utils$1.forEach(
+      headers && utils$4.forEach(
         ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
         (method) => {
           delete headers[method];
@@ -3581,13 +3580,13 @@
 
     getUri(config) {
       config = mergeConfig(this.defaults, config);
-      const fullPath = buildFullPath(config.baseURL, config.url);
-      return buildURL(fullPath, config.params, config.paramsSerializer);
+      const fullPath = buildFullPath$2(config.baseURL, config.url);
+      return buildURL$2(fullPath, config.params, config.paramsSerializer);
     }
   }
 
   // Provide aliases for supported request methods
-  utils$1.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+  utils$4.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
     /*eslint func-names:0*/
     Axios.prototype[method] = function(url, config) {
       return this.request(mergeConfig(config || {}, {
@@ -3598,7 +3597,7 @@
     };
   });
 
-  utils$1.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  utils$4.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
     /*eslint func-names:0*/
 
     function generateHTTPMethod(isForm) {
@@ -3774,7 +3773,7 @@
    * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
    */
   function isAxiosError(payload) {
-    return utils$1.isObject(payload) && (payload.isAxiosError === true);
+    return utils$4.isObject(payload) && (payload.isAxiosError === true);
   }
 
   const HttpStatusCode = {
@@ -3858,13 +3857,13 @@
    */
   function createInstance(defaultConfig) {
     const context = new Axios$1(defaultConfig);
-    const instance = bind(Axios$1.prototype.request, context);
+    const instance = bind$2(Axios$1.prototype.request, context);
 
     // Copy axios.prototype to instance
-    utils$1.extend(instance, Axios$1.prototype, context, {allOwnKeys: true});
+    utils$4.extend(instance, Axios$1.prototype, context, {allOwnKeys: true});
 
     // Copy context to instance
-    utils$1.extend(instance, context, null, {allOwnKeys: true});
+    utils$4.extend(instance, context, null, {allOwnKeys: true});
 
     // Factory for creating new instances
     instance.create = function create(instanceConfig) {
@@ -3908,7 +3907,7 @@
 
   axios.AxiosHeaders = AxiosHeaders$1;
 
-  axios.formToJSON = thing => formDataToJSON(utils$1.isHTMLForm(thing) ? new FormData(thing) : thing);
+  axios.formToJSON = thing => formDataToJSON(utils$4.isHTMLForm(thing) ? new FormData(thing) : thing);
 
   axios.getAdapter = adapters.getAdapter;
 
@@ -3916,8 +3915,824 @@
 
   axios.default = axios;
 
-  // this module should only have a default export
-  var axios$1 = axios;
+  var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+  function getDefaultExportFromCjs (x) {
+  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+  }
+
+  function getAugmentedNamespace(n) {
+    if (n.__esModule) return n;
+    var f = n.default;
+  	if (typeof f == "function") {
+  		var a = function a () {
+  			if (this instanceof a) {
+          return Reflect.construct(f, arguments, this.constructor);
+  			}
+  			return f.apply(this, arguments);
+  		};
+  		a.prototype = f.prototype;
+    } else a = {};
+    Object.defineProperty(a, '__esModule', {value: true});
+  	Object.keys(n).forEach(function (k) {
+  		var d = Object.getOwnPropertyDescriptor(n, k);
+  		Object.defineProperty(a, k, d.get ? d : {
+  			enumerable: true,
+  			get: function () {
+  				return n[k];
+  			}
+  		});
+  	});
+  	return a;
+  }
+
+  var bind$1 = function bind(fn, thisArg) {
+    return function wrap() {
+      var args = new Array(arguments.length);
+      for (var i = 0; i < args.length; i++) {
+        args[i] = arguments[i];
+      }
+      return fn.apply(thisArg, args);
+    };
+  };
+
+  var bind = bind$1;
+
+  /*global toString:true*/
+
+  // utils is a library of generic helper functions non-specific to axios
+
+  var toString = Object.prototype.toString;
+
+  /**
+   * Determine if a value is an Array
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is an Array, otherwise false
+   */
+  function isArray(val) {
+    return toString.call(val) === '[object Array]';
+  }
+
+  /**
+   * Determine if a value is undefined
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if the value is undefined, otherwise false
+   */
+  function isUndefined(val) {
+    return typeof val === 'undefined';
+  }
+
+  /**
+   * Determine if a value is a Buffer
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Buffer, otherwise false
+   */
+  function isBuffer(val) {
+    return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
+      && typeof val.constructor.isBuffer === 'function' && val.constructor.isBuffer(val);
+  }
+
+  /**
+   * Determine if a value is an ArrayBuffer
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+   */
+  function isArrayBuffer(val) {
+    return toString.call(val) === '[object ArrayBuffer]';
+  }
+
+  /**
+   * Determine if a value is a FormData
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is an FormData, otherwise false
+   */
+  function isFormData(val) {
+    return (typeof FormData !== 'undefined') && (val instanceof FormData);
+  }
+
+  /**
+   * Determine if a value is a view on an ArrayBuffer
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+   */
+  function isArrayBufferView(val) {
+    var result;
+    if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+      result = ArrayBuffer.isView(val);
+    } else {
+      result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+    }
+    return result;
+  }
+
+  /**
+   * Determine if a value is a String
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a String, otherwise false
+   */
+  function isString(val) {
+    return typeof val === 'string';
+  }
+
+  /**
+   * Determine if a value is a Number
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Number, otherwise false
+   */
+  function isNumber(val) {
+    return typeof val === 'number';
+  }
+
+  /**
+   * Determine if a value is an Object
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is an Object, otherwise false
+   */
+  function isObject(val) {
+    return val !== null && typeof val === 'object';
+  }
+
+  /**
+   * Determine if a value is a Date
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Date, otherwise false
+   */
+  function isDate(val) {
+    return toString.call(val) === '[object Date]';
+  }
+
+  /**
+   * Determine if a value is a File
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a File, otherwise false
+   */
+  function isFile(val) {
+    return toString.call(val) === '[object File]';
+  }
+
+  /**
+   * Determine if a value is a Blob
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Blob, otherwise false
+   */
+  function isBlob(val) {
+    return toString.call(val) === '[object Blob]';
+  }
+
+  /**
+   * Determine if a value is a Function
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Function, otherwise false
+   */
+  function isFunction(val) {
+    return toString.call(val) === '[object Function]';
+  }
+
+  /**
+   * Determine if a value is a Stream
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Stream, otherwise false
+   */
+  function isStream(val) {
+    return isObject(val) && isFunction(val.pipe);
+  }
+
+  /**
+   * Determine if a value is a URLSearchParams object
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+   */
+  function isURLSearchParams(val) {
+    return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+  }
+
+  /**
+   * Trim excess whitespace off the beginning and end of a string
+   *
+   * @param {String} str The String to trim
+   * @returns {String} The String freed of excess whitespace
+   */
+  function trim(str) {
+    return str.replace(/^\s*/, '').replace(/\s*$/, '');
+  }
+
+  /**
+   * Determine if we're running in a standard browser environment
+   *
+   * This allows axios to run in a web worker, and react-native.
+   * Both environments support XMLHttpRequest, but not fully standard globals.
+   *
+   * web workers:
+   *  typeof window -> undefined
+   *  typeof document -> undefined
+   *
+   * react-native:
+   *  navigator.product -> 'ReactNative'
+   * nativescript
+   *  navigator.product -> 'NativeScript' or 'NS'
+   */
+  function isStandardBrowserEnv() {
+    if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
+                                             navigator.product === 'NativeScript' ||
+                                             navigator.product === 'NS')) {
+      return false;
+    }
+    return (
+      typeof window !== 'undefined' &&
+      typeof document !== 'undefined'
+    );
+  }
+
+  /**
+   * Iterate over an Array or an Object invoking a function for each item.
+   *
+   * If `obj` is an Array callback will be called passing
+   * the value, index, and complete array for each item.
+   *
+   * If 'obj' is an Object callback will be called passing
+   * the value, key, and complete object for each property.
+   *
+   * @param {Object|Array} obj The object to iterate
+   * @param {Function} fn The callback to invoke for each item
+   */
+  function forEach(obj, fn) {
+    // Don't bother if no value provided
+    if (obj === null || typeof obj === 'undefined') {
+      return;
+    }
+
+    // Force an array if not already something iterable
+    if (typeof obj !== 'object') {
+      /*eslint no-param-reassign:0*/
+      obj = [obj];
+    }
+
+    if (isArray(obj)) {
+      // Iterate over array values
+      for (var i = 0, l = obj.length; i < l; i++) {
+        fn.call(null, obj[i], i, obj);
+      }
+    } else {
+      // Iterate over object keys
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          fn.call(null, obj[key], key, obj);
+        }
+      }
+    }
+  }
+
+  /**
+   * Accepts varargs expecting each argument to be an object, then
+   * immutably merges the properties of each object and returns result.
+   *
+   * When multiple objects contain the same key the later object in
+   * the arguments list will take precedence.
+   *
+   * Example:
+   *
+   * ```js
+   * var result = merge({foo: 123}, {foo: 456});
+   * console.log(result.foo); // outputs 456
+   * ```
+   *
+   * @param {Object} obj1 Object to merge
+   * @returns {Object} Result of all merge properties
+   */
+  function merge(/* obj1, obj2, obj3, ... */) {
+    var result = {};
+    function assignValue(val, key) {
+      if (typeof result[key] === 'object' && typeof val === 'object') {
+        result[key] = merge(result[key], val);
+      } else {
+        result[key] = val;
+      }
+    }
+
+    for (var i = 0, l = arguments.length; i < l; i++) {
+      forEach(arguments[i], assignValue);
+    }
+    return result;
+  }
+
+  /**
+   * Function equal to merge with the difference being that no reference
+   * to original objects is kept.
+   *
+   * @see merge
+   * @param {Object} obj1 Object to merge
+   * @returns {Object} Result of all merge properties
+   */
+  function deepMerge(/* obj1, obj2, obj3, ... */) {
+    var result = {};
+    function assignValue(val, key) {
+      if (typeof result[key] === 'object' && typeof val === 'object') {
+        result[key] = deepMerge(result[key], val);
+      } else if (typeof val === 'object') {
+        result[key] = deepMerge({}, val);
+      } else {
+        result[key] = val;
+      }
+    }
+
+    for (var i = 0, l = arguments.length; i < l; i++) {
+      forEach(arguments[i], assignValue);
+    }
+    return result;
+  }
+
+  /**
+   * Extends object a by mutably adding to it the properties of object b.
+   *
+   * @param {Object} a The object to be extended
+   * @param {Object} b The object to copy properties from
+   * @param {Object} thisArg The object to bind function to
+   * @return {Object} The resulting value of object a
+   */
+  function extend(a, b, thisArg) {
+    forEach(b, function assignValue(val, key) {
+      if (thisArg && typeof val === 'function') {
+        a[key] = bind(val, thisArg);
+      } else {
+        a[key] = val;
+      }
+    });
+    return a;
+  }
+
+  var utils$2 = {
+    isArray: isArray,
+    isArrayBuffer: isArrayBuffer,
+    isBuffer: isBuffer,
+    isFormData: isFormData,
+    isArrayBufferView: isArrayBufferView,
+    isString: isString,
+    isNumber: isNumber,
+    isObject: isObject,
+    isUndefined: isUndefined,
+    isDate: isDate,
+    isFile: isFile,
+    isBlob: isBlob,
+    isFunction: isFunction,
+    isStream: isStream,
+    isURLSearchParams: isURLSearchParams,
+    isStandardBrowserEnv: isStandardBrowserEnv,
+    forEach: forEach,
+    merge: merge,
+    deepMerge: deepMerge,
+    extend: extend,
+    trim: trim
+  };
+
+  /**
+   * Update an Error with the specified config, error code, and response.
+   *
+   * @param {Error} error The error to update.
+   * @param {Object} config The config.
+   * @param {string} [code] The error code (for example, 'ECONNABORTED').
+   * @param {Object} [request] The request.
+   * @param {Object} [response] The response.
+   * @returns {Error} The error.
+   */
+  var enhanceError$1 = function enhanceError(error, config, code, request, response) {
+    error.config = config;
+    if (code) {
+      error.code = code;
+    }
+
+    error.request = request;
+    error.response = response;
+    error.isAxiosError = true;
+
+    error.toJSON = function() {
+      return {
+        // Standard
+        message: this.message,
+        name: this.name,
+        // Microsoft
+        description: this.description,
+        number: this.number,
+        // Mozilla
+        fileName: this.fileName,
+        lineNumber: this.lineNumber,
+        columnNumber: this.columnNumber,
+        stack: this.stack,
+        // Axios
+        config: this.config,
+        code: this.code
+      };
+    };
+    return error;
+  };
+
+  var enhanceError = enhanceError$1;
+
+  /**
+   * Create an Error with the specified message, config, error code, request and response.
+   *
+   * @param {string} message The error message.
+   * @param {Object} config The config.
+   * @param {string} [code] The error code (for example, 'ECONNABORTED').
+   * @param {Object} [request] The request.
+   * @param {Object} [response] The response.
+   * @returns {Error} The created error.
+   */
+  var createError$2 = function createError(message, config, code, request, response) {
+    var error = new Error(message);
+    return enhanceError(error, config, code, request, response);
+  };
+
+  var createError$1 = createError$2;
+
+  /**
+   * Resolve or reject a Promise based on response status.
+   *
+   * @param {Function} resolve A function that resolves the promise.
+   * @param {Function} reject A function that rejects the promise.
+   * @param {object} response The response.
+   */
+  var settle$1 = function settle(resolve, reject, response) {
+    var validateStatus = response.config.validateStatus;
+    if (!validateStatus || validateStatus(response.status)) {
+      resolve(response);
+    } else {
+      reject(createError$1(
+        'Request failed with status code ' + response.status,
+        response.config,
+        null,
+        response.request,
+        response
+      ));
+    }
+  };
+
+  var utils$1 = utils$2;
+
+  function encode(val) {
+    return encodeURIComponent(val).
+      replace(/%40/gi, '@').
+      replace(/%3A/gi, ':').
+      replace(/%24/g, '$').
+      replace(/%2C/gi, ',').
+      replace(/%20/g, '+').
+      replace(/%5B/gi, '[').
+      replace(/%5D/gi, ']');
+  }
+
+  /**
+   * Build a URL by appending params to the end
+   *
+   * @param {string} url The base of the url (e.g., http://www.google.com)
+   * @param {object} [params] The params to be appended
+   * @returns {string} The formatted url
+   */
+  var buildURL$1 = function buildURL(url, params, paramsSerializer) {
+    /*eslint no-param-reassign:0*/
+    if (!params) {
+      return url;
+    }
+
+    var serializedParams;
+    if (paramsSerializer) {
+      serializedParams = paramsSerializer(params);
+    } else if (utils$1.isURLSearchParams(params)) {
+      serializedParams = params.toString();
+    } else {
+      var parts = [];
+
+      utils$1.forEach(params, function serialize(val, key) {
+        if (val === null || typeof val === 'undefined') {
+          return;
+        }
+
+        if (utils$1.isArray(val)) {
+          key = key + '[]';
+        } else {
+          val = [val];
+        }
+
+        utils$1.forEach(val, function parseValue(v) {
+          if (utils$1.isDate(v)) {
+            v = v.toISOString();
+          } else if (utils$1.isObject(v)) {
+            v = JSON.stringify(v);
+          }
+          parts.push(encode(key) + '=' + encode(v));
+        });
+      });
+
+      serializedParams = parts.join('&');
+    }
+
+    if (serializedParams) {
+      var hashmarkIndex = url.indexOf('#');
+      if (hashmarkIndex !== -1) {
+        url = url.slice(0, hashmarkIndex);
+      }
+
+      url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+    }
+
+    return url;
+  };
+
+  /**
+   * Determines whether the specified URL is absolute
+   *
+   * @param {string} url The URL to test
+   * @returns {boolean} True if the specified URL is absolute, otherwise false
+   */
+  var isAbsoluteURL$1 = function isAbsoluteURL(url) {
+    // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+    // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+    // by any combination of letters, digits, plus, period, or hyphen.
+    return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+  };
+
+  /**
+   * Creates a new URL by combining the specified URLs
+   *
+   * @param {string} baseURL The base URL
+   * @param {string} relativeURL The relative URL
+   * @returns {string} The combined URL
+   */
+  var combineURLs$1 = function combineURLs(baseURL, relativeURL) {
+    return relativeURL
+      ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+      : baseURL;
+  };
+
+  var isAbsoluteURL = isAbsoluteURL$1;
+  var combineURLs = combineURLs$1;
+
+  /**
+   * Creates a new URL by combining the baseURL with the requestedURL,
+   * only when the requestedURL is not already an absolute URL.
+   * If the requestURL is absolute, this function returns the requestedURL untouched.
+   *
+   * @param {string} baseURL The base URL
+   * @param {string} requestedURL Absolute or relative URL to combine
+   * @returns {string} The combined full path
+   */
+  var buildFullPath$1 = function buildFullPath(baseURL, requestedURL) {
+    if (baseURL && !isAbsoluteURL(requestedURL)) {
+      return combineURLs(baseURL, requestedURL);
+    }
+    return requestedURL;
+  };
+
+  /*!
+   * axios-miniprogram-adapter 0.3.5 (https://github.com/bigMeow/axios-miniprogram-adapter)
+   * API https://github.com/bigMeow/axios-miniprogram-adapter/blob/master/doc/api.md
+   * Copyright 2018-2022 bigMeow. All Rights Reserved
+   * Licensed under MIT (https://github.com/bigMeow/axios-miniprogram-adapter/blob/master/LICENSE)
+   */
+
+  function _interopDefault$1 (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+  var utils = _interopDefault$1(utils$2);
+  var settle = _interopDefault$1(settle$1);
+  var buildURL = _interopDefault$1(buildURL$1);
+  var buildFullPath = _interopDefault$1(buildFullPath$1);
+  var createError = _interopDefault$1(createError$2);
+
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+  // encoder
+  function encoder(input) {
+      var str = String(input);
+      // initialize result and counter
+      var block;
+      var charCode;
+      var idx = 0;
+      var map = chars;
+      var output = '';
+      for (; 
+      // if the next str index does not exist:
+      //   change the mapping table to "="
+      //   check if d has no fractional digits
+      str.charAt(idx | 0) || (map = '=', idx % 1); 
+      // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+      output += map.charAt(63 & block >> 8 - idx % 1 * 8)) {
+          charCode = str.charCodeAt(idx += 3 / 4);
+          if (charCode > 0xFF) {
+              throw new Error("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
+          }
+          block = block << 8 | charCode;
+      }
+      return output;
+  }
+
+  var platFormName = "wechat" /* 微信 */;
+  /**
+   * 获取各个平台的请求函数
+   */
+  function getRequest() {
+      switch (true) {
+          case typeof wx === 'object':
+              platFormName = "wechat" /* 微信 */;
+              return wx.request.bind(wx);
+          case typeof swan === 'object':
+              platFormName = "baidu" /* 百度 */;
+              return swan.request.bind(swan);
+          case typeof dd === 'object':
+              platFormName = "dd" /* 钉钉 */;
+              // https://open.dingtalk.com/document/orgapp-client/send-network-requests
+              return dd.httpRequest.bind(dd);
+          case typeof my === 'object':
+              /**
+               * remark:
+               * 支付宝客户端已不再维护 my.httpRequest，建议使用 my.request。另外，钉钉客户端尚不支持 my.request。若在钉钉客户端开发小程序，则需要使用 my.httpRequest。
+               * my.httpRequest的请求头默认值为{'content-type': 'application/x-www-form-urlencoded'}。
+               * my.request的请求头默认值为{'content-type': 'application/json'}。
+               * 还有个 dd.httpRequest
+               */
+              platFormName = "alipay" /* 支付宝 */;
+              return (my.request || my.httpRequest).bind(my);
+          default:
+              return wx.request.bind(wx);
+      }
+  }
+  /**
+   * 处理各平台返回的响应数据，抹平差异
+   * @param mpResponse
+   * @param config axios处理过的请求配置对象
+   * @param request 小程序的调用发起请求时，传递给小程序api的实际配置
+   */
+  function transformResponse(mpResponse, config, mpRequestOption) {
+      var headers = mpResponse.header || mpResponse.headers;
+      var status = mpResponse.statusCode || mpResponse.status;
+      var statusText = '';
+      if (status === 200) {
+          statusText = 'OK';
+      }
+      else if (status === 400) {
+          statusText = 'Bad Request';
+      }
+      var response = {
+          data: mpResponse.data,
+          status: status,
+          statusText: statusText,
+          headers: headers,
+          config: config,
+          request: mpRequestOption
+      };
+      return response;
+  }
+  /**
+   * 处理各平台返回的错误信息，抹平差异
+   * @param error 小程序api返回的错误对象
+   * @param reject 上层的promise reject 函数
+   * @param config
+   */
+  function transformError(error, reject, config) {
+      switch (platFormName) {
+          case "wechat" /* 微信 */:
+              if (error.errMsg.indexOf('request:fail abort') !== -1) {
+                  // Handle request cancellation (as opposed to a manual cancellation)
+                  reject(createError('Request aborted', config, 'ECONNABORTED', ''));
+              }
+              else if (error.errMsg.indexOf('timeout') !== -1) {
+                  // timeout
+                  reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED', ''));
+              }
+              else {
+                  // NetWordError
+                  reject(createError('Network Error', config, null, ''));
+              }
+              break;
+          case "dd" /* 钉钉 */:
+          case "alipay" /* 支付宝 */:
+              // https://docs.alipay.com/mini/api/network
+              if ([14, 19].includes(error.error)) {
+                  reject(createError('Request aborted', config, 'ECONNABORTED', '', error));
+              }
+              else if ([13].includes(error.error)) {
+                  // timeout
+                  reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED', '', error));
+              }
+              else {
+                  // NetWordError
+                  reject(createError('Network Error', config, null, '', error));
+              }
+              break;
+          case "baidu" /* 百度 */:
+              // TODO error.errCode
+              reject(createError('Network Error', config, null, ''));
+              break;
+      }
+  }
+  /**
+   * 将axios的请求配置，转换成各个平台都支持的请求config
+   * @param config
+   */
+  function transformConfig(config) {
+      var _a;
+      if (["alipay" /* 支付宝 */, "dd" /* 钉钉 */].includes(platFormName)) {
+          config.headers = config.header;
+          delete config.header;
+          if ("dd" /* 钉钉 */ === platFormName && config.method !== 'GET' && ((_a = config.headers) === null || _a === void 0 ? void 0 : _a['Content-Type']) === 'application/json' && Object.prototype.toString.call(config.data) === '[object Object]') {
+              // Content-Type为application/json时，data参数只支持json字符串，需要手动调用JSON.stringify进行序列化
+              config.data = JSON.stringify(config.data);
+          }
+      }
+      return config;
+  }
+
+  var isJSONstr = function (str) {
+      try {
+          return typeof str === 'string' && str.length && (str = JSON.parse(str)) && Object.prototype.toString.call(str) === '[object Object]';
+      }
+      catch (error) {
+          return false;
+      }
+  };
+  function mpAdapter(config, _a) {
+      var _b = (_a === void 0 ? {} : _a).transformRequestOption, transformRequestOption = _b === void 0 ? function (requestOption) { return requestOption; } : _b;
+      var request = getRequest();
+      return new Promise(function (resolve, reject) {
+          var requestTask;
+          var requestData = config.data;
+          var requestHeaders = config.headers;
+          // baidu miniprogram only support upperCase
+          var requestMethod = (config.method && config.method.toUpperCase()) || 'GET';
+          // miniprogram network request config
+          var mpRequestOption = {
+              method: requestMethod,
+              url: buildURL(buildFullPath(config.baseURL, config.url), config.params, config.paramsSerializer),
+              timeout: config.timeout,
+              // Listen for success
+              success: function (mpResponse) {
+                  var response = transformResponse(mpResponse, config, mpRequestOption);
+                  settle(resolve, reject, response);
+              },
+              // Handle request Exception
+              fail: function (error) {
+                  transformError(error, reject, config);
+              },
+              complete: function () {
+                  requestTask = undefined;
+              }
+          };
+          // HTTP basic authentication
+          if (config.auth) {
+              var _a = [config.auth.username || '', config.auth.password || ''], username = _a[0], password = _a[1];
+              requestHeaders.Authorization = 'Basic ' + encoder(username + ':' + password);
+          }
+          // Add headers to the request
+          utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+              var _header = key.toLowerCase();
+              if ((typeof requestData === 'undefined' && _header === 'content-type') || _header === 'referer') {
+                  // Remove Content-Type if data is undefined
+                  // And the miniprogram document said that '设置请求的 header，header 中不能设置 Referer'
+                  delete requestHeaders[key];
+              }
+          });
+          mpRequestOption.header = requestHeaders;
+          // Add responseType to request if needed
+          if (config.responseType) {
+              mpRequestOption.responseType = config.responseType;
+          }
+          if (config.cancelToken) {
+              // Handle cancellation
+              config.cancelToken.promise.then(function onCanceled(cancel) {
+                  if (!requestTask) {
+                      return;
+                  }
+                  requestTask.abort();
+                  reject(cancel);
+                  // Clean up request
+                  requestTask = undefined;
+              });
+          }
+          // Converting JSON strings to objects is handed over to the MiniPrograme
+          if (isJSONstr(requestData)) {
+              requestData = JSON.parse(requestData);
+          }
+          if (requestData !== undefined) {
+              mpRequestOption.data = requestData;
+          }
+          requestTask = request(transformRequestOption(transformConfig(mpRequestOption)));
+      });
+  }
+
+  var dist = mpAdapter;
+
+  var mpAdapter$1 = /*@__PURE__*/getDefaultExportFromCjs(dist);
 
   /**
    * 系统时间校准
@@ -3962,37 +4777,6 @@
     return SystemClock;
   }();
   var systemClock = new SystemClock();
-
-  var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-  function getDefaultExportFromCjs (x) {
-  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-  }
-
-  function getAugmentedNamespace(n) {
-    if (n.__esModule) return n;
-    var f = n.default;
-  	if (typeof f == "function") {
-  		var a = function a () {
-  			if (this instanceof a) {
-          return Reflect.construct(f, arguments, this.constructor);
-  			}
-  			return f.apply(this, arguments);
-  		};
-  		a.prototype = f.prototype;
-    } else a = {};
-    Object.defineProperty(a, '__esModule', {value: true});
-  	Object.keys(n).forEach(function (k) {
-  		var d = Object.getOwnPropertyDescriptor(n, k);
-  		Object.defineProperty(a, k, d.get ? d : {
-  			enumerable: true,
-  			get: function () {
-  				return n[k];
-  			}
-  		});
-  	});
-  	return a;
-  }
 
   var cryptoJs = {exports: {}};
 
@@ -11528,783 +12312,838 @@
 
   var minimal$1 = {};
 
-  var aspromise = asPromise;
+  var aspromise;
+  var hasRequiredAspromise;
 
-  /**
-   * Callback as used by {@link util.asPromise}.
-   * @typedef asPromiseCallback
-   * @type {function}
-   * @param {Error|null} error Error, if any
-   * @param {...*} params Additional arguments
-   * @returns {undefined}
-   */
+  function requireAspromise () {
+  	if (hasRequiredAspromise) return aspromise;
+  	hasRequiredAspromise = 1;
+  	aspromise = asPromise;
 
-  /**
-   * Returns a promise from a node-style callback function.
-   * @memberof util
-   * @param {asPromiseCallback} fn Function to call
-   * @param {*} ctx Function context
-   * @param {...*} params Function arguments
-   * @returns {Promise<*>} Promisified function
-   */
-  function asPromise(fn, ctx/*, varargs */) {
-      var params  = new Array(arguments.length - 1),
-          offset  = 0,
-          index   = 2,
-          pending = true;
-      while (index < arguments.length)
-          params[offset++] = arguments[index++];
-      return new Promise(function executor(resolve, reject) {
-          params[offset] = function callback(err/*, varargs */) {
-              if (pending) {
-                  pending = false;
-                  if (err)
-                      reject(err);
-                  else {
-                      var params = new Array(arguments.length - 1),
-                          offset = 0;
-                      while (offset < params.length)
-                          params[offset++] = arguments[offset];
-                      resolve.apply(null, params);
-                  }
-              }
-          };
-          try {
-              fn.apply(ctx || null, params);
-          } catch (err) {
-              if (pending) {
-                  pending = false;
-                  reject(err);
-              }
-          }
-      });
+  	/**
+  	 * Callback as used by {@link util.asPromise}.
+  	 * @typedef asPromiseCallback
+  	 * @type {function}
+  	 * @param {Error|null} error Error, if any
+  	 * @param {...*} params Additional arguments
+  	 * @returns {undefined}
+  	 */
+
+  	/**
+  	 * Returns a promise from a node-style callback function.
+  	 * @memberof util
+  	 * @param {asPromiseCallback} fn Function to call
+  	 * @param {*} ctx Function context
+  	 * @param {...*} params Function arguments
+  	 * @returns {Promise<*>} Promisified function
+  	 */
+  	function asPromise(fn, ctx/*, varargs */) {
+  	    var params  = new Array(arguments.length - 1),
+  	        offset  = 0,
+  	        index   = 2,
+  	        pending = true;
+  	    while (index < arguments.length)
+  	        params[offset++] = arguments[index++];
+  	    return new Promise(function executor(resolve, reject) {
+  	        params[offset] = function callback(err/*, varargs */) {
+  	            if (pending) {
+  	                pending = false;
+  	                if (err)
+  	                    reject(err);
+  	                else {
+  	                    var params = new Array(arguments.length - 1),
+  	                        offset = 0;
+  	                    while (offset < params.length)
+  	                        params[offset++] = arguments[offset];
+  	                    resolve.apply(null, params);
+  	                }
+  	            }
+  	        };
+  	        try {
+  	            fn.apply(ctx || null, params);
+  	        } catch (err) {
+  	            if (pending) {
+  	                pending = false;
+  	                reject(err);
+  	            }
+  	        }
+  	    });
+  	}
+  	return aspromise;
   }
 
   var base64$1 = {};
 
-  (function (exports) {
+  var hasRequiredBase64;
+
+  function requireBase64 () {
+  	if (hasRequiredBase64) return base64$1;
+  	hasRequiredBase64 = 1;
+  	(function (exports) {
+
+  		/**
+  		 * A minimal base64 implementation for number arrays.
+  		 * @memberof util
+  		 * @namespace
+  		 */
+  		var base64 = exports;
+
+  		/**
+  		 * Calculates the byte length of a base64 encoded string.
+  		 * @param {string} string Base64 encoded string
+  		 * @returns {number} Byte length
+  		 */
+  		base64.length = function length(string) {
+  		    var p = string.length;
+  		    if (!p)
+  		        return 0;
+  		    var n = 0;
+  		    while (--p % 4 > 1 && string.charAt(p) === "=")
+  		        ++n;
+  		    return Math.ceil(string.length * 3) / 4 - n;
+  		};
+
+  		// Base64 encoding table
+  		var b64 = new Array(64);
+
+  		// Base64 decoding table
+  		var s64 = new Array(123);
+
+  		// 65..90, 97..122, 48..57, 43, 47
+  		for (var i = 0; i < 64;)
+  		    s64[b64[i] = i < 26 ? i + 65 : i < 52 ? i + 71 : i < 62 ? i - 4 : i - 59 | 43] = i++;
+
+  		/**
+  		 * Encodes a buffer to a base64 encoded string.
+  		 * @param {Uint8Array} buffer Source buffer
+  		 * @param {number} start Source start
+  		 * @param {number} end Source end
+  		 * @returns {string} Base64 encoded string
+  		 */
+  		base64.encode = function encode(buffer, start, end) {
+  		    var parts = null,
+  		        chunk = [];
+  		    var i = 0, // output index
+  		        j = 0, // goto index
+  		        t;     // temporary
+  		    while (start < end) {
+  		        var b = buffer[start++];
+  		        switch (j) {
+  		            case 0:
+  		                chunk[i++] = b64[b >> 2];
+  		                t = (b & 3) << 4;
+  		                j = 1;
+  		                break;
+  		            case 1:
+  		                chunk[i++] = b64[t | b >> 4];
+  		                t = (b & 15) << 2;
+  		                j = 2;
+  		                break;
+  		            case 2:
+  		                chunk[i++] = b64[t | b >> 6];
+  		                chunk[i++] = b64[b & 63];
+  		                j = 0;
+  		                break;
+  		        }
+  		        if (i > 8191) {
+  		            (parts || (parts = [])).push(String.fromCharCode.apply(String, chunk));
+  		            i = 0;
+  		        }
+  		    }
+  		    if (j) {
+  		        chunk[i++] = b64[t];
+  		        chunk[i++] = 61;
+  		        if (j === 1)
+  		            chunk[i++] = 61;
+  		    }
+  		    if (parts) {
+  		        if (i)
+  		            parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
+  		        return parts.join("");
+  		    }
+  		    return String.fromCharCode.apply(String, chunk.slice(0, i));
+  		};
+
+  		var invalidEncoding = "invalid encoding";
+
+  		/**
+  		 * Decodes a base64 encoded string to a buffer.
+  		 * @param {string} string Source string
+  		 * @param {Uint8Array} buffer Destination buffer
+  		 * @param {number} offset Destination offset
+  		 * @returns {number} Number of bytes written
+  		 * @throws {Error} If encoding is invalid
+  		 */
+  		base64.decode = function decode(string, buffer, offset) {
+  		    var start = offset;
+  		    var j = 0, // goto index
+  		        t;     // temporary
+  		    for (var i = 0; i < string.length;) {
+  		        var c = string.charCodeAt(i++);
+  		        if (c === 61 && j > 1)
+  		            break;
+  		        if ((c = s64[c]) === undefined)
+  		            throw Error(invalidEncoding);
+  		        switch (j) {
+  		            case 0:
+  		                t = c;
+  		                j = 1;
+  		                break;
+  		            case 1:
+  		                buffer[offset++] = t << 2 | (c & 48) >> 4;
+  		                t = c;
+  		                j = 2;
+  		                break;
+  		            case 2:
+  		                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
+  		                t = c;
+  		                j = 3;
+  		                break;
+  		            case 3:
+  		                buffer[offset++] = (t & 3) << 6 | c;
+  		                j = 0;
+  		                break;
+  		        }
+  		    }
+  		    if (j === 1)
+  		        throw Error(invalidEncoding);
+  		    return offset - start;
+  		};
+
+  		/**
+  		 * Tests if the specified string appears to be base64 encoded.
+  		 * @param {string} string String to test
+  		 * @returns {boolean} `true` if probably base64 encoded, otherwise false
+  		 */
+  		base64.test = function test(string) {
+  		    return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(string);
+  		}; 
+  	} (base64$1));
+  	return base64$1;
+  }
+
+  var eventemitter;
+  var hasRequiredEventemitter;
+
+  function requireEventemitter () {
+  	if (hasRequiredEventemitter) return eventemitter;
+  	hasRequiredEventemitter = 1;
+  	eventemitter = EventEmitter;
 
   	/**
-  	 * A minimal base64 implementation for number arrays.
+  	 * Constructs a new event emitter instance.
+  	 * @classdesc A minimal event emitter.
   	 * @memberof util
+  	 * @constructor
+  	 */
+  	function EventEmitter() {
+
+  	    /**
+  	     * Registered listeners.
+  	     * @type {Object.<string,*>}
+  	     * @private
+  	     */
+  	    this._listeners = {};
+  	}
+
+  	/**
+  	 * Registers an event listener.
+  	 * @param {string} evt Event name
+  	 * @param {function} fn Listener
+  	 * @param {*} [ctx] Listener context
+  	 * @returns {util.EventEmitter} `this`
+  	 */
+  	EventEmitter.prototype.on = function on(evt, fn, ctx) {
+  	    (this._listeners[evt] || (this._listeners[evt] = [])).push({
+  	        fn  : fn,
+  	        ctx : ctx || this
+  	    });
+  	    return this;
+  	};
+
+  	/**
+  	 * Removes an event listener or any matching listeners if arguments are omitted.
+  	 * @param {string} [evt] Event name. Removes all listeners if omitted.
+  	 * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+  	 * @returns {util.EventEmitter} `this`
+  	 */
+  	EventEmitter.prototype.off = function off(evt, fn) {
+  	    if (evt === undefined)
+  	        this._listeners = {};
+  	    else {
+  	        if (fn === undefined)
+  	            this._listeners[evt] = [];
+  	        else {
+  	            var listeners = this._listeners[evt];
+  	            for (var i = 0; i < listeners.length;)
+  	                if (listeners[i].fn === fn)
+  	                    listeners.splice(i, 1);
+  	                else
+  	                    ++i;
+  	        }
+  	    }
+  	    return this;
+  	};
+
+  	/**
+  	 * Emits an event by calling its listeners with the specified arguments.
+  	 * @param {string} evt Event name
+  	 * @param {...*} args Arguments
+  	 * @returns {util.EventEmitter} `this`
+  	 */
+  	EventEmitter.prototype.emit = function emit(evt) {
+  	    var listeners = this._listeners[evt];
+  	    if (listeners) {
+  	        var args = [],
+  	            i = 1;
+  	        for (; i < arguments.length;)
+  	            args.push(arguments[i++]);
+  	        for (i = 0; i < listeners.length;)
+  	            listeners[i].fn.apply(listeners[i++].ctx, args);
+  	    }
+  	    return this;
+  	};
+  	return eventemitter;
+  }
+
+  var float;
+  var hasRequiredFloat;
+
+  function requireFloat () {
+  	if (hasRequiredFloat) return float;
+  	hasRequiredFloat = 1;
+
+  	float = factory(factory);
+
+  	/**
+  	 * Reads / writes floats / doubles from / to buffers.
+  	 * @name util.float
   	 * @namespace
   	 */
-  	var base64 = exports;
 
   	/**
-  	 * Calculates the byte length of a base64 encoded string.
-  	 * @param {string} string Base64 encoded string
-  	 * @returns {number} Byte length
+  	 * Writes a 32 bit float to a buffer using little endian byte order.
+  	 * @name util.float.writeFloatLE
+  	 * @function
+  	 * @param {number} val Value to write
+  	 * @param {Uint8Array} buf Target buffer
+  	 * @param {number} pos Target buffer offset
+  	 * @returns {undefined}
   	 */
-  	base64.length = function length(string) {
-  	    var p = string.length;
-  	    if (!p)
-  	        return 0;
-  	    var n = 0;
-  	    while (--p % 4 > 1 && string.charAt(p) === "=")
-  	        ++n;
-  	    return Math.ceil(string.length * 3) / 4 - n;
-  	};
-
-  	// Base64 encoding table
-  	var b64 = new Array(64);
-
-  	// Base64 decoding table
-  	var s64 = new Array(123);
-
-  	// 65..90, 97..122, 48..57, 43, 47
-  	for (var i = 0; i < 64;)
-  	    s64[b64[i] = i < 26 ? i + 65 : i < 52 ? i + 71 : i < 62 ? i - 4 : i - 59 | 43] = i++;
 
   	/**
-  	 * Encodes a buffer to a base64 encoded string.
-  	 * @param {Uint8Array} buffer Source buffer
-  	 * @param {number} start Source start
-  	 * @param {number} end Source end
-  	 * @returns {string} Base64 encoded string
+  	 * Writes a 32 bit float to a buffer using big endian byte order.
+  	 * @name util.float.writeFloatBE
+  	 * @function
+  	 * @param {number} val Value to write
+  	 * @param {Uint8Array} buf Target buffer
+  	 * @param {number} pos Target buffer offset
+  	 * @returns {undefined}
   	 */
-  	base64.encode = function encode(buffer, start, end) {
-  	    var parts = null,
-  	        chunk = [];
-  	    var i = 0, // output index
-  	        j = 0, // goto index
-  	        t;     // temporary
-  	    while (start < end) {
-  	        var b = buffer[start++];
-  	        switch (j) {
-  	            case 0:
-  	                chunk[i++] = b64[b >> 2];
-  	                t = (b & 3) << 4;
-  	                j = 1;
-  	                break;
-  	            case 1:
-  	                chunk[i++] = b64[t | b >> 4];
-  	                t = (b & 15) << 2;
-  	                j = 2;
-  	                break;
-  	            case 2:
-  	                chunk[i++] = b64[t | b >> 6];
-  	                chunk[i++] = b64[b & 63];
-  	                j = 0;
-  	                break;
+
+  	/**
+  	 * Reads a 32 bit float from a buffer using little endian byte order.
+  	 * @name util.float.readFloatLE
+  	 * @function
+  	 * @param {Uint8Array} buf Source buffer
+  	 * @param {number} pos Source buffer offset
+  	 * @returns {number} Value read
+  	 */
+
+  	/**
+  	 * Reads a 32 bit float from a buffer using big endian byte order.
+  	 * @name util.float.readFloatBE
+  	 * @function
+  	 * @param {Uint8Array} buf Source buffer
+  	 * @param {number} pos Source buffer offset
+  	 * @returns {number} Value read
+  	 */
+
+  	/**
+  	 * Writes a 64 bit double to a buffer using little endian byte order.
+  	 * @name util.float.writeDoubleLE
+  	 * @function
+  	 * @param {number} val Value to write
+  	 * @param {Uint8Array} buf Target buffer
+  	 * @param {number} pos Target buffer offset
+  	 * @returns {undefined}
+  	 */
+
+  	/**
+  	 * Writes a 64 bit double to a buffer using big endian byte order.
+  	 * @name util.float.writeDoubleBE
+  	 * @function
+  	 * @param {number} val Value to write
+  	 * @param {Uint8Array} buf Target buffer
+  	 * @param {number} pos Target buffer offset
+  	 * @returns {undefined}
+  	 */
+
+  	/**
+  	 * Reads a 64 bit double from a buffer using little endian byte order.
+  	 * @name util.float.readDoubleLE
+  	 * @function
+  	 * @param {Uint8Array} buf Source buffer
+  	 * @param {number} pos Source buffer offset
+  	 * @returns {number} Value read
+  	 */
+
+  	/**
+  	 * Reads a 64 bit double from a buffer using big endian byte order.
+  	 * @name util.float.readDoubleBE
+  	 * @function
+  	 * @param {Uint8Array} buf Source buffer
+  	 * @param {number} pos Source buffer offset
+  	 * @returns {number} Value read
+  	 */
+
+  	// Factory function for the purpose of node-based testing in modified global environments
+  	function factory(exports) {
+
+  	    // float: typed array
+  	    if (typeof Float32Array !== "undefined") (function() {
+
+  	        var f32 = new Float32Array([ -0 ]),
+  	            f8b = new Uint8Array(f32.buffer),
+  	            le  = f8b[3] === 128;
+
+  	        function writeFloat_f32_cpy(val, buf, pos) {
+  	            f32[0] = val;
+  	            buf[pos    ] = f8b[0];
+  	            buf[pos + 1] = f8b[1];
+  	            buf[pos + 2] = f8b[2];
+  	            buf[pos + 3] = f8b[3];
   	        }
-  	        if (i > 8191) {
-  	            (parts || (parts = [])).push(String.fromCharCode.apply(String, chunk));
-  	            i = 0;
-  	        }
-  	    }
-  	    if (j) {
-  	        chunk[i++] = b64[t];
-  	        chunk[i++] = 61;
-  	        if (j === 1)
-  	            chunk[i++] = 61;
-  	    }
-  	    if (parts) {
-  	        if (i)
-  	            parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
-  	        return parts.join("");
-  	    }
-  	    return String.fromCharCode.apply(String, chunk.slice(0, i));
-  	};
 
-  	var invalidEncoding = "invalid encoding";
+  	        function writeFloat_f32_rev(val, buf, pos) {
+  	            f32[0] = val;
+  	            buf[pos    ] = f8b[3];
+  	            buf[pos + 1] = f8b[2];
+  	            buf[pos + 2] = f8b[1];
+  	            buf[pos + 3] = f8b[0];
+  	        }
+
+  	        /* istanbul ignore next */
+  	        exports.writeFloatLE = le ? writeFloat_f32_cpy : writeFloat_f32_rev;
+  	        /* istanbul ignore next */
+  	        exports.writeFloatBE = le ? writeFloat_f32_rev : writeFloat_f32_cpy;
+
+  	        function readFloat_f32_cpy(buf, pos) {
+  	            f8b[0] = buf[pos    ];
+  	            f8b[1] = buf[pos + 1];
+  	            f8b[2] = buf[pos + 2];
+  	            f8b[3] = buf[pos + 3];
+  	            return f32[0];
+  	        }
+
+  	        function readFloat_f32_rev(buf, pos) {
+  	            f8b[3] = buf[pos    ];
+  	            f8b[2] = buf[pos + 1];
+  	            f8b[1] = buf[pos + 2];
+  	            f8b[0] = buf[pos + 3];
+  	            return f32[0];
+  	        }
+
+  	        /* istanbul ignore next */
+  	        exports.readFloatLE = le ? readFloat_f32_cpy : readFloat_f32_rev;
+  	        /* istanbul ignore next */
+  	        exports.readFloatBE = le ? readFloat_f32_rev : readFloat_f32_cpy;
+
+  	    // float: ieee754
+  	    })(); else (function() {
+
+  	        function writeFloat_ieee754(writeUint, val, buf, pos) {
+  	            var sign = val < 0 ? 1 : 0;
+  	            if (sign)
+  	                val = -val;
+  	            if (val === 0)
+  	                writeUint(1 / val > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos);
+  	            else if (isNaN(val))
+  	                writeUint(2143289344, buf, pos);
+  	            else if (val > 3.4028234663852886e+38) // +-Infinity
+  	                writeUint((sign << 31 | 2139095040) >>> 0, buf, pos);
+  	            else if (val < 1.1754943508222875e-38) // denormal
+  	                writeUint((sign << 31 | Math.round(val / 1.401298464324817e-45)) >>> 0, buf, pos);
+  	            else {
+  	                var exponent = Math.floor(Math.log(val) / Math.LN2),
+  	                    mantissa = Math.round(val * Math.pow(2, -exponent) * 8388608) & 8388607;
+  	                writeUint((sign << 31 | exponent + 127 << 23 | mantissa) >>> 0, buf, pos);
+  	            }
+  	        }
+
+  	        exports.writeFloatLE = writeFloat_ieee754.bind(null, writeUintLE);
+  	        exports.writeFloatBE = writeFloat_ieee754.bind(null, writeUintBE);
+
+  	        function readFloat_ieee754(readUint, buf, pos) {
+  	            var uint = readUint(buf, pos),
+  	                sign = (uint >> 31) * 2 + 1,
+  	                exponent = uint >>> 23 & 255,
+  	                mantissa = uint & 8388607;
+  	            return exponent === 255
+  	                ? mantissa
+  	                ? NaN
+  	                : sign * Infinity
+  	                : exponent === 0 // denormal
+  	                ? sign * 1.401298464324817e-45 * mantissa
+  	                : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
+  	        }
+
+  	        exports.readFloatLE = readFloat_ieee754.bind(null, readUintLE);
+  	        exports.readFloatBE = readFloat_ieee754.bind(null, readUintBE);
+
+  	    })();
+
+  	    // double: typed array
+  	    if (typeof Float64Array !== "undefined") (function() {
+
+  	        var f64 = new Float64Array([-0]),
+  	            f8b = new Uint8Array(f64.buffer),
+  	            le  = f8b[7] === 128;
+
+  	        function writeDouble_f64_cpy(val, buf, pos) {
+  	            f64[0] = val;
+  	            buf[pos    ] = f8b[0];
+  	            buf[pos + 1] = f8b[1];
+  	            buf[pos + 2] = f8b[2];
+  	            buf[pos + 3] = f8b[3];
+  	            buf[pos + 4] = f8b[4];
+  	            buf[pos + 5] = f8b[5];
+  	            buf[pos + 6] = f8b[6];
+  	            buf[pos + 7] = f8b[7];
+  	        }
+
+  	        function writeDouble_f64_rev(val, buf, pos) {
+  	            f64[0] = val;
+  	            buf[pos    ] = f8b[7];
+  	            buf[pos + 1] = f8b[6];
+  	            buf[pos + 2] = f8b[5];
+  	            buf[pos + 3] = f8b[4];
+  	            buf[pos + 4] = f8b[3];
+  	            buf[pos + 5] = f8b[2];
+  	            buf[pos + 6] = f8b[1];
+  	            buf[pos + 7] = f8b[0];
+  	        }
+
+  	        /* istanbul ignore next */
+  	        exports.writeDoubleLE = le ? writeDouble_f64_cpy : writeDouble_f64_rev;
+  	        /* istanbul ignore next */
+  	        exports.writeDoubleBE = le ? writeDouble_f64_rev : writeDouble_f64_cpy;
+
+  	        function readDouble_f64_cpy(buf, pos) {
+  	            f8b[0] = buf[pos    ];
+  	            f8b[1] = buf[pos + 1];
+  	            f8b[2] = buf[pos + 2];
+  	            f8b[3] = buf[pos + 3];
+  	            f8b[4] = buf[pos + 4];
+  	            f8b[5] = buf[pos + 5];
+  	            f8b[6] = buf[pos + 6];
+  	            f8b[7] = buf[pos + 7];
+  	            return f64[0];
+  	        }
+
+  	        function readDouble_f64_rev(buf, pos) {
+  	            f8b[7] = buf[pos    ];
+  	            f8b[6] = buf[pos + 1];
+  	            f8b[5] = buf[pos + 2];
+  	            f8b[4] = buf[pos + 3];
+  	            f8b[3] = buf[pos + 4];
+  	            f8b[2] = buf[pos + 5];
+  	            f8b[1] = buf[pos + 6];
+  	            f8b[0] = buf[pos + 7];
+  	            return f64[0];
+  	        }
+
+  	        /* istanbul ignore next */
+  	        exports.readDoubleLE = le ? readDouble_f64_cpy : readDouble_f64_rev;
+  	        /* istanbul ignore next */
+  	        exports.readDoubleBE = le ? readDouble_f64_rev : readDouble_f64_cpy;
+
+  	    // double: ieee754
+  	    })(); else (function() {
+
+  	        function writeDouble_ieee754(writeUint, off0, off1, val, buf, pos) {
+  	            var sign = val < 0 ? 1 : 0;
+  	            if (sign)
+  	                val = -val;
+  	            if (val === 0) {
+  	                writeUint(0, buf, pos + off0);
+  	                writeUint(1 / val > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos + off1);
+  	            } else if (isNaN(val)) {
+  	                writeUint(0, buf, pos + off0);
+  	                writeUint(2146959360, buf, pos + off1);
+  	            } else if (val > 1.7976931348623157e+308) { // +-Infinity
+  	                writeUint(0, buf, pos + off0);
+  	                writeUint((sign << 31 | 2146435072) >>> 0, buf, pos + off1);
+  	            } else {
+  	                var mantissa;
+  	                if (val < 2.2250738585072014e-308) { // denormal
+  	                    mantissa = val / 5e-324;
+  	                    writeUint(mantissa >>> 0, buf, pos + off0);
+  	                    writeUint((sign << 31 | mantissa / 4294967296) >>> 0, buf, pos + off1);
+  	                } else {
+  	                    var exponent = Math.floor(Math.log(val) / Math.LN2);
+  	                    if (exponent === 1024)
+  	                        exponent = 1023;
+  	                    mantissa = val * Math.pow(2, -exponent);
+  	                    writeUint(mantissa * 4503599627370496 >>> 0, buf, pos + off0);
+  	                    writeUint((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 1048575) >>> 0, buf, pos + off1);
+  	                }
+  	            }
+  	        }
+
+  	        exports.writeDoubleLE = writeDouble_ieee754.bind(null, writeUintLE, 0, 4);
+  	        exports.writeDoubleBE = writeDouble_ieee754.bind(null, writeUintBE, 4, 0);
+
+  	        function readDouble_ieee754(readUint, off0, off1, buf, pos) {
+  	            var lo = readUint(buf, pos + off0),
+  	                hi = readUint(buf, pos + off1);
+  	            var sign = (hi >> 31) * 2 + 1,
+  	                exponent = hi >>> 20 & 2047,
+  	                mantissa = 4294967296 * (hi & 1048575) + lo;
+  	            return exponent === 2047
+  	                ? mantissa
+  	                ? NaN
+  	                : sign * Infinity
+  	                : exponent === 0 // denormal
+  	                ? sign * 5e-324 * mantissa
+  	                : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
+  	        }
+
+  	        exports.readDoubleLE = readDouble_ieee754.bind(null, readUintLE, 0, 4);
+  	        exports.readDoubleBE = readDouble_ieee754.bind(null, readUintBE, 4, 0);
+
+  	    })();
+
+  	    return exports;
+  	}
+
+  	// uint helpers
+
+  	function writeUintLE(val, buf, pos) {
+  	    buf[pos    ] =  val        & 255;
+  	    buf[pos + 1] =  val >>> 8  & 255;
+  	    buf[pos + 2] =  val >>> 16 & 255;
+  	    buf[pos + 3] =  val >>> 24;
+  	}
+
+  	function writeUintBE(val, buf, pos) {
+  	    buf[pos    ] =  val >>> 24;
+  	    buf[pos + 1] =  val >>> 16 & 255;
+  	    buf[pos + 2] =  val >>> 8  & 255;
+  	    buf[pos + 3] =  val        & 255;
+  	}
+
+  	function readUintLE(buf, pos) {
+  	    return (buf[pos    ]
+  	          | buf[pos + 1] << 8
+  	          | buf[pos + 2] << 16
+  	          | buf[pos + 3] << 24) >>> 0;
+  	}
+
+  	function readUintBE(buf, pos) {
+  	    return (buf[pos    ] << 24
+  	          | buf[pos + 1] << 16
+  	          | buf[pos + 2] << 8
+  	          | buf[pos + 3]) >>> 0;
+  	}
+  	return float;
+  }
+
+  var inquire_1;
+  var hasRequiredInquire;
+
+  function requireInquire () {
+  	if (hasRequiredInquire) return inquire_1;
+  	hasRequiredInquire = 1;
+  	inquire_1 = inquire;
 
   	/**
-  	 * Decodes a base64 encoded string to a buffer.
-  	 * @param {string} string Source string
-  	 * @param {Uint8Array} buffer Destination buffer
-  	 * @param {number} offset Destination offset
-  	 * @returns {number} Number of bytes written
-  	 * @throws {Error} If encoding is invalid
+  	 * Requires a module only if available.
+  	 * @memberof util
+  	 * @param {string} moduleName Module to require
+  	 * @returns {?Object} Required module if available and not empty, otherwise `null`
   	 */
-  	base64.decode = function decode(string, buffer, offset) {
-  	    var start = offset;
-  	    var j = 0, // goto index
-  	        t;     // temporary
-  	    for (var i = 0; i < string.length;) {
-  	        var c = string.charCodeAt(i++);
-  	        if (c === 61 && j > 1)
-  	            break;
-  	        if ((c = s64[c]) === undefined)
-  	            throw Error(invalidEncoding);
-  	        switch (j) {
-  	            case 0:
-  	                t = c;
-  	                j = 1;
-  	                break;
-  	            case 1:
-  	                buffer[offset++] = t << 2 | (c & 48) >> 4;
-  	                t = c;
-  	                j = 2;
-  	                break;
-  	            case 2:
-  	                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
-  	                t = c;
-  	                j = 3;
-  	                break;
-  	            case 3:
-  	                buffer[offset++] = (t & 3) << 6 | c;
-  	                j = 0;
-  	                break;
-  	        }
-  	    }
-  	    if (j === 1)
-  	        throw Error(invalidEncoding);
-  	    return offset - start;
-  	};
-
-  	/**
-  	 * Tests if the specified string appears to be base64 encoded.
-  	 * @param {string} string String to test
-  	 * @returns {boolean} `true` if probably base64 encoded, otherwise false
-  	 */
-  	base64.test = function test(string) {
-  	    return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(string);
-  	}; 
-  } (base64$1));
-
-  var eventemitter = EventEmitter;
-
-  /**
-   * Constructs a new event emitter instance.
-   * @classdesc A minimal event emitter.
-   * @memberof util
-   * @constructor
-   */
-  function EventEmitter() {
-
-      /**
-       * Registered listeners.
-       * @type {Object.<string,*>}
-       * @private
-       */
-      this._listeners = {};
-  }
-
-  /**
-   * Registers an event listener.
-   * @param {string} evt Event name
-   * @param {function} fn Listener
-   * @param {*} [ctx] Listener context
-   * @returns {util.EventEmitter} `this`
-   */
-  EventEmitter.prototype.on = function on(evt, fn, ctx) {
-      (this._listeners[evt] || (this._listeners[evt] = [])).push({
-          fn  : fn,
-          ctx : ctx || this
-      });
-      return this;
-  };
-
-  /**
-   * Removes an event listener or any matching listeners if arguments are omitted.
-   * @param {string} [evt] Event name. Removes all listeners if omitted.
-   * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
-   * @returns {util.EventEmitter} `this`
-   */
-  EventEmitter.prototype.off = function off(evt, fn) {
-      if (evt === undefined)
-          this._listeners = {};
-      else {
-          if (fn === undefined)
-              this._listeners[evt] = [];
-          else {
-              var listeners = this._listeners[evt];
-              for (var i = 0; i < listeners.length;)
-                  if (listeners[i].fn === fn)
-                      listeners.splice(i, 1);
-                  else
-                      ++i;
-          }
-      }
-      return this;
-  };
-
-  /**
-   * Emits an event by calling its listeners with the specified arguments.
-   * @param {string} evt Event name
-   * @param {...*} args Arguments
-   * @returns {util.EventEmitter} `this`
-   */
-  EventEmitter.prototype.emit = function emit(evt) {
-      var listeners = this._listeners[evt];
-      if (listeners) {
-          var args = [],
-              i = 1;
-          for (; i < arguments.length;)
-              args.push(arguments[i++]);
-          for (i = 0; i < listeners.length;)
-              listeners[i].fn.apply(listeners[i++].ctx, args);
-      }
-      return this;
-  };
-
-  var float = factory(factory);
-
-  /**
-   * Reads / writes floats / doubles from / to buffers.
-   * @name util.float
-   * @namespace
-   */
-
-  /**
-   * Writes a 32 bit float to a buffer using little endian byte order.
-   * @name util.float.writeFloatLE
-   * @function
-   * @param {number} val Value to write
-   * @param {Uint8Array} buf Target buffer
-   * @param {number} pos Target buffer offset
-   * @returns {undefined}
-   */
-
-  /**
-   * Writes a 32 bit float to a buffer using big endian byte order.
-   * @name util.float.writeFloatBE
-   * @function
-   * @param {number} val Value to write
-   * @param {Uint8Array} buf Target buffer
-   * @param {number} pos Target buffer offset
-   * @returns {undefined}
-   */
-
-  /**
-   * Reads a 32 bit float from a buffer using little endian byte order.
-   * @name util.float.readFloatLE
-   * @function
-   * @param {Uint8Array} buf Source buffer
-   * @param {number} pos Source buffer offset
-   * @returns {number} Value read
-   */
-
-  /**
-   * Reads a 32 bit float from a buffer using big endian byte order.
-   * @name util.float.readFloatBE
-   * @function
-   * @param {Uint8Array} buf Source buffer
-   * @param {number} pos Source buffer offset
-   * @returns {number} Value read
-   */
-
-  /**
-   * Writes a 64 bit double to a buffer using little endian byte order.
-   * @name util.float.writeDoubleLE
-   * @function
-   * @param {number} val Value to write
-   * @param {Uint8Array} buf Target buffer
-   * @param {number} pos Target buffer offset
-   * @returns {undefined}
-   */
-
-  /**
-   * Writes a 64 bit double to a buffer using big endian byte order.
-   * @name util.float.writeDoubleBE
-   * @function
-   * @param {number} val Value to write
-   * @param {Uint8Array} buf Target buffer
-   * @param {number} pos Target buffer offset
-   * @returns {undefined}
-   */
-
-  /**
-   * Reads a 64 bit double from a buffer using little endian byte order.
-   * @name util.float.readDoubleLE
-   * @function
-   * @param {Uint8Array} buf Source buffer
-   * @param {number} pos Source buffer offset
-   * @returns {number} Value read
-   */
-
-  /**
-   * Reads a 64 bit double from a buffer using big endian byte order.
-   * @name util.float.readDoubleBE
-   * @function
-   * @param {Uint8Array} buf Source buffer
-   * @param {number} pos Source buffer offset
-   * @returns {number} Value read
-   */
-
-  // Factory function for the purpose of node-based testing in modified global environments
-  function factory(exports) {
-
-      // float: typed array
-      if (typeof Float32Array !== "undefined") (function() {
-
-          var f32 = new Float32Array([ -0 ]),
-              f8b = new Uint8Array(f32.buffer),
-              le  = f8b[3] === 128;
-
-          function writeFloat_f32_cpy(val, buf, pos) {
-              f32[0] = val;
-              buf[pos    ] = f8b[0];
-              buf[pos + 1] = f8b[1];
-              buf[pos + 2] = f8b[2];
-              buf[pos + 3] = f8b[3];
-          }
-
-          function writeFloat_f32_rev(val, buf, pos) {
-              f32[0] = val;
-              buf[pos    ] = f8b[3];
-              buf[pos + 1] = f8b[2];
-              buf[pos + 2] = f8b[1];
-              buf[pos + 3] = f8b[0];
-          }
-
-          /* istanbul ignore next */
-          exports.writeFloatLE = le ? writeFloat_f32_cpy : writeFloat_f32_rev;
-          /* istanbul ignore next */
-          exports.writeFloatBE = le ? writeFloat_f32_rev : writeFloat_f32_cpy;
-
-          function readFloat_f32_cpy(buf, pos) {
-              f8b[0] = buf[pos    ];
-              f8b[1] = buf[pos + 1];
-              f8b[2] = buf[pos + 2];
-              f8b[3] = buf[pos + 3];
-              return f32[0];
-          }
-
-          function readFloat_f32_rev(buf, pos) {
-              f8b[3] = buf[pos    ];
-              f8b[2] = buf[pos + 1];
-              f8b[1] = buf[pos + 2];
-              f8b[0] = buf[pos + 3];
-              return f32[0];
-          }
-
-          /* istanbul ignore next */
-          exports.readFloatLE = le ? readFloat_f32_cpy : readFloat_f32_rev;
-          /* istanbul ignore next */
-          exports.readFloatBE = le ? readFloat_f32_rev : readFloat_f32_cpy;
-
-      // float: ieee754
-      })(); else (function() {
-
-          function writeFloat_ieee754(writeUint, val, buf, pos) {
-              var sign = val < 0 ? 1 : 0;
-              if (sign)
-                  val = -val;
-              if (val === 0)
-                  writeUint(1 / val > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos);
-              else if (isNaN(val))
-                  writeUint(2143289344, buf, pos);
-              else if (val > 3.4028234663852886e+38) // +-Infinity
-                  writeUint((sign << 31 | 2139095040) >>> 0, buf, pos);
-              else if (val < 1.1754943508222875e-38) // denormal
-                  writeUint((sign << 31 | Math.round(val / 1.401298464324817e-45)) >>> 0, buf, pos);
-              else {
-                  var exponent = Math.floor(Math.log(val) / Math.LN2),
-                      mantissa = Math.round(val * Math.pow(2, -exponent) * 8388608) & 8388607;
-                  writeUint((sign << 31 | exponent + 127 << 23 | mantissa) >>> 0, buf, pos);
-              }
-          }
-
-          exports.writeFloatLE = writeFloat_ieee754.bind(null, writeUintLE);
-          exports.writeFloatBE = writeFloat_ieee754.bind(null, writeUintBE);
-
-          function readFloat_ieee754(readUint, buf, pos) {
-              var uint = readUint(buf, pos),
-                  sign = (uint >> 31) * 2 + 1,
-                  exponent = uint >>> 23 & 255,
-                  mantissa = uint & 8388607;
-              return exponent === 255
-                  ? mantissa
-                  ? NaN
-                  : sign * Infinity
-                  : exponent === 0 // denormal
-                  ? sign * 1.401298464324817e-45 * mantissa
-                  : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
-          }
-
-          exports.readFloatLE = readFloat_ieee754.bind(null, readUintLE);
-          exports.readFloatBE = readFloat_ieee754.bind(null, readUintBE);
-
-      })();
-
-      // double: typed array
-      if (typeof Float64Array !== "undefined") (function() {
-
-          var f64 = new Float64Array([-0]),
-              f8b = new Uint8Array(f64.buffer),
-              le  = f8b[7] === 128;
-
-          function writeDouble_f64_cpy(val, buf, pos) {
-              f64[0] = val;
-              buf[pos    ] = f8b[0];
-              buf[pos + 1] = f8b[1];
-              buf[pos + 2] = f8b[2];
-              buf[pos + 3] = f8b[3];
-              buf[pos + 4] = f8b[4];
-              buf[pos + 5] = f8b[5];
-              buf[pos + 6] = f8b[6];
-              buf[pos + 7] = f8b[7];
-          }
-
-          function writeDouble_f64_rev(val, buf, pos) {
-              f64[0] = val;
-              buf[pos    ] = f8b[7];
-              buf[pos + 1] = f8b[6];
-              buf[pos + 2] = f8b[5];
-              buf[pos + 3] = f8b[4];
-              buf[pos + 4] = f8b[3];
-              buf[pos + 5] = f8b[2];
-              buf[pos + 6] = f8b[1];
-              buf[pos + 7] = f8b[0];
-          }
-
-          /* istanbul ignore next */
-          exports.writeDoubleLE = le ? writeDouble_f64_cpy : writeDouble_f64_rev;
-          /* istanbul ignore next */
-          exports.writeDoubleBE = le ? writeDouble_f64_rev : writeDouble_f64_cpy;
-
-          function readDouble_f64_cpy(buf, pos) {
-              f8b[0] = buf[pos    ];
-              f8b[1] = buf[pos + 1];
-              f8b[2] = buf[pos + 2];
-              f8b[3] = buf[pos + 3];
-              f8b[4] = buf[pos + 4];
-              f8b[5] = buf[pos + 5];
-              f8b[6] = buf[pos + 6];
-              f8b[7] = buf[pos + 7];
-              return f64[0];
-          }
-
-          function readDouble_f64_rev(buf, pos) {
-              f8b[7] = buf[pos    ];
-              f8b[6] = buf[pos + 1];
-              f8b[5] = buf[pos + 2];
-              f8b[4] = buf[pos + 3];
-              f8b[3] = buf[pos + 4];
-              f8b[2] = buf[pos + 5];
-              f8b[1] = buf[pos + 6];
-              f8b[0] = buf[pos + 7];
-              return f64[0];
-          }
-
-          /* istanbul ignore next */
-          exports.readDoubleLE = le ? readDouble_f64_cpy : readDouble_f64_rev;
-          /* istanbul ignore next */
-          exports.readDoubleBE = le ? readDouble_f64_rev : readDouble_f64_cpy;
-
-      // double: ieee754
-      })(); else (function() {
-
-          function writeDouble_ieee754(writeUint, off0, off1, val, buf, pos) {
-              var sign = val < 0 ? 1 : 0;
-              if (sign)
-                  val = -val;
-              if (val === 0) {
-                  writeUint(0, buf, pos + off0);
-                  writeUint(1 / val > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos + off1);
-              } else if (isNaN(val)) {
-                  writeUint(0, buf, pos + off0);
-                  writeUint(2146959360, buf, pos + off1);
-              } else if (val > 1.7976931348623157e+308) { // +-Infinity
-                  writeUint(0, buf, pos + off0);
-                  writeUint((sign << 31 | 2146435072) >>> 0, buf, pos + off1);
-              } else {
-                  var mantissa;
-                  if (val < 2.2250738585072014e-308) { // denormal
-                      mantissa = val / 5e-324;
-                      writeUint(mantissa >>> 0, buf, pos + off0);
-                      writeUint((sign << 31 | mantissa / 4294967296) >>> 0, buf, pos + off1);
-                  } else {
-                      var exponent = Math.floor(Math.log(val) / Math.LN2);
-                      if (exponent === 1024)
-                          exponent = 1023;
-                      mantissa = val * Math.pow(2, -exponent);
-                      writeUint(mantissa * 4503599627370496 >>> 0, buf, pos + off0);
-                      writeUint((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 1048575) >>> 0, buf, pos + off1);
-                  }
-              }
-          }
-
-          exports.writeDoubleLE = writeDouble_ieee754.bind(null, writeUintLE, 0, 4);
-          exports.writeDoubleBE = writeDouble_ieee754.bind(null, writeUintBE, 4, 0);
-
-          function readDouble_ieee754(readUint, off0, off1, buf, pos) {
-              var lo = readUint(buf, pos + off0),
-                  hi = readUint(buf, pos + off1);
-              var sign = (hi >> 31) * 2 + 1,
-                  exponent = hi >>> 20 & 2047,
-                  mantissa = 4294967296 * (hi & 1048575) + lo;
-              return exponent === 2047
-                  ? mantissa
-                  ? NaN
-                  : sign * Infinity
-                  : exponent === 0 // denormal
-                  ? sign * 5e-324 * mantissa
-                  : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
-          }
-
-          exports.readDoubleLE = readDouble_ieee754.bind(null, readUintLE, 0, 4);
-          exports.readDoubleBE = readDouble_ieee754.bind(null, readUintBE, 4, 0);
-
-      })();
-
-      return exports;
-  }
-
-  // uint helpers
-
-  function writeUintLE(val, buf, pos) {
-      buf[pos    ] =  val        & 255;
-      buf[pos + 1] =  val >>> 8  & 255;
-      buf[pos + 2] =  val >>> 16 & 255;
-      buf[pos + 3] =  val >>> 24;
-  }
-
-  function writeUintBE(val, buf, pos) {
-      buf[pos    ] =  val >>> 24;
-      buf[pos + 1] =  val >>> 16 & 255;
-      buf[pos + 2] =  val >>> 8  & 255;
-      buf[pos + 3] =  val        & 255;
-  }
-
-  function readUintLE(buf, pos) {
-      return (buf[pos    ]
-            | buf[pos + 1] << 8
-            | buf[pos + 2] << 16
-            | buf[pos + 3] << 24) >>> 0;
-  }
-
-  function readUintBE(buf, pos) {
-      return (buf[pos    ] << 24
-            | buf[pos + 1] << 16
-            | buf[pos + 2] << 8
-            | buf[pos + 3]) >>> 0;
-  }
-
-  var inquire_1 = inquire;
-
-  /**
-   * Requires a module only if available.
-   * @memberof util
-   * @param {string} moduleName Module to require
-   * @returns {?Object} Required module if available and not empty, otherwise `null`
-   */
-  function inquire(moduleName) {
-      try {
-          var mod = eval("quire".replace(/^/,"re"))(moduleName); // eslint-disable-line no-eval
-          if (mod && (mod.length || Object.keys(mod).length))
-              return mod;
-      } catch (e) {} // eslint-disable-line no-empty
-      return null;
+  	function inquire(moduleName) {
+  	    try {
+  	        var mod = eval("quire".replace(/^/,"re"))(moduleName); // eslint-disable-line no-eval
+  	        if (mod && (mod.length || Object.keys(mod).length))
+  	            return mod;
+  	    } catch (e) {} // eslint-disable-line no-empty
+  	    return null;
+  	}
+  	return inquire_1;
   }
 
   var utf8$2 = {};
 
-  (function (exports) {
+  var hasRequiredUtf8;
+
+  function requireUtf8 () {
+  	if (hasRequiredUtf8) return utf8$2;
+  	hasRequiredUtf8 = 1;
+  	(function (exports) {
+
+  		/**
+  		 * A minimal UTF8 implementation for number arrays.
+  		 * @memberof util
+  		 * @namespace
+  		 */
+  		var utf8 = exports;
+
+  		/**
+  		 * Calculates the UTF8 byte length of a string.
+  		 * @param {string} string String
+  		 * @returns {number} Byte length
+  		 */
+  		utf8.length = function utf8_length(string) {
+  		    var len = 0,
+  		        c = 0;
+  		    for (var i = 0; i < string.length; ++i) {
+  		        c = string.charCodeAt(i);
+  		        if (c < 128)
+  		            len += 1;
+  		        else if (c < 2048)
+  		            len += 2;
+  		        else if ((c & 0xFC00) === 0xD800 && (string.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
+  		            ++i;
+  		            len += 4;
+  		        } else
+  		            len += 3;
+  		    }
+  		    return len;
+  		};
+
+  		/**
+  		 * Reads UTF8 bytes as a string.
+  		 * @param {Uint8Array} buffer Source buffer
+  		 * @param {number} start Source start
+  		 * @param {number} end Source end
+  		 * @returns {string} String read
+  		 */
+  		utf8.read = function utf8_read(buffer, start, end) {
+  		    var len = end - start;
+  		    if (len < 1)
+  		        return "";
+  		    var parts = null,
+  		        chunk = [],
+  		        i = 0, // char offset
+  		        t;     // temporary
+  		    while (start < end) {
+  		        t = buffer[start++];
+  		        if (t < 128)
+  		            chunk[i++] = t;
+  		        else if (t > 191 && t < 224)
+  		            chunk[i++] = (t & 31) << 6 | buffer[start++] & 63;
+  		        else if (t > 239 && t < 365) {
+  		            t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
+  		            chunk[i++] = 0xD800 + (t >> 10);
+  		            chunk[i++] = 0xDC00 + (t & 1023);
+  		        } else
+  		            chunk[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
+  		        if (i > 8191) {
+  		            (parts || (parts = [])).push(String.fromCharCode.apply(String, chunk));
+  		            i = 0;
+  		        }
+  		    }
+  		    if (parts) {
+  		        if (i)
+  		            parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
+  		        return parts.join("");
+  		    }
+  		    return String.fromCharCode.apply(String, chunk.slice(0, i));
+  		};
+
+  		/**
+  		 * Writes a string as UTF8 bytes.
+  		 * @param {string} string Source string
+  		 * @param {Uint8Array} buffer Destination buffer
+  		 * @param {number} offset Destination offset
+  		 * @returns {number} Bytes written
+  		 */
+  		utf8.write = function utf8_write(string, buffer, offset) {
+  		    var start = offset,
+  		        c1, // character 1
+  		        c2; // character 2
+  		    for (var i = 0; i < string.length; ++i) {
+  		        c1 = string.charCodeAt(i);
+  		        if (c1 < 128) {
+  		            buffer[offset++] = c1;
+  		        } else if (c1 < 2048) {
+  		            buffer[offset++] = c1 >> 6       | 192;
+  		            buffer[offset++] = c1       & 63 | 128;
+  		        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = string.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+  		            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+  		            ++i;
+  		            buffer[offset++] = c1 >> 18      | 240;
+  		            buffer[offset++] = c1 >> 12 & 63 | 128;
+  		            buffer[offset++] = c1 >> 6  & 63 | 128;
+  		            buffer[offset++] = c1       & 63 | 128;
+  		        } else {
+  		            buffer[offset++] = c1 >> 12      | 224;
+  		            buffer[offset++] = c1 >> 6  & 63 | 128;
+  		            buffer[offset++] = c1       & 63 | 128;
+  		        }
+  		    }
+  		    return offset - start;
+  		}; 
+  	} (utf8$2));
+  	return utf8$2;
+  }
+
+  var pool_1;
+  var hasRequiredPool;
+
+  function requirePool () {
+  	if (hasRequiredPool) return pool_1;
+  	hasRequiredPool = 1;
+  	pool_1 = pool;
 
   	/**
-  	 * A minimal UTF8 implementation for number arrays.
+  	 * An allocator as used by {@link util.pool}.
+  	 * @typedef PoolAllocator
+  	 * @type {function}
+  	 * @param {number} size Buffer size
+  	 * @returns {Uint8Array} Buffer
+  	 */
+
+  	/**
+  	 * A slicer as used by {@link util.pool}.
+  	 * @typedef PoolSlicer
+  	 * @type {function}
+  	 * @param {number} start Start offset
+  	 * @param {number} end End offset
+  	 * @returns {Uint8Array} Buffer slice
+  	 * @this {Uint8Array}
+  	 */
+
+  	/**
+  	 * A general purpose buffer pool.
   	 * @memberof util
-  	 * @namespace
+  	 * @function
+  	 * @param {PoolAllocator} alloc Allocator
+  	 * @param {PoolSlicer} slice Slicer
+  	 * @param {number} [size=8192] Slab size
+  	 * @returns {PoolAllocator} Pooled allocator
   	 */
-  	var utf8 = exports;
-
-  	/**
-  	 * Calculates the UTF8 byte length of a string.
-  	 * @param {string} string String
-  	 * @returns {number} Byte length
-  	 */
-  	utf8.length = function utf8_length(string) {
-  	    var len = 0,
-  	        c = 0;
-  	    for (var i = 0; i < string.length; ++i) {
-  	        c = string.charCodeAt(i);
-  	        if (c < 128)
-  	            len += 1;
-  	        else if (c < 2048)
-  	            len += 2;
-  	        else if ((c & 0xFC00) === 0xD800 && (string.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
-  	            ++i;
-  	            len += 4;
-  	        } else
-  	            len += 3;
-  	    }
-  	    return len;
-  	};
-
-  	/**
-  	 * Reads UTF8 bytes as a string.
-  	 * @param {Uint8Array} buffer Source buffer
-  	 * @param {number} start Source start
-  	 * @param {number} end Source end
-  	 * @returns {string} String read
-  	 */
-  	utf8.read = function utf8_read(buffer, start, end) {
-  	    var len = end - start;
-  	    if (len < 1)
-  	        return "";
-  	    var parts = null,
-  	        chunk = [],
-  	        i = 0, // char offset
-  	        t;     // temporary
-  	    while (start < end) {
-  	        t = buffer[start++];
-  	        if (t < 128)
-  	            chunk[i++] = t;
-  	        else if (t > 191 && t < 224)
-  	            chunk[i++] = (t & 31) << 6 | buffer[start++] & 63;
-  	        else if (t > 239 && t < 365) {
-  	            t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
-  	            chunk[i++] = 0xD800 + (t >> 10);
-  	            chunk[i++] = 0xDC00 + (t & 1023);
-  	        } else
-  	            chunk[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
-  	        if (i > 8191) {
-  	            (parts || (parts = [])).push(String.fromCharCode.apply(String, chunk));
-  	            i = 0;
+  	function pool(alloc, slice, size) {
+  	    var SIZE   = size || 8192;
+  	    var MAX    = SIZE >>> 1;
+  	    var slab   = null;
+  	    var offset = SIZE;
+  	    return function pool_alloc(size) {
+  	        if (size < 1 || size > MAX)
+  	            return alloc(size);
+  	        if (offset + size > SIZE) {
+  	            slab = alloc(SIZE);
+  	            offset = 0;
   	        }
-  	    }
-  	    if (parts) {
-  	        if (i)
-  	            parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
-  	        return parts.join("");
-  	    }
-  	    return String.fromCharCode.apply(String, chunk.slice(0, i));
-  	};
-
-  	/**
-  	 * Writes a string as UTF8 bytes.
-  	 * @param {string} string Source string
-  	 * @param {Uint8Array} buffer Destination buffer
-  	 * @param {number} offset Destination offset
-  	 * @returns {number} Bytes written
-  	 */
-  	utf8.write = function utf8_write(string, buffer, offset) {
-  	    var start = offset,
-  	        c1, // character 1
-  	        c2; // character 2
-  	    for (var i = 0; i < string.length; ++i) {
-  	        c1 = string.charCodeAt(i);
-  	        if (c1 < 128) {
-  	            buffer[offset++] = c1;
-  	        } else if (c1 < 2048) {
-  	            buffer[offset++] = c1 >> 6       | 192;
-  	            buffer[offset++] = c1       & 63 | 128;
-  	        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = string.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
-  	            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
-  	            ++i;
-  	            buffer[offset++] = c1 >> 18      | 240;
-  	            buffer[offset++] = c1 >> 12 & 63 | 128;
-  	            buffer[offset++] = c1 >> 6  & 63 | 128;
-  	            buffer[offset++] = c1       & 63 | 128;
-  	        } else {
-  	            buffer[offset++] = c1 >> 12      | 224;
-  	            buffer[offset++] = c1 >> 6  & 63 | 128;
-  	            buffer[offset++] = c1       & 63 | 128;
-  	        }
-  	    }
-  	    return offset - start;
-  	}; 
-  } (utf8$2));
-
-  var pool_1 = pool;
-
-  /**
-   * An allocator as used by {@link util.pool}.
-   * @typedef PoolAllocator
-   * @type {function}
-   * @param {number} size Buffer size
-   * @returns {Uint8Array} Buffer
-   */
-
-  /**
-   * A slicer as used by {@link util.pool}.
-   * @typedef PoolSlicer
-   * @type {function}
-   * @param {number} start Start offset
-   * @param {number} end End offset
-   * @returns {Uint8Array} Buffer slice
-   * @this {Uint8Array}
-   */
-
-  /**
-   * A general purpose buffer pool.
-   * @memberof util
-   * @function
-   * @param {PoolAllocator} alloc Allocator
-   * @param {PoolSlicer} slice Slicer
-   * @param {number} [size=8192] Slab size
-   * @returns {PoolAllocator} Pooled allocator
-   */
-  function pool(alloc, slice, size) {
-      var SIZE   = size || 8192;
-      var MAX    = SIZE >>> 1;
-      var slab   = null;
-      var offset = SIZE;
-      return function pool_alloc(size) {
-          if (size < 1 || size > MAX)
-              return alloc(size);
-          if (offset + size > SIZE) {
-              slab = alloc(SIZE);
-              offset = 0;
-          }
-          var buf = slice.call(slab, offset, offset += size);
-          if (offset & 7) // align to 32 bit
-              offset = (offset | 7) + 1;
-          return buf;
-      };
+  	        var buf = slice.call(slab, offset, offset += size);
+  	        if (offset & 7) // align to 32 bit
+  	            offset = (offset | 7) + 1;
+  	        return buf;
+  	    };
+  	}
+  	return pool_1;
   }
 
   var longbits;
@@ -12524,25 +13363,25 @@
   		var util = exports;
 
   		// used to return a Promise where callback is omitted
-  		util.asPromise = aspromise;
+  		util.asPromise = requireAspromise();
 
   		// converts to / from base64 encoded strings
-  		util.base64 = base64$1;
+  		util.base64 = requireBase64();
 
   		// base class of rpc.Service
-  		util.EventEmitter = eventemitter;
+  		util.EventEmitter = requireEventemitter();
 
   		// float handling accross browsers
-  		util.float = float;
+  		util.float = requireFloat();
 
   		// requires modules optionally and hides the call from bundlers
-  		util.inquire = inquire_1;
+  		util.inquire = requireInquire();
 
   		// converts to / from utf8 encoded strings
-  		util.utf8 = utf8$2;
+  		util.utf8 = requireUtf8();
 
   		// provides a node-like buffer pool in the browser
-  		util.pool = pool_1;
+  		util.pool = requirePool();
 
   		// utility to work with the low and high bits of a 64 bit value
   		util.LongBits = requireLongbits();
@@ -15491,7 +16330,7 @@
         logItem.time = log.time;
         Object.keys(log.contents).forEach(function (key) {
           var o = log.contents[key];
-          var value = isString$1(o) ? o : JSON.stringify(o);
+          var value = isString$2(o) ? o : JSON.stringify(o);
           logItem.contents.push(new cls.cls.Log.Content({
             key: key,
             value: value
@@ -15620,7 +16459,7 @@
        */
       _defineProperty(this, "stsCache", []);
       _defineProperty(this, "CLS_HOST", 'cls.tencentcs.com');
-      _defineProperty(this, "cancelRequestSource", axios$1.CancelToken.source());
+      _defineProperty(this, "cancelRequestSource", axios.CancelToken.source());
       _defineProperty(this, "retryTimes", 3);
       // 默认重试次数
       _defineProperty(this, "topicId", '');
@@ -15693,11 +16532,12 @@
           proxy && (axiosConfig.proxy = proxy);
           options.proxy && (axiosConfig.proxy = proxy); // 直接挂载的代理变量优先级高于函数中获取的代理变量
         }
-        var axiosIns = axios$1.create(axiosConfig);
+        var axiosIns = axios.create(axiosConfig);
         this.generateCancelToken(axiosIns);
         this.initMethods(axiosIns);
         this.setReqInterceptors(axiosIns);
         this.setResInterceptors(axiosIns);
+        axiosIns.defaults.adapter = mpAdapter$1;
         return axiosIns;
       }
     }, {
@@ -15809,7 +16649,7 @@
             return _regeneratorRuntime().wrap(function _callee2$(_context2) {
               while (1) switch (_context2.prev = _context2.next) {
                 case 0:
-                  if (!axios$1.isCancel(error)) {
+                  if (!axios.isCancel(error)) {
                     _context2.next = 3;
                     break;
                   }
@@ -15909,7 +16749,7 @@
     }, {
       key: "generateCancelToken",
       value: function generateCancelToken(ins) {
-        this.cancelRequestSource = axios$1.CancelToken.source();
+        this.cancelRequestSource = axios.CancelToken.source();
         ins.defaults.cancelToken = this.cancelRequestSource.token;
       }
     }, {
