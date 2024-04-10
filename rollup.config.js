@@ -11,7 +11,7 @@ export default [
     input: 'src/index.ts',
     output: {
       format: 'umd',
-      file: 'dist/cls.cjs',
+      file: 'dist/cls.cjs.js',
       name: 'ClsClient',
     },
     external: ['axios', 'crypto-js'],
@@ -36,7 +36,7 @@ export default [
     input: 'src/index.ts',
     output: {
       format: 'esm',
-      file: 'dist/cls.mjs',
+      file: 'dist/cls.mjs.js',
       name: 'ClsClient',
     },
     external: ['axios', 'crypto-js'],
@@ -61,7 +61,7 @@ export default [
     input: 'src/index.ts',
     output: {
       format: 'umd',
-      file: 'dist/cls.browser.js',
+      file: 'dist/cls.js',
       name: 'ClsClient',
     },
     external: [],
